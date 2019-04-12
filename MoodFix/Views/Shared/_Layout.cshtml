@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-30415191-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-30415191-3');
+    </script>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="Description" content="Author:Blake Stone, Subject: Like the title this site is supposed to make you feel a bit better." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-control" content="public" max-age=31536000 />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Fix My Mood</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">                    
+                    <li><a asp-area="" asp-controller="Home" asp-action="WhichIsYou">Which Is You?</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    @*<div class="spacer">
+            &nbsp;
+        </div>*@
+    @*<partial name="_CookieConsentPartial" />*@
+    <div id="banner" class="flex-container">
+        <div class="container body-content content">
+            @RenderBody()   
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

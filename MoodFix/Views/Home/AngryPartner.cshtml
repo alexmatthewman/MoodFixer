@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Partner";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(".Next").click(function () {
+            var nextLocation = $(".Next").val();
+            if (nextLocation == 1) { window.location.replace('/'); }
+            
+            $(".imgBox").remove();
+
+            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
+
+                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
+                {
+                    console.log(nextFix);
+                    $("#Back").show();
+                    $("#Title").text(nextFix.heading);
+                    $("#Text").text(nextFix.maintext);
+                    $(".Next").val(nextFix.nextvalue);
+                    $(".Back").val(nextFix.backvalue);
+
+                    node = document.getElementById('Text');         
+                   
+                    // Add an image if it exists
+                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
+                    {
+                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
+                    }
+                }
+            });
+
+        });
+
+        
+
+        $(".Back").click(function () {
+            var nextLocation = $(".Back").val();
+
+            $(".imgBox").remove();
+            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
+                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
+                {
+                    console.log(nextFix);
+                    $("#Back").show();
+                    $("#Title").text(nextFix.heading);
+                    $("#Text").text(nextFix.maintext);
+                    $(".Next").val(nextFix.nextvalue);
+                    $(".Back").val(nextFix.backvalue);
+
+                    // Add an image if it exists
+                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
+                    {
+                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
+                    }
+                }
+            });
+
+        });
+
+
+    </script>
+}
+
+<div class="bigBox">
+
+    <div class="adviceBox">
+        <div class="notButtonsBox">
+            <h1 id="Title" class="title">Lover turned hater?</h1>
+            <h2 id="Text" class="textMain">When you are so emotionally open to someone (like you are to a free buffet) it can be impossible not to be hurt easily. These steps should help!</h2>
+            <div class="imgBox"><img src="~/images/partner.png" alt="lover" /> </div>
+        </div>
+        <button style="display:none" id="Back" type="submit" value="1" class="backButton button glow pulse Back">Back</button>
+        <button id="Next" type="submit" value="241" class="forwardButton button glow pulse Next">Continue</button>
+    </div>
+
+</div>
