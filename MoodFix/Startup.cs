@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using MoodFix.Models;
 using WebEssentials.AspNetCore.Pwa;
+using Microsoft.Data.Sqlite;
+using SQLitePCL;
+using System.IO;
 
 namespace MoodFix
 {
@@ -36,8 +39,11 @@ namespace MoodFix
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<MoodFixContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("IdentityConnection")));
+            //services.AddDbContext<MoodFixContext>(options =>
+            //        options.UseMySql(Configuration.GetConnectionString("IdentityConnection")));
+          
+            services.AddDbContext<MoodFixContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddProgressiveWebApp();
 

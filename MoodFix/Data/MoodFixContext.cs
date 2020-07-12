@@ -11,6 +11,12 @@ namespace MoodFix.Models
         public MoodFixContext (DbContextOptions<MoodFixContext> options)
             : base(options)
         {
+            
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Filename=moodfixdb.db");
         }
 
         public DbSet<MoodFix.Models.Fix> Fix { get; set; }

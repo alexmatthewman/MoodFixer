@@ -28,7 +28,7 @@ namespace MoodFix.Controllers
         // GET: Fixes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fix.OrderByDescending(m => m.order).ToListAsync());
+            return View(await _context.Fix.OrderByDescending(m => m.ordering).ToListAsync());
         }
 
         // GET: Fixes/Details/5
@@ -68,7 +68,7 @@ namespace MoodFix.Controllers
             {
                 Fix fvm = new Fix
                 {
-                    order = fix.order,
+                    ordering = fix.ordering,
                     heading = fix.heading,
                     maintext = fix.maintext,
                     nextvalue = fix.nextvalue,
@@ -109,7 +109,7 @@ namespace MoodFix.Controllers
             }
             FixViewModel fvm = new FixViewModel
             {
-                order = fix.order,
+                ordering = fix.ordering,
                 heading = fix.heading,
                 maintext = fix.maintext,
                 nextvalue = fix.nextvalue,
@@ -137,7 +137,7 @@ namespace MoodFix.Controllers
                 {
                     
                     fix.ID = id;
-                    fix.order = fvm.order;
+                    fix.ordering = fvm.ordering;
                     fix.heading = fvm.heading;
                     fix.maintext = fvm.maintext;
                     fix.nextvalue = fvm.nextvalue;

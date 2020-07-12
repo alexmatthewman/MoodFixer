@@ -13,7 +13,7 @@ namespace MoodFix.Models
         public int ID { get; set; }
 
         [Display(Name = "order")]
-        public int order { get; set; }
+        public int ordering { get; set; }
 
         [StringLength(1000)]
         [Display(Name = "Fix Heading")]
@@ -42,7 +42,7 @@ namespace MoodFix.Models
         public int ID { get; set; }
 
         [Display(Name = "order")]
-        public int order { get; set; }
+        public int ordering { get; set; }
 
         [StringLength(1000)]
         [Display(Name = "Fix Heading")]

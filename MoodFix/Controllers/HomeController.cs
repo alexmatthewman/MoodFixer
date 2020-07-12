@@ -136,7 +136,7 @@ namespace MoodFix.Controllers
             if (!string.IsNullOrWhiteSpace(order))
             {
                 var suc = int.TryParse(order, out int ord);
-                Fix tester = _context.Fix.FirstOrDefault(m => m.order == ord);
+                Fix tester = _context.Fix.FirstOrDefault(m => m.ordering == ord);
                 return Json(tester);
             }
             return null;
