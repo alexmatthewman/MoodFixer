@@ -42,7 +42,7 @@ namespace MoodFix
             //services.AddDbContext<MoodFixContext>(options =>
             //        options.UseMySql(Configuration.GetConnectionString("IdentityConnection")));
           
-            services.AddDbContext<MoodFixContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MoodFixContext>(options => options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
             
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddProgressiveWebApp();
