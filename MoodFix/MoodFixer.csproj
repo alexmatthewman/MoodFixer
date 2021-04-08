@@ -36,9 +36,6 @@
     <Content Update="Views\Home\Addiction.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Home\AddictionChemical.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Home\Shame.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
