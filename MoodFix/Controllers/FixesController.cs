@@ -39,8 +39,7 @@ namespace MoodFix.Controllers
                 return NotFound();
             }
 
-            var fix = await _context.Fix
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var fix = await _context.Fix.FirstOrDefaultAsync(m => m.ID == id);
             if (fix == null)
             {
                 return NotFound();
