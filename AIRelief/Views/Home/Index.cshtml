@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Need to adjust your attitude? Fix your mood?";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(".Next").click(function () {
+            var nextLocation = $(".Next").val();               
+            $(".imgBox").remove();
+            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
+                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
+                {
+                    console.log(nextFix);
+                    $("#Back").show();
+                    $("#Title").text(nextFix.heading);
+                    $("#Text").text(nextFix.maintext);
+                    $(".Next").val(nextFix.nextvalue);
+                    $(".Back").val(nextFix.backvalue);
+                    node = document.getElementById('Text');
+                    if (nextFix.nextvalue == "4") {
+                        //alert("triggerredddd!");
+                        $("#Next").remove();
+                        $("#WhichIsYou").show();
+                    }
+                    else {
+                        $("#WhichIsYou").hide();
+                    }                                         
+                    // Add an image if it exists
+                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
+                    {
+                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
+                    }
+                }
+            });
+        });
+
+        $(".Back").click(function () {
+            var nextLocation = $(".Back").val();   
+            
+            $(".imgBox").remove();
+            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
+                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
+                {
+                    console.log(nextFix);
+                    $("#Back").show();
+                    $("#Title").text(nextFix.heading);
+                    $("#Text").text(nextFix.maintext);
+                    $(".Next").val(nextFix.nextvalue);
+                    $(".Back").val(nextFix.backvalue);                    
+                    // Add an image if it exists
+                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
+                    {
+                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<div class="bigBox">
+    <div class="adviceBox">
+        <div class="notButtonsBox">
+            <h1 id="Title" class="title">Fix My Mood!</h1>
+            <h2 id="Text" class="textMain">Not feeling so great? This should help! Please note I wrote this as advice for myself but it might help you too if you have a sense of humor.</h2>
+            <div class="imgBox"><img src="~/images/welcome.png"  alt="welcome" /> </div>
+        </div>
+        <button style="display:none" id="Back" type="submit" value="1" class="backButton button glow pulse Back">Back</button>
+        <button id="Next" type="submit" value="2" class="forwardButton button glow pulse Next">Continue</button>
+        <a style="display:none" id="WhichIsYou" asp-action="WhichIsYou" class="forwardButton button glow Next">Continue</a>
+    </div>
+
+</div>

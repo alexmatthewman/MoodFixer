@@ -1,0 +1,224 @@
+﻿
+
+.navbar {
+    position: relative;
+    margin-bottom: unset;
+}
+
+.heading-text {
+    color: #fff;
+    font-weight: bolder;
+    background: rgba(255,255,255,0.5);
+    text-align: left;
+    padding: 1em;
+}
+
+#maintext {
+    min-height: 10em;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+body {
+    background: #135557 !important;
+}
+
+.row, table {
+    background: #fff;
+}
+
+.bigBox {
+    min-height: 600px;
+    opacity: 1;
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    -webkit-box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
+    -moz-box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
+    box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
+    border-radius: 1em;
+    flex: 1;
+    background: #f1f1f1;
+    margin-top: 6em;
+    padding-bottom: 1em;
+}
+
+    .bigBox .adviceBox {
+        width: 70%;
+        margin: 0 auto;
+        min-height: 10em;
+        padding: 3em;
+        text-align: center;
+        flex: 1;
+    }
+
+        .bigBox .adviceBox .notButtonsBox {
+            min-height: 19em;
+            display: block;
+            min-height: 33em;
+        }
+
+        .bigBox .adviceBox .title {
+            text-align: center;
+        }
+
+        .bigBox .adviceBox .textMain {
+            padding-top: 1em;
+            text-align: center;
+            padding-left: unset;
+        }
+
+        .bigBox .adviceBox .imgBox {
+            margin: 0 auto;
+            text-align: center;
+            padding: 1em;
+        }
+
+        .bigBox .adviceBox .imgBoxList {
+            margin: 0 auto;
+            text-align: center;
+            display: inline-block;
+            padding: 1em;
+        }
+
+        .bigBox .adviceBox .backButton {
+            float: left;
+        }
+
+        .bigBox .adviceBox .forwardButton {
+            float: right;
+        }
+
+.button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    background-color: #FFF;
+    border-radius: 3px;
+    border: 3px solid #ccc;
+    box-shadow: inset 0 0 0 1px #fff;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 600;
+    height: 3.125em;
+    letter-spacing: 0.225em;
+    line-height: 3.125em;
+    padding: 0 2.75em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+    .pulse:hover {
+        animation: none;
+    }
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.6);
+    }
+
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.6);
+        box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    }
+
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
+}
+
+
+#banner {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: block;
+    -moz-flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    cursor: default;
+    min-height: 35em;
+    /*overflow: hidden;*/
+    position: relative;
+    text-align: center;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../images/background.jpeg");
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../images/background.jpeg");
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../images/background.jpeg");
+    background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../images/background.jpeg");
+    height: 100vh;
+    -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 3s; /* Firefox < 16 */
+    -ms-animation: fadein 3s; /* Internet Explorer */
+    -o-animation: fadein 4s; /* Opera < 12.1 */
+    animation: fadein 4s;
+}
+
+
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+
+    .bigBox {
+        display: flex;
+    }
+
+        .bigBox .adviceBox {
+            width: 100%;
+            max-width: 100%;
+            padding: 1.5em;
+        }
+
+            .bigBox .adviceBox .notButtonsBox {
+                margin-bottom: 2em;
+            }
+
+    .button {
+        padding: 1em;
+        padding-top: 0;
+    }
+}

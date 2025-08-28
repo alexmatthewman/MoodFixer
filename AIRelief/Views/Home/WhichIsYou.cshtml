@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Which Is You?";
+}
+
+<div class="bigBox">
+
+    <div class="adviceBox">
+        <h1 id="Title" class="title">OK</h1>
+        <h2 id="Text" class="textMain">Which best describes you currently you moody bitch?</h2>
+        <div class="imgBoxList next">
+            <a asp-action="Angry">
+                <img src="~/images/angry.png" value="200" alt="angry" /><div class="descriptor">Angry</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Sad">
+                <img src="~/images/sad.png" value="100" alt="sad" /><div class="descriptor">Sad</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Frustrated">
+                <img src="~/images/frustrated.png" value="300" alt="frustrated" /><div class="descriptor">Frustrated</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Anxious">
+                <img src="~/images/anxious.png" value="300" alt="anxious" /><div class="descriptor">Anxious</div>
+            </a>
+        </div>
+
+        <div class="imgBoxList next">
+            <a asp-action="Ennui">
+                <img src="~/images/ennui.png" value="500" alt="ennui" /><div class="descriptor">Ennui</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Blurg">
+                <img src="~/images/exhausted.png" value="600" alt="blurg" /><div class="descriptor">Blurg</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Motivation">
+                <img src="~/images/lazy.png" value="600" alt="blurg" /><div class="descriptor">Unmotivated</div>
+            </a>
+        </div>
+        <div class="imgBoxList next">
+            <a asp-action="Addiction">
+                <img src="~/images/addiction.png" value="600" alt="addiction" /><div class="descriptor">Addiction</div>
+            </a>
+        </div>
+        @*<div class="imgBoxList next">
+            <a asp-action="Incredibly Good Looking">
+                <img src="~/images/looker.png" value="300" /><div class="descriptor">Incredibly Good Looking</div>
+            </a>
+        </div>*@
+    </div>
+
+</div>
