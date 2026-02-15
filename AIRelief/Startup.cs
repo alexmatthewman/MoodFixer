@@ -44,18 +44,32 @@ namespace AIRelief
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Add session services
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.Name = "AIRelief.Session";
+            });
 
             services.AddMvc();
             services.AddDbContext<AIReliefContext>(options => options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AIReliefContext>()
-                .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                // TODO This disables email sending for dev - needed for PROD
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddRoles<IdentityRole>() // if you need roles
+            .AddEntityFrameworkStores<AIReliefContext>();
+
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/Account/Login";
-                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
 
             services.AddAuthentication()
@@ -70,14 +84,7 @@ namespace AIRelief
                     microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
                 });
 
-            services.AddRazorPages()
-                .AddRazorPagesOptions(options =>
-                {
-                    // Require authentication for all pages except /Home and /Index
-                    options.Conventions.AuthorizeFolder("/");
-                    options.Conventions.AllowAnonymousToPage("/Index");
-                    options.Conventions.AllowAnonymousToFolder("/Home");
-                });
+            services.AddRazorPages();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddProgressiveWebApp();
@@ -87,26 +94,24 @@ namespace AIRelief
             services.AddResponseCompression(options =>
             {
                 options.EnableForHttps = true;
-                
+
             });
 
             services.AddHsts(options =>
-                {
-                    options.Preload = true;
-                    options.IncludeSubDomains = true;
-                    options.MaxAge = System.TimeSpan.FromDays(60);
-                    options.ExcludedHosts.Add("fixmymood.com");
-                    options.ExcludedHosts.Add("www.fixmymood.com");
-                    
-                });
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = System.TimeSpan.FromDays(60);
+                options.ExcludedHosts.Add("fixmymood.com");
+                options.ExcludedHosts.Add("www.fixmymood.com");
+
+            });
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +123,10 @@ namespace AIRelief
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCors();
+
+            // Add session middleware - must be after UseRouting and before UseAuthentication
+            app.UseSession();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -130,11 +139,13 @@ namespace AIRelief
             app.UseForwardedHeaders(forwardingOptions);
             app.UseResponseCompression();
             app.UseCookiePolicy();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default", "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages(); // Must be here to enable Identity pagesd
             });
         }
     }

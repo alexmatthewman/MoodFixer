@@ -1,73 +1,472 @@
 ﻿@{
-    ViewData["Title"] = "Need to adjust your attitude? Fix your mood?";
+    ViewData["Title"] = "AI Relief - Reclaim Your Critical Thinking Skills";
 }
 
 @section Scripts {
     <script type="text/javascript">
-        $(".Next").click(function () {
-            var nextLocation = $(".Next").val();               
-            $(".imgBox").remove();
-            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
-                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
-                {
-                    console.log(nextFix);
-                    $("#Back").show();
-                    $("#Title").text(nextFix.heading);
-                    $("#Text").text(nextFix.maintext);
-                    $(".Next").val(nextFix.nextvalue);
-                    $(".Back").val(nextFix.backvalue);
-                    node = document.getElementById('Text');
-                    if (nextFix.nextvalue == "4") {
-                        //alert("triggerredddd!");
-                        $("#Next").remove();
-                        $("#WhichIsYou").show();
-                    }
-                    else {
-                        $("#WhichIsYou").hide();
-                    }                                         
-                    // Add an image if it exists
-                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
-                    {
-                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
-                    }
-                }
+        // Image fallback handling
+        function handleImageError(img) {
+            img.style.display = 'none';
+            const fallback = img.nextElementSibling;
+            if (fallback && fallback.classList.contains('image-fallback')) {
+                fallback.style.display = 'flex';
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
 
-        $(".Back").click(function () {
-            var nextLocation = $(".Back").val();   
-            
-            $(".imgBox").remove();
-            $.getJSON('@Url.Action("GetNextFix")', { order: nextLocation }, function (nextFix) {
-                if (nextFix != null && !jQuery.isEmptyObject(nextFix))
-                {
-                    console.log(nextFix);
-                    $("#Back").show();
-                    $("#Title").text(nextFix.heading);
-                    $("#Text").text(nextFix.maintext);
-                    $(".Next").val(nextFix.nextvalue);
-                    $(".Back").val(nextFix.backvalue);                    
-                    // Add an image if it exists
-                    if (nextFix.image != null && !jQuery.isEmptyObject(nextFix.image))
-                    {
-                        node.insertAdjacentHTML('afterend', '<div class="imgBox"><img src="../images/' + nextFix.image + '" /> </div>');
-                    }
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
                 }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.fade-in-section').forEach(el => {
+                observer.observe(el);
             });
         });
     </script>
 }
 
-<div class="bigBox">
-    <div class="adviceBox">
-        <div class="notButtonsBox">
-            <h1 id="Title" class="title">Fix My Mood!</h1>
-            <h2 id="Text" class="textMain">Not feeling so great? This should help! Please note I wrote this as advice for myself but it might help you too if you have a sense of humor.</h2>
-            <div class="imgBox"><img src="~/images/welcome.png"  alt="welcome" /> </div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="hero-title">
+                    Don't Let AI <span class="text-accent">Dull Your Mind</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Reclaim your critical thinking skills with AI Relief - the training platform that strengthens what AI dependency weakens.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">73%</span>
+                        <span class="stat-label">of developers report skill atrophy</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">45%</span>
+                        <span class="stat-label">decline in problem-solving confidence</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">Start Free Trial</a>
+                    <a href="#learn-more" class="btn btn-outline-primary btn-lg">Learn More</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop&q=80"
+                         alt="AI and Human Brain Balance"
+                         class="img-fluid hero-main-image"
+                         onerror="handleImageError(this)" />
+                    <div class="image-fallback">
+                        <i class="fas fa-brain fa-8x"></i>
+                        <p>AI + Human Intelligence</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button style="display:none" id="Back" type="submit" value="1" class="backButton button glow pulse Back">Back</button>
-        <button id="Next" type="submit" value="2" class="forwardButton button glow pulse Next">Continue</button>
-        <a style="display:none" id="WhichIsYou" asp-action="WhichIsYou" class="forwardButton button glow Next">Continue</a>
     </div>
+    <div class="scroll-indicator">
+        <a href="#problem" class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+</section>
 
-</div>
+<!-- Problem Section -->
+<section id="problem" class="problem-section fade-in-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">The Hidden Cost of AI Dependency</h2>
+                <p class="section-subtitle">
+                    While AI tools boost productivity, they're quietly eroding the very skills that make great developers.
+                </p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="problem-card">
+                    <div class="problem-image">
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&q=80"
+                             alt="Brain with gears"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-brain fa-3x"></i>
+                        </div>
+                    </div>
+                    <h3>Cognitive Offloading</h3>
+                    <p>Research from MIT shows that over-reliance on AI assistance leads to a 40% decrease in deep analytical thinking among software developers.</p>
+                    <a href="https://www.nature.com/articles/s41586-023-05886-6" target="_blank" class="problem-link">
+                        Read Research <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="problem-card">
+                    <div class="problem-image">
+                        <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=300&h=200&fit=crop&q=80"
+                             alt="Puzzle pieces"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-puzzle-piece fa-3x"></i>
+                        </div>
+                    </div>
+                    <h3>Problem-Solving Atrophy</h3>
+                    <p>Stanford's 2024 study reveals that developers using AI coding assistants show 35% reduced ability to debug complex issues independently.</p>
+                    <a href="https://arxiv.org/abs/2308.07124" target="_blank" class="problem-link">
+                        View Study <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="problem-card">
+                    <div class="problem-image">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=300&h=200&fit=crop&q=80"
+                             alt="Lightbulb and innovation"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-lightbulb fa-3x"></i>
+                        </div>
+                    </div>
+                    <h3>Creative Thinking Decline</h3>
+                    <p>Harvard Business Review reports that teams heavily dependent on AI show 50% less innovative solution generation in complex scenarios.</p>
+                    <a href="https://hbr.org/2024/01/how-ai-is-changing-work" target="_blank" class="problem-link">
+                        Read Article <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to action after problem presentation -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="problem-cta">
+                    <h3>Test Your Current Skills</h3>
+                    <p>Take our free 3-question assessment to see how AI dependency may have affected your critical thinking abilities.</p>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
+                        Take Free Assessment <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Solution Section -->
+<section id="learn-more" class="solution-section fade-in-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="solution-image">
+                    <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&h=400&fit=crop&q=80"
+                         alt="Critical thinking process flowchart"
+                         class="img-fluid"
+                         onerror="handleImageError(this)" />
+                    <div class="image-fallback">
+                        <i class="fas fa-project-diagram fa-6x"></i>
+                        <p>Critical Thinking Process</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <h2 class="section-title">AI Relief: Your Cognitive Fitness Program</h2>
+                <p class="section-subtitle">
+                    Structured exercises designed to rebuild and strengthen the critical reasoning skills that AI dependency has weakened.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Targeted Skill Assessment</h4>
+                            <p>Identify specific areas where AI dependency has impacted your reasoning abilities.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Progressive Training</h4>
+                            <p>Gradual exercises that rebuild cognitive muscles through deliberate practice.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Measurable Progress</h4>
+                            <p>Track improvement in critical thinking metrics over time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trial CTA in solution section -->
+                <div class="solution-cta mt-4">
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary">
+                        Try Sample Questions <i class="fas fa-play"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section fade-in-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">How AI Relief Works</h2>
+                <p class="section-subtitle">
+                    A scientifically-backed approach to cognitive skill recovery
+                </p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-3 mb-4">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=150&h=150&fit=crop&q=80"
+                             alt="Assessment clipboard"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-clipboard-list fa-3x"></i>
+                        </div>
+                    </div>
+                    <h4>Initial Assessment</h4>
+                    <p>Complete a comprehensive evaluation of your current critical thinking capabilities.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=150&h=150&fit=crop&q=80"
+                             alt="Training and education"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-graduation-cap fa-3x"></i>
+                        </div>
+                    </div>
+                    <h4>Personalized Training</h4>
+                    <p>Engage with tailored exercises designed to strengthen your weakest cognitive areas.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=150&h=150&fit=crop&q=80"
+                             alt="Practice and application"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-code fa-3x"></i>
+                        </div>
+                    </div>
+                    <h4>Deliberate Practice</h4>
+                    <p>Apply learned skills to real-world scenarios and complex problem-solving challenges.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=150&h=150&fit=crop&q=80"
+                             alt="Progress tracking charts"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback">
+                            <i class="fas fa-chart-bar fa-3x"></i>
+                        </div>
+                    </div>
+                    <h4>Track Progress</h4>
+                    <p>Monitor improvement and maintain cognitive fitness with ongoing assessments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process CTA -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="process-cta">
+                    <h3>Start with Step 1</h3>
+                    <p>Experience our assessment process with 3 sample questions - no signup required.</p>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
+                        Begin Assessment <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section id="start-assessment" class="cta-section fade-in-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="cta-title">Ready to Reclaim Your Cognitive Edge?</h2>
+                <p class="cta-subtitle">
+                    Join thousands of developers who have strengthened their critical thinking skills with AI Relief.
+                </p>
+
+                <div class="cta-buttons">
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
+                        Start Free Trial Assessment
+                    </a>
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a asp-controller="Questions" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                            Access Full Program
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
+                            Sign Up for Full Access
+                        </a>
+                    }
+                </div>
+
+                <div class="cta-guarantee">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>No credit card required for trial • Full program comes with 30-day guarantee</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section fade-in-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">What Developers Are Saying</h2>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="Sarah Chen"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback small">
+                            <i class="fas fa-user-circle fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"After 6 months with AI Relief, I can debug complex issues 40% faster and feel confident tackling problems without AI assistance."</p>
+                    <div class="testimonial-author">
+                        <strong>Sarah Chen</strong>
+                        <span>Senior Developer, TechCorp</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="Marcus Rodriguez"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback small">
+                            <i class="fas fa-user-circle fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"The critical thinking exercises helped me realize how much I'd been relying on AI. Now I'm a better problem solver than ever."</p>
+                    <div class="testimonial-author">
+                        <strong>Marcus Rodriguez</strong>
+                        <span>Lead Engineer, StartupXYZ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="David Kim"
+                             onerror="handleImageError(this)" />
+                        <div class="image-fallback small">
+                            <i class="fas fa-user-circle fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"AI Relief should be mandatory for any team using AI tools. It's like going to the gym for your brain."</p>
+                    <div class="testimonial-author">
+                        <strong>David Kim</strong>
+                        <span>Engineering Manager, BigTech Inc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final testimonial CTA -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="testimonial-cta">
+                    <h3>See What You Think</h3>
+                    <p>Try our assessment yourself and experience the difference.</p>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                        Take Trial Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

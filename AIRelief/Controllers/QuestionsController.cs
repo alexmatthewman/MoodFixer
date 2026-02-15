@@ -53,7 +53,7 @@ namespace AIRelief.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,order,heading,maintext,image,backvalue,nextvalue,Answer1,Answer2,Answer3,Answer4,Answer5,Answer6,Answer7,Answer8")] Question question)
+        public async Task<IActionResult> Create([Bind("ID,order,heading,maintext,image,backvalue,nextvalue,correctiontext,correctionimage,Option1,Option2,Option3,Option4,Option5,Option6,Option7,Option8,CorrectAnswer")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace AIRelief.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,order,heading,maintext,image,backvalue,nextvalue,Answer1,Answer2,Answer3,Answer4,Answer5,Answer6,Answer7,Answer8")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,order,heading,maintext,image,backvalue,nextvalue,correctiontext,correctionimage,Option1,Option2,Option3,Option4,Option5,Option6,Option7,Option8,CorrectAnswer")] Question question)
         {
             if (id != question.ID)
             {

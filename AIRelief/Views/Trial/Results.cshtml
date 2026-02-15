@@ -1,0 +1,76 @@
+﻿@model TrialResultViewModel
+
+@{
+    ViewData["Title"] = "Trial Results - AI Relief";
+}
+
+<section class="results-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="results-card">
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span class="score-percentage">@Model.Percentage%</span>
+                            <span class="score-fraction">@Model.Score/@Model.TotalQuestions</span>
+                        </div>
+                    </div>
+
+                    <h2 class="results-title">@Model.Message</h2>
+
+                    @if (Model.ShowTrainingSuggestion)
+                    {
+                        <div class="training-suggestion">
+                            <h3>Strengthen Your Skills</h3>
+                            <p>
+                                Your score suggests you could benefit from our comprehensive training program.
+                                AI Relief offers personalized exercises designed to rebuild critical thinking capabilities.
+                            </p>
+
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <a asp-controller="Questions" asp-action="Index" class="btn btn-primary btn-lg">
+                                    Start Full Assessment
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
+                                    Sign Up for Full Access
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="success-message">
+                            <h3>Well Done!</h3>
+                            <p>
+                                You demonstrate strong critical thinking skills. Our full program can help you maintain
+                                and further enhance these abilities.
+                            </p>
+
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <a asp-controller="Questions" asp-action="Index" class="btn btn-primary btn-lg">
+                                    Access Full Program
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
+                                    Join AI Relief
+                                </a>
+                            }
+                        </div>
+                    }
+
+                    <div class="trial-actions">
+                        <a asp-action="Index" class="btn btn-outline-primary">Take Trial Again</a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-link">Return Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
