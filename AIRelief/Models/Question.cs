@@ -1,3 +1,5 @@
+#nullable enable
+
 using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,16 +12,16 @@ namespace AIRelief.Models
         public int ID { get; set; }
 
         [Display(Name = "Order")]
-        public int? order { get; set; } // Made optional
+        public int? order { get; set; }
 
         [StringLength(1000, ErrorMessage = "Heading cannot exceed 1000 characters.")]
         [Display(Name = "Heading")]
-        public string? heading { get; set; } // Made optional
+        public string? heading { get; set; }
 
         [Required(ErrorMessage = "Main Text is required.")]
         [StringLength(1000, ErrorMessage = "Main Text cannot exceed 1000 characters.")]
         [Display(Name = "Main Text")]
-        public string maintext { get; set; }
+        public string maintext { get; set; } = string.Empty;
 
         [StringLength(1000, ErrorMessage = "Image path cannot exceed 1000 characters.")]
         [Display(Name = "Image")]
@@ -45,12 +47,12 @@ namespace AIRelief.Models
         [Required(ErrorMessage = "Option 1 is required.")]
         [StringLength(500, ErrorMessage = "Option 1 cannot exceed 500 characters.")]
         [Display(Name = "Option 1")]
-        public string Option1 { get; set; }
+        public string Option1 { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Option 2 is required.")]
         [StringLength(500, ErrorMessage = "Option 2 cannot exceed 500 characters.")]
         [Display(Name = "Option 2")]
-        public string Option2 { get; set; }
+        public string Option2 { get; set; } = string.Empty;
 
         // Optional options (3-8)
         [StringLength(500, ErrorMessage = "Option 3 cannot exceed 500 characters.")]
@@ -81,6 +83,8 @@ namespace AIRelief.Models
         [Required(ErrorMessage = "Correct Answer is required.")]
         [StringLength(500, ErrorMessage = "Correct Answer cannot exceed 500 characters.")]
         [Display(Name = "Correct Answer")]
-        public string CorrectAnswer { get; set; }
+        public string CorrectAnswer { get; set; } = string.Empty;
     }
 }
+
+#nullable restore

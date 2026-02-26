@@ -1,0 +1,137 @@
+@model AIRelief.Models.Group
+@{
+    ViewData["Title"] = "Group Details";
+    var availableLicenses = Model.NumberOfUserLicenses - Model.Users.Count;
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">@Model.Name <small class="text-muted">(@Model.PlanName)</small></h1>
+        <div>
+            <a href="/Admin/SystemAdmin/Groups/Edit/@Model.ID" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Groups
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>Group Configuration</h5>
+        </div>
+        <div class="admin-card-body">
+            <div class="admin-stats">
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Total Licenses</div>
+                    <div class="admin-stat-value">@Model.NumberOfUserLicenses</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Used Licenses</div>
+                    <div class="admin-stat-value">@Model.Users.Count</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Available</div>
+                    <div class="admin-stat-value">@availableLicenses</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Expiry (Days)</div>
+                    <div class="admin-stat-value">@Model.ExpiryDays</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Query Frequency</div>
+                    <div class="admin-stat-value" style="font-size: 1rem; color: var(--text-secondary);">@Model.QueryFrequency</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Passing Grade</div>
+                    <div class="admin-stat-value">@Model.QueryPassingGrade%</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Query Completion</div>
+                    <div class="admin-stat-value">@Model.QueryTimeToCompleteDays days</div>
+                </div>
+            </div>
+
+            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Question Settings</h6>
+                    <div style="color: var(--text-primary);">
+                        <div style="margin-bottom: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);" aria-hidden="true"></i>
+                            <strong>Random Questions:</strong> @(Model.QueryQuestionsRandom ? "Enabled" : "Disabled")
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: var(--success-color);" aria-hidden="true"></i>
+                            <strong>Focussed Questions:</strong> @(Model.QueryQuestionsFocussed ? "Enabled" : "Disabled")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Theme Colors</h6>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        @if (!string.IsNullOrEmpty(Model.PrimaryThemeColor))
+                        {
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="width: 40px; height: 40px; background-color: @Model.PrimaryThemeColor; border-radius: 5px; border: 1px solid var(--border-color);"></div>
+                                <span>Primary: @Model.PrimaryThemeColor</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.SecondaryThemeColor))
+                        {
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="width: 40px; height: 40px; background-color: @Model.SecondaryThemeColor; border-radius: 5px; border: 1px solid var(--border-color);"></div>
+                                <span>Secondary: @Model.SecondaryThemeColor</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users in Group -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>Users in Group (@Model.Users.Count / @Model.NumberOfUserLicenses)</h5>
+        </div>
+        <div class="admin-card-body">
+            @if (Model.Users.Count == 0)
+            {
+                <p class="text-muted">No users assigned to this group.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Auth Level</th>
+                                <th>Expiry Date</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>@user.Name</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@user.AuthLevel</span>
+                                    </td>
+                                    <td>@user.ExpiryDate?.ToString("yyyy-MM-dd")</td>
+                                    <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

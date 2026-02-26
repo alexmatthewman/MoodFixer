@@ -1,0 +1,36 @@
+@using AIRelief.Models
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@inject AIReliefContext Context
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var appUser = await Context.Users.FirstOrDefaultAsync(u => u.IdentityUserId == user.Id);
+    
+    var isGroupAdmin = appUser?.AuthLevel == AuthLevel.GroupAdmin;
+    var isSystemAdmin = appUser?.AuthLevel == AuthLevel.SystemAdmin;
+}
+
+@if (isGroupAdmin || isSystemAdmin)     
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            Administration
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+            @if (isGroupAdmin)
+            {
+                <li><a class="dropdown-item" href="/Admin/GroupAdmin">Group Users</a></li>
+                <li><a class="dropdown-item" href="/Admin/UserAdmin">User Admin</a></li>
+            }
+            @if (isSystemAdmin)
+            {
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Groups">Manage Groups</a></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Users">Manage Users</a></li>
+            }
+        </ul>
+    </li>
+}

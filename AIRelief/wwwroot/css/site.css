@@ -1578,6 +1578,408 @@ img {
 
 }
 
+/* =================================
+   ADMIN PAGES STYLING
+   ================================= */
+
+/* Admin Page Layout */
+.admin-page {
+    padding: 2rem 0;
+}
+
+.admin-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Table Styling */
+.table {
+    background-color: var(--bg-tertiary);
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.table thead {
+    background-color: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-accent);
+}
+
+    .table thead th {
+        color: var(--text-secondary);
+        font-weight: 600;
+        padding: 1rem;
+        text-align: left;
+        border: none;
+        background-color: var(--bg-secondary);
+    }
+
+.table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+    .table tbody tr:hover {
+        background-color: var(--bg-secondary);
+        box-shadow: inset 0 0 10px rgba(0, 255, 170, 0.05);
+    }
+
+.table tbody td {
+    color: var(--text-primary);
+    padding: 1rem;
+    border: none;
+    vertical-align: middle;
+}
+
+    .table tbody td.action-cell {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+/* Card Layout for Admin Pages */
+.admin-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+    .admin-card:hover {
+        border-color: var(--border-accent);
+        box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+.admin-card-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+    .admin-card-header h5 {
+        margin: 0;
+        color: var(--text-secondary);
+        padding: 0;
+        border: none;
+    }
+
+.admin-card-body {
+    color: var(--text-primary);
+}
+
+.admin-card-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Statistics Display */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.admin-stat-item {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+    .admin-stat-item:hover {
+        border-color: var(--border-accent);
+        box-shadow: 0 6px 15px var(--shadow-color);
+    }
+
+.admin-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-accent);
+}
+
+/* Form Groups in Admin */
+.admin-form-group {
+    margin-bottom: 1.5rem;
+}
+
+    .admin-form-group label {
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+.admin-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+/* Filter Section */
+.admin-filter {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+    .admin-filter label {
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+/* Responsive Table */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.9rem;
+    }
+
+        .table thead th {
+            padding: 0.75rem;
+        }
+
+        .table tbody td {
+            padding: 0.75rem;
+        }
+
+    .admin-card {
+        padding: 1.5rem;
+    }
+
+    .admin-stats {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .admin-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .admin-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .action-cell {
+        flex-direction: column;
+    }
+
+        .action-cell .btn {
+            width: 100%;
+        }
+}
+
+/* =================================
+   GROUP DETAILS PAGE STYLING
+   ================================= */
+
+.user-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.user-name {
+    min-width: 150px;
+    flex: 0 0 auto;
+}
+
+.user-email {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+}
+
+.user-stats {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+.stat-badge {
+    display: inline-block;
+    background-color: var(--bg-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.stat-badge.score {
+    background-color: var(--text-accent);
+    color: var(--btn-text);
+    font-weight: bold;
+}
+
+.accordion-button {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    margin-bottom: 0.5rem;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--bg-tertiary) !important;
+    border-color: var(--border-accent) !important;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--border-accent) !important;
+}
+
+.accordion-body {
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.user-stats-detail {
+    padding: 1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-box {
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.domain-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.domain-stat {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.domain-name {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.domain-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.domain-metrics span {
+    color: var(--text-primary);
+}
+
+.domain-metrics .domain-avg {
+    color: var(--text-accent);
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.overall-score {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-accent);
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .user-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-stats {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .domain-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .accordion-button {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
 /* Page load animations */
 .row > div {
     animation: fadeIn 0.8s ease-out;

@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "User Details";
+    dynamic model = Model;
+    var user = model.User as AIRelief.Models.User;
+    var statistics = model.Statistics as IList<AIRelief.Models.UserStatistics>;
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">@user.Name</h1>
+        <a href="/Admin/GroupAdmin" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>User Information</h5>
+        </div>
+        <div class="admin-card-body">
+            <div class="user-summary">
+                <div class="user-name">
+                    <strong>@user.Name</strong>
+                </div>
+                <div class="user-email">
+                    @user.Email
+                </div>
+                <div class="user-stats" style="margin-left: auto;">
+                    <span class="stat-badge">Auth Level: @user.AuthLevel</span>
+                    <span class="stat-badge">Created: @user.CreatedDate.ToString("yyyy-MM-dd")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (statistics != null && statistics.Count > 0)
+    {
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5>User Statistics</h5>
+            </div>
+            <div class="admin-card-body">
+                @foreach (var stat in statistics)
+                {
+                    <div class="domain-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Cognitive Reflection</div>
+                            <div class="stat-value">@stat.CognitiveReflectionWeightedAverage%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Reading Comprehension</div>
+                            <div class="stat-value">@stat.ReadingComprehensionWeightedAverage%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Causal Reasoning</div>
+                            <div class="stat-value">@stat.CausalReasoningWeightedAverage%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Metacognition</div>
+                            <div class="stat-value">@stat.MetacognitionWeightedAverage%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Short-Term Memory</div>
+                            <div class="stat-value">@stat.ShortTermMemoryWeightedAverage%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Confidence Calibration</div>
+                            <div class="stat-value">@stat.ConfidenceCalibrationWeightedAverage%</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

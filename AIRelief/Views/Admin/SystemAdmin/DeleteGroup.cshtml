@@ -1,0 +1,49 @@
+@model AIRelief.Models.Group
+@{
+    ViewData["Title"] = "Delete Group";
+}
+
+<div class="admin-page">
+    <h1 class="admin-title">Delete Group</h1>
+
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Warning:</strong> This action cannot be undone. Deleting this group will remove all associated user relationships and settings.
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>@Model.Name</h5>
+        </div>
+        <div class="admin-card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Licenses</dt>
+                <dd class="col-sm-9">@Model.NumberOfUserLicenses</dd>
+
+                <dt class="col-sm-3">Expiry (Days)</dt>
+                <dd class="col-sm-9">@Model.ExpiryDays</dd>
+
+                <dt class="col-sm-3">Query Frequency</dt>
+                <dd class="col-sm-9">@Model.QueryFrequency</dd>
+
+                <dt class="col-sm-3">Passing Grade</dt>
+                <dd class="col-sm-9">@Model.QueryPassingGrade%</dd>
+
+                <dt class="col-sm-3">Created Date</dt>
+                <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+            </dl>
+
+            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+            <form method="post" action="/Admin/SystemAdmin/Groups/Delete/@Model.ID">
+                @Html.AntiForgeryToken()
+                <div class="admin-card-footer" style="margin: 0; padding: 0; border: none;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete Permanently
+                    </button>
+                    <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

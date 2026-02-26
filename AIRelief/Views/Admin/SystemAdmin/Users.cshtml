@@ -1,0 +1,54 @@
+@model IList<AIRelief.Models.User>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">User Management</h1>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No users found.
+        </div>
+    }
+    else
+    {
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5>All Users (@Model.Count)</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Group</th>
+                                <th>Auth Level</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td><strong>@user.Name</strong></td>
+                                    <td>@user.Email</td>
+                                    <td>@user.Group?.Name ?? "N/A"</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@user.AuthLevel</span>
+                                    </td>
+                                    <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,198 @@
+@model AIRelief.Models.Group
+@{
+    ViewData["Title"] = "Edit Group";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">Edit Group - @Model.Name</h1>
+        <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Groups
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>Group Information</h5>
+        </div>
+        <div class="admin-card-body">
+            <form method="post" action="/Admin/SystemAdmin/Groups/Edit/@Model.ID">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="ID" />
+                <input type="hidden" asp-for="CreatedDate" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="admin-form-group">
+                            <label asp-for="PlanName" class="form-label" style="color: var(--text-secondary);">Plan Name <small class="text-muted">(optional)</small></label>
+                            <input asp-for="PlanName" class="form-control" />
+                            <span asp-validation-for="PlanName" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="Name" class="form-label" style="color: var(--text-secondary);">Group/Company Name</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="NumberOfUserLicenses" class="form-label" style="color: var(--text-secondary);">Number of User Licenses</label>
+                            <input asp-for="NumberOfUserLicenses" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="NumberOfUserLicenses" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="ExpiryDays" class="form-label" style="color: var(--text-secondary);">Account Expiry (Days)</label>
+                            <input asp-for="ExpiryDays" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="ExpiryDays" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="QueryTimeToCompleteDays" class="form-label" style="color: var(--text-secondary);">Query Time to Complete (Days)</label>
+                            <input asp-for="QueryTimeToCompleteDays" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="QueryTimeToCompleteDays" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="admin-form-group">
+                            <label asp-for="QueryPassingGrade" class="form-label" style="color: var(--text-secondary);">Query Passing Grade (%)</label>
+                            <input asp-for="QueryPassingGrade" class="form-control" type="number" min="0" max="100" />
+                            <span asp-validation-for="QueryPassingGrade" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">Query Frequency</label>
+                            <select asp-for="QueryFrequency" class="form-select" asp-items="Html.GetEnumSelectList<AIRelief.Models.QueryFrequency>()">
+                                <option value="">-- Select Frequency --</option>
+                            </select>
+                            <span asp-validation-for="QueryFrequency" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="GroupImageUrl" class="form-label" style="color: var(--text-secondary);">Group/Company Logo URL</label>
+                            <input asp-for="GroupImageUrl" class="form-control" type="url" />
+                            <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
+                            <small class="form-text text-muted">Optional: URL to group/company logo</small>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="PrimaryThemeColor" class="form-label" style="color: var(--text-secondary);">Primary Theme Color</label>
+                            <div class="input-group">
+                                <input asp-for="PrimaryThemeColor" class="form-control" placeholder="#FF5733" />
+                                <input type="color" class="btn border" id="primaryColorPicker" />
+                            </div>
+                            <span asp-validation-for="PrimaryThemeColor" class="text-danger"></span>
+                            <small class="form-text text-muted">Hex color code (e.g., #FF5733)</small>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label asp-for="SecondaryThemeColor" class="form-label" style="color: var(--text-secondary);">Secondary Theme Color</label>
+                            <div class="input-group">
+                                <input asp-for="SecondaryThemeColor" class="form-control" placeholder="#FF5733" />
+                                <input type="color" class="btn border" id="secondaryColorPicker" />
+                            </div>
+                            <span asp-validation-for="SecondaryThemeColor" class="text-danger"></span>
+                            <small class="form-text text-muted">Hex color code (e.g., #FF5733)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Question Settings</h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="admin-form-group">
+                            <div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="QuestionMode" id="modeFocussed" value="Focussed" />
+                                    <label class="form-check-label" for="modeFocussed">Use Focussed Questions</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="QuestionMode" id="modeRandom" value="Random" />
+                                    <label class="form-check-label" for="modeRandom">Use Random Questions</label>
+                                </div>
+                                <small class="form-text text-muted d-block">Choose query selection mode. Only one may be selected.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="admin-card-footer" style="margin: 0; padding: 0; border: none;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Color picker integration
+        document.getElementById('primaryColorPicker').addEventListener('change', function() {
+            document.getElementById('PrimaryThemeColor').value = this.value;
+        });
+        document.getElementById('secondaryColorPicker').addEventListener('change', function() {
+            document.getElementById('SecondaryThemeColor').value = this.value;
+        });
+
+        // Sync text input to color picker
+        document.getElementById('PrimaryThemeColor').addEventListener('change', function() {
+            if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+                document.getElementById('primaryColorPicker').value = this.value;
+            }
+        });
+        document.getElementById('SecondaryThemeColor').addEventListener('change', function() {
+            if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+                document.getElementById('secondaryColorPicker').value = this.value;
+            }
+        });
+
+        // Initialize color pickers if values exist
+        var primaryColor = document.getElementById('PrimaryThemeColor').value;
+        if (primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor)) {
+            document.getElementById('primaryColorPicker').value = primaryColor;
+        }
+        var secondaryColor = document.getElementById('SecondaryThemeColor').value;
+        if (secondaryColor && /^#[0-9A-Fa-f]{6}$/.test(secondaryColor)) {
+            document.getElementById('secondaryColorPicker').value = secondaryColor;
+        }
+    </script>
+    <script>
+        // Initialize radios based on model
+        (function() {
+            var focussed = @((Model.QueryQuestionsFocussed) ? "true" : "false");
+            if (focussed === "true") {
+                document.getElementById('modeFocussed').checked = true;
+            } else {
+                document.getElementById('modeRandom').checked = true;
+            }
+
+            document.querySelector('form').addEventListener('submit', function (e) {
+                var mode = document.querySelector('input[name="QuestionMode"]:checked')?.value;
+                var fi = document.getElementById('QueryQuestionsFocussed');
+                var ri = document.getElementById('QueryQuestionsRandom');
+                if (fi && ri) {
+                    fi.value = (mode === 'Focussed');
+                    ri.value = (mode === 'Random');
+                } else {
+                    var hiddenF = document.createElement('input'); hiddenF.type = 'hidden'; hiddenF.name = 'QueryQuestionsFocussed'; hiddenF.value = (mode === 'Focussed'); this.appendChild(hiddenF);
+                    var hiddenR = document.createElement('input'); hiddenR.type = 'hidden'; hiddenR.name = 'QueryQuestionsRandom'; hiddenR.value = (mode === 'Random'); this.appendChild(hiddenR);
+                }
+            });
+        })();
+    </script>
+}

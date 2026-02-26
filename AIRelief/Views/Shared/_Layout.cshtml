@@ -41,6 +41,9 @@
                                     <li><a class="dropdown-item" asp-controller="Questions" asp-action="Create">Create New</a></li>
                                 </ul>
                             </li>
+
+                            @* Render admin nav partial that handles Group/System admin links based on app user level *@
+                            <partial name="_AdminNavPartial" />
                         }
                     </ul>
 
