@@ -3,6 +3,7 @@ using System;
 using AIRelief.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRelief.Migrations
 {
     [DbContext(typeof(AIReliefContext))]
-    partial class AIReliefContextModelSnapshot : ModelSnapshot
+    [Migration("20260227050435_AddExpiryDateTimeToGroup")]
+    partial class AddExpiryDateTimeToGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -85,19 +88,6 @@ namespace AIRelief.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AttemptsCorrect")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("AttemptsShown")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("BestAnswersRaw")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Category")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CorrectAnswer")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -125,11 +115,27 @@ namespace AIRelief.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("explanationimage")
+                    b.Property<string>("Option6")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Option7")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Option8")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("backvalue")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("correctionimage")
                         .HasMaxLength(300)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("explanationtext")
+                    b.Property<string>("correctiontext")
                         .HasMaxLength(2000)
                         .HasColumnType("TEXT");
 
@@ -145,6 +151,13 @@ namespace AIRelief.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("nextvalue")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("order")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 

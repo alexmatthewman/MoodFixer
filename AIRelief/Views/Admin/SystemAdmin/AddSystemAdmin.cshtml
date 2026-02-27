@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Add System Admin";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">Add System Admin</h1>
+        <a href="/Admin/SystemAdmin/SystemAdmins" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to System Admins
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>New System Admin Details</h5>
+        </div>
+        <div class="admin-card-body">
+            <form method="post" action="/Admin/SystemAdmin/SystemAdmins/Add">
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="admin-form-group">
+                            <label class="form-label">Full Name</label>
+                            <input name="name" class="form-control" required maxlength="400" />
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="form-label">Email</label>
+                            <input name="email" type="email" class="form-control" required maxlength="256" />
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="form-label">Password</label>
+                            <input name="password" type="password" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                }
+
+                <div class="admin-form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Add System Admin
+                    </button>
+                    <a href="/Admin/SystemAdmin/SystemAdmins" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

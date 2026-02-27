@@ -1,0 +1,82 @@
+@model IEnumerable<AIRelief.Models.User>
+@{
+    ViewData["Title"] = "Manage System Admins";
+    var currentUserId = (int)ViewBag.CurrentUserId;
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">System Administrators</h1>
+        <a href="/Admin/SystemAdmin/SystemAdmins/Add" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Add System Admin
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>All System Admins (@Model.Count())</h5>
+        </div>
+        <div class="admin-card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-muted">No system admins found.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var admin in Model)
+                            {
+                                <tr>
+                                    <td>@admin.Name</td>
+                                    <td>@admin.Email</td>
+                                    <td>@admin.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @if (admin.ID == currentUserId)
+                                        {
+                                            <span class="badge bg-secondary">Current User</span>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="/Admin/SystemAdmin/SystemAdmins/Remove/@admin.ID" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to remove @Html.Raw(admin.Name.Replace("'", "\\'")) as a System Admin? This will change their auth level to User.');">
+                                                    <i class="fas fa-user-minus"></i> Remove
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

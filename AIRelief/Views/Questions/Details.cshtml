@@ -12,12 +12,6 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.order)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.order)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.heading)
         </dt>
         <dd class = "col-sm-10">
@@ -36,28 +30,16 @@
             @Html.DisplayFor(model => model.image)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.backvalue)
+            @Html.DisplayNameFor(model => model.explanationtext)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.backvalue)
+            @Html.DisplayFor(model => model.explanationtext)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.nextvalue)
+            @Html.DisplayNameFor(model => model.explanationimage)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.nextvalue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.correctiontext)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.correctiontext)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.correctionimage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.correctionimage)
+            @Html.DisplayFor(model => model.explanationimage)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Option1)
@@ -90,32 +72,39 @@
             @Html.DisplayFor(model => model.Option5)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Option6)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Option6)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Option7)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Option7)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Option8)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Option8)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CorrectAnswer)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CorrectAnswer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BestAnswersRaw)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BestAnswersRaw)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AttemptsShown)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttemptsShown)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AttemptsCorrect)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttemptsCorrect)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
 </div>

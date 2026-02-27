@@ -38,7 +38,7 @@
                                 <tr>
                                     <td><strong>@user.Name</strong></td>
                                     <td>@user.Email</td>
-                                    <td>@user.Group?.Name ?? "N/A"</td>
+                                    <td>@(user.Group?.Name ?? "")</td>
                                     <td>
                                         <span class="badge bg-info text-dark">@user.AuthLevel</span>
                                     </td>

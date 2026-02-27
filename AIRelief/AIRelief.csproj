@@ -29,8 +29,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\Admin\UserAdmin\" />
-    <Folder Include="Views\Home\" />
-  </ItemGroup>
 </Project>

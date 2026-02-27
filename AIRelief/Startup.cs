@@ -42,6 +42,12 @@ namespace AIRelief
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AIRelief.Services.AdminAuthorizationService>();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -56,14 +62,16 @@ namespace AIRelief
                 app.UseHsts();
             }
 
-            // Seed initial system user
+            // Apply any pending EF Core migrations, then seed initial data
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                     var context = services.GetRequiredService<AIReliefContext>();
+                    context.Database.Migrate();
+
+                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                     AIRelief.SeedHelpers.EnsureInitialSystemUser(userManager, context).GetAwaiter().GetResult();
                 }
                 catch
@@ -73,6 +81,7 @@ namespace AIRelief
             }
 
             app.UseStaticFiles();
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

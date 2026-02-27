@@ -37,11 +37,15 @@
                 </div>
                 <div class="admin-stat-item">
                     <div class="admin-stat-label">Expiry (Days)</div>
-                    <div class="admin-stat-value">@Model.ExpiryDays</div>
+                    <div class="admin-stat-value">@(Model.ExpiryDays.HasValue ? Model.ExpiryDays.ToString() : "None")</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Expiry Date</div>
+                    <div class="admin-stat-value admin-stat-value--secondary">@(Model.ExpiryDateTime.HasValue ? Model.ExpiryDateTime.Value.ToString("yyyy-MM-dd") : "No Expiry")</div>
                 </div>
                 <div class="admin-stat-item">
                     <div class="admin-stat-label">Query Frequency</div>
-                    <div class="admin-stat-value" style="font-size: 1rem; color: var(--text-secondary);">@Model.QueryFrequency</div>
+                    <div class="admin-stat-value admin-stat-value--secondary">@Model.QueryFrequency</div>
                 </div>
                 <div class="admin-stat-item">
                     <div class="admin-stat-label">Passing Grade</div>
@@ -53,36 +57,36 @@
                 </div>
             </div>
 
-            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+            <hr>
 
             <div class="row">
                 <div class="col-md-6">
-                    <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Question Settings</h6>
-                    <div style="color: var(--text-primary);">
-                        <div style="margin-bottom: 0.5rem;">
-                            <i class="fas fa-check-circle" style="color: var(--success-color);" aria-hidden="true"></i>
+                    <h6>Question Settings</h6>
+                    <div>
+                        <div class="mb-2">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
                             <strong>Random Questions:</strong> @(Model.QueryQuestionsRandom ? "Enabled" : "Disabled")
                         </div>
                         <div>
-                            <i class="fas fa-check-circle" style="color: var(--success-color);" aria-hidden="true"></i>
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
                             <strong>Focussed Questions:</strong> @(Model.QueryQuestionsFocussed ? "Enabled" : "Disabled")
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Theme Colors</h6>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
+                    <h6>Theme Colors</h6>
+                    <div class="theme-colors">
                         @if (!string.IsNullOrEmpty(Model.PrimaryThemeColor))
                         {
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <div style="width: 40px; height: 40px; background-color: @Model.PrimaryThemeColor; border-radius: 5px; border: 1px solid var(--border-color);"></div>
+                            <div class="theme-color-item">
+                                <div class="theme-color-swatch" style="background-color: @Model.PrimaryThemeColor;"></div>
                                 <span>Primary: @Model.PrimaryThemeColor</span>
                             </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.SecondaryThemeColor))
                         {
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <div style="width: 40px; height: 40px; background-color: @Model.SecondaryThemeColor; border-radius: 5px; border: 1px solid var(--border-color);"></div>
+                            <div class="theme-color-item">
+                                <div class="theme-color-swatch" style="background-color: @Model.SecondaryThemeColor;"></div>
                                 <span>Secondary: @Model.SecondaryThemeColor</span>
                             </div>
                         }
@@ -92,12 +96,48 @@
         </div>
     </div>
 
-    <!-- Users in Group -->
     <div class="admin-card">
-        <div class="admin-card-header">
+        <div class="admin-card-header group-details-users-header">
             <h5>Users in Group (@Model.Users.Count / @Model.NumberOfUserLicenses)</h5>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a href="/Admin/SystemAdmin/Groups/@Model.ID/AddUser" class="btn btn-primary btn-sm">
+                    <i class="fas fa-user-plus"></i> Add User
+                </a>
+                <form id="bulkUploadForm" method="post" action="/Admin/SystemAdmin/Groups/@Model.ID/BulkAddUsers" enctype="multipart/form-data" class="m-0">
+                    @Html.AntiForgeryToken()
+                    <input type="file" id="csvFileInput" name="csvFile" accept=".csv" style="display:none;" onchange="this.form.submit();">
+                    <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('csvFileInput').click();">
+                        <i class="fas fa-users"></i> Bulk Add Users
+                    </button>
+                </form>
+                <a href="/Admin/SystemAdmin/Groups/@Model.ID/BulkUsersTemplate" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-csv"></i> Bulk User Template
+                </a>
+            </div>
         </div>
         <div class="admin-card-body">
+            @if (TempData["BulkError"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["BulkError"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["BulkResults"] != null)
+            {
+                var bulkAdded = (int)(TempData["BulkAdded"] ?? 0);
+                var bulkResults = System.Text.Json.JsonSerializer.Deserialize<List<string>>(TempData["BulkResults"].ToString());
+                <div class="alert @(bulkAdded > 0 ? "alert-success" : "alert-warning") alert-dismissible fade show" role="alert">
+                    <strong>Bulk Import:</strong> @bulkAdded user(s) added.
+                    <ul class="mb-0 mt-1">
+                        @foreach (var msg in bulkResults)
+                        {
+                            <li>@msg</li>
+                        }
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             @if (Model.Users.Count == 0)
             {
                 <p class="text-muted">No users assigned to this group.</p>
@@ -121,9 +161,7 @@
                                 <tr>
                                     <td>@user.Name</td>
                                     <td>@user.Email</td>
-                                    <td>
-                                        <span class="badge bg-info text-dark">@user.AuthLevel</span>
-                                    </td>
+                                    <td><span class="badge bg-info text-dark">@user.AuthLevel</span></td>
                                     <td>@user.ExpiryDate?.ToString("yyyy-MM-dd")</td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
                                 </tr>

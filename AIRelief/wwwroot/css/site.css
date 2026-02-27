@@ -1730,6 +1730,37 @@ img {
     color: var(--text-accent);
 }
 
+.admin-stat-value--secondary {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.group-details-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.theme-colors {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.theme-color-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.theme-color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
 /* Form Groups in Admin */
 .admin-form-group {
     margin-bottom: 1.5rem;

@@ -31,7 +31,7 @@ namespace AIRelief.Services
 
             return await _context.Users
                 .Include(u => u.Group)
-                .FirstOrDefaultAsync(u => u.IdentityUserId == identityUser.Id);
+                .FirstOrDefaultAsync(u => u.Email == identityUser.Email);
         }
 
         /// <summary>

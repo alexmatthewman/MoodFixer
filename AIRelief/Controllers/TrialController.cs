@@ -57,8 +57,8 @@ namespace AIRelief.Controllers
             }
 
             Console.WriteLine($"Question found: {question.maintext?.Substring(0, 50)}...");
-            Console.WriteLine($"Correction text: {question.correctiontext}");
-            Console.WriteLine($"Correction image: {question.correctionimage}");
+            Console.WriteLine($"Explanation text: {question.explanationtext}");
+            Console.WriteLine($"Explanation image: {question.explanationimage}");
 
             // Check if the selected answer is correct
             bool isCorrect = selectedAnswer == question.CorrectAnswer;
@@ -84,8 +84,8 @@ namespace AIRelief.Controllers
             {
                 success = true,
                 isCorrect = isCorrect,
-                correctionText = question.correctiontext, // Always include, let JS decide
-                correctionImage = question.correctionimage, // Always include, let JS decide
+                correctionText = question.explanationtext, // Always include, let JS decide
+                correctionImage = question.explanationimage, // Always include, let JS decide
                 isLastQuestion = isLastQuestion,
                 nextQuestionUrl = isLastQuestion ? Url.Action("Results") : Url.Action("NextQuestion"),
                 currentIndex = nextIndex,

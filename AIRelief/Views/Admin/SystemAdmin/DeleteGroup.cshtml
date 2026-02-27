@@ -4,7 +4,12 @@
 }
 
 <div class="admin-page">
-    <h1 class="admin-title">Delete Group</h1>
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">Delete Group</h1>
+        <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Groups
+        </a>
+    </div>
 
     <div class="alert alert-danger">
         <i class="fas fa-exclamation-triangle"></i>
@@ -17,11 +22,14 @@
         </div>
         <div class="admin-card-body">
             <dl class="row">
+                <dt class="col-sm-3">Plan</dt>
+                <dd class="col-sm-9">@Model.PlanName</dd>
+
                 <dt class="col-sm-3">Licenses</dt>
                 <dd class="col-sm-9">@Model.NumberOfUserLicenses</dd>
 
                 <dt class="col-sm-3">Expiry (Days)</dt>
-                <dd class="col-sm-9">@Model.ExpiryDays</dd>
+                <dd class="col-sm-9">@(Model.ExpiryDays.HasValue ? Model.ExpiryDays.ToString() : "None")</dd>
 
                 <dt class="col-sm-3">Query Frequency</dt>
                 <dd class="col-sm-9">@Model.QueryFrequency</dd>
@@ -33,11 +41,11 @@
                 <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
             </dl>
 
-            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+            <hr>
 
             <form method="post" action="/Admin/SystemAdmin/Groups/Delete/@Model.ID">
                 @Html.AntiForgeryToken()
-                <div class="admin-card-footer" style="margin: 0; padding: 0; border: none;">
+                <div class="admin-card-footer">
                     <button type="submit" class="btn btn-danger">
                         <i class="fas fa-trash"></i> Delete Permanently
                     </button>

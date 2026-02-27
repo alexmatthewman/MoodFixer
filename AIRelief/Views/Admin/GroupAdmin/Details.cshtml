@@ -1,14 +1,13 @@
+@model AIRelief.Models.User
 @{
     ViewData["Title"] = "User Details";
-    dynamic model = Model;
-    var user = model.User as AIRelief.Models.User;
-    var statistics = model.Statistics as IList<AIRelief.Models.UserStatistics>;
+    var statistics = ViewBag.Statistics as IList<AIRelief.Models.UserStatistics>;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">@user.Name</h1>
-        <a href="/Admin/GroupAdmin" class="btn btn-secondary">
+        <h1 class="admin-title" style="margin: 0;">@Model.Name</h1>
+        <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Users
         </a>
     </div>
@@ -20,14 +19,14 @@
         <div class="admin-card-body">
             <div class="user-summary">
                 <div class="user-name">
-                    <strong>@user.Name</strong>
+                    <strong>@Model.Name</strong>
                 </div>
                 <div class="user-email">
-                    @user.Email
+                    @Model.Email
                 </div>
-                <div class="user-stats" style="margin-left: auto;">
-                    <span class="stat-badge">Auth Level: @user.AuthLevel</span>
-                    <span class="stat-badge">Created: @user.CreatedDate.ToString("yyyy-MM-dd")</span>
+                <div class="user-stats">
+                    <span class="stat-badge">Auth Level: @Model.AuthLevel</span>
+                    <span class="stat-badge">Created: @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
                 </div>
             </div>
         </div>

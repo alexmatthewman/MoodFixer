@@ -65,33 +65,6 @@
                 @Model.Option5
             </button>
         }
-
-        @if (!string.IsNullOrEmpty(Model.Option6))
-        {
-            <button type="button"
-                    class="answer-option btn"
-                    onclick="selectAnswer('@Html.Raw(Html.Encode(Model.Option6))', this)">
-                @Model.Option6
-            </button>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.Option7))
-        {
-            <button type="button"
-                    class="answer-option btn"
-                    onclick="selectAnswer('@Html.Raw(Html.Encode(Model.Option7))', this)">
-                @Model.Option7
-            </button>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.Option8))
-        {
-            <button type="button"
-                    class="answer-option btn"
-                    onclick="selectAnswer('@Html.Raw(Html.Encode(Model.Option8))', this)">
-                @Model.Option8
-            </button>
-        }
     </div>
 </div>
 

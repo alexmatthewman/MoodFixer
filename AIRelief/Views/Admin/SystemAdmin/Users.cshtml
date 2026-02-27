@@ -1,14 +1,23 @@
 @model IList<AIRelief.Models.User>
 @{
     ViewData["Title"] = "Manage Users";
+    var currentUserId = (int)(ViewBag.CurrentUserId ?? 0);
 }
 
 <div class="admin-page">
-    <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">User Management</h1>
-    </div>
+<div class="admin-header">
+    <h1 class="admin-title" style="margin: 0;">User Management</h1>
+</div>
 
-    @if (Model.Count == 0)
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (Model.Count == 0)
     {
         <div class="alert alert-info">
             <i class="fas fa-info-circle"></i> No users found.
@@ -30,6 +39,7 @@
                                 <th>Group</th>
                                 <th>Auth Level</th>
                                 <th>Created</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,11 +48,27 @@
                                 <tr>
                                     <td><strong>@user.Name</strong></td>
                                     <td>@user.Email</td>
-                                    <td>@user.Group?.Name ?? "N/A"</td>
+                                    <td>@(user.Group?.Name ?? "")</td>
                                     <td>
                                         <span class="badge bg-info text-dark">@user.AuthLevel</span>
                                     </td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td class="action-cell">
+                                        @if (user.ID == currentUserId)
+                                        {
+                                            <span class="badge bg-secondary">Current User</span>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="/Admin/SystemAdmin/Users/Remove/@user.ID" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to remove @Html.Raw(user.Name.Replace("'", "\\'"))?');">
+                                                    <i class="fas fa-user-minus"></i> Remove
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>

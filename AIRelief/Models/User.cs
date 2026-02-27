@@ -21,10 +21,6 @@ namespace AIRelief.Models
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Identity User ID")]
-        public string IdentityUserId { get; set; }
-
-        [Required]
         [Display(Name = "Authentication Level")]
         public AuthLevel AuthLevel { get; set; } = AuthLevel.User;
 

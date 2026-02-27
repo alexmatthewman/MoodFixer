@@ -20,6 +20,7 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="ID" />
                 <input type="hidden" asp-for="CreatedDate" />
+                <input type="hidden" asp-for="ExpiryDateTime" />
 
                 <div class="row">
                     <div class="col-md-6">
@@ -43,8 +44,8 @@
                         </div>
 
                         <div class="admin-form-group">
-                            <label asp-for="ExpiryDays" class="form-label" style="color: var(--text-secondary);">Account Expiry (Days)</label>
-                            <input asp-for="ExpiryDays" class="form-control" type="number" min="1" />
+                            <label asp-for="ExpiryDays" class="form-label" style="color: var(--text-secondary);">Account Expiry (Days) <small class="text-muted">(optional – leave blank for no expiry)</small></label>
+                            <input asp-for="ExpiryDays" class="form-control" type="number" min="1" placeholder="e.g. 365" />
                             <span asp-validation-for="ExpiryDays" class="text-danger"></span>
                         </div>
 

@@ -47,9 +47,11 @@ namespace AIRelief.Models
         [Display(Name = "Number of User Licenses")]
         public int NumberOfUserLicenses { get; set; }
 
-        [Required]
         [Display(Name = "Account Expiry (Days)")]
-        public int ExpiryDays { get; set; } = 365;
+        public int? ExpiryDays { get; set; } = 365;
+
+        [Display(Name = "Expiry Date")]
+        public DateTime? ExpiryDateTime { get; set; }
 
         [Required]
         [Display(Name = "Query Time to Complete (Days)")]
