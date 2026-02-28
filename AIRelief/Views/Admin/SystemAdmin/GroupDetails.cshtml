@@ -153,6 +153,7 @@
                                 <th>Auth Level</th>
                                 <th>Expiry Date</th>
                                 <th>Created</th>
+                                <th>Last Question Attempt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,6 +165,7 @@
                                     <td><span class="badge bg-info text-dark">@user.AuthLevel</span></td>
                                     <td>@user.ExpiryDate?.ToString("yyyy-MM-dd")</td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>
                                 </tr>
                             }
                         </tbody>

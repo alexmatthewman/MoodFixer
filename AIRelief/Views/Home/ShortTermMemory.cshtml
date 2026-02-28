@@ -1,0 +1,135 @@
+@{
+    ViewData["Title"] = "Short-Term Memory";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <h1 class="mb-4">Short-Term Memory</h1>
+
+            <div class="text-center mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
+                     style="max-width:100%; height:auto; border:1px solid var(--border-color); border-radius:0.5rem; background:var(--bg-secondary); padding:1rem;"
+                     aria-label="Diagram showing short-term memory as a buffer between incoming information and long-term memory, with an active maintenance loop"
+                     role="img">
+                    <defs>
+                        <marker id="stm-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-muted)" />
+                        </marker>
+                        <marker id="stm-arr-accent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-accent)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Incoming information node -->
+                    <ellipse cx="68" cy="100" rx="58" ry="26"
+                             fill="none" stroke="var(--border-accent)" stroke-width="1.5" />
+                    <text x="68" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Incoming</text>
+                    <text x="68" y="110" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Information</text>
+
+                    <!-- Arrow: Incoming -> STM -->
+                    <line x1="128" y1="100" x2="178" y2="100"
+                          stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#stm-arr)" />
+
+                    <!-- Short-Term Memory node -->
+                    <rect x="180" y="72" width="120" height="56" rx="8"
+                          fill="none" stroke="var(--text-accent)" stroke-width="2" />
+                    <text x="240" y="97" text-anchor="middle" font-size="12"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">Short-Term</text>
+                    <text x="240" y="113" text-anchor="middle" font-size="12"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">Memory</text>
+
+                    <!-- Rehearsal / maintenance loop -->
+                    <path d="M 220 72 Q 240 32 260 72" fill="none"
+                          stroke="var(--text-accent)" stroke-width="1.5" stroke-dasharray="5,3"
+                          marker-end="url(#stm-arr-accent)" />
+                    <text x="240" y="28" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">rehearsal</text>
+
+                    <!-- Fade / decay label -->
+                    <text x="240" y="158" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">fades without rehearsal</text>
+                    <line x1="240" y1="148" x2="240" y2="131"
+                          stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3"
+                          marker-end="url(#stm-arr)" />
+
+                    <!-- Arrow: STM -> Long-Term -->
+                    <line x1="302" y1="100" x2="352" y2="100"
+                          stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#stm-arr)" />
+
+                    <!-- Long-Term Memory node -->
+                    <ellipse cx="414" cy="100" rx="58" ry="26"
+                             fill="none" stroke="var(--border-accent)" stroke-width="1.5" />
+                    <text x="414" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Long-Term</text>
+                    <text x="414" y="110" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Memory</text>
+                </svg>
+            </div>
+
+            <section class="mb-5">
+                <p>
+                    Short-term memory allows us to hold information in mind long enough to use it. It plays a
+                    central role in everyday thinking, such as following instructions or keeping track of a task
+                    as it unfolds. Rather than acting as a simple storage space, short-term memory helps maintain
+                    and update information as we work with it. Because of this, it supports reasoning, learning,
+                    and decision-making across many contexts (Baddeley, 2003; Cowan, 2010).
+                </p>
+                <p>
+                    Modern work habits place steady demands on short-term memory, but they also reduce how often
+                    it is used directly. Frequent interruptions, constant switching between tasks, and reliance
+                    on reminders mean that fewer details need to be held in mind at once. Over time, this can
+                    make it harder to keep information active without external support, especially during
+                    multi-step or mentally demanding tasks.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="h4 mb-3">How practice helps</h2>
+                <p>
+                    Research suggests that short-term memory is not fixed. Practice that requires briefly holding
+                    and using information can improve performance on related tasks (Klingberg, 2010; Shipstead,
+                    Redick, &amp; Engle, 2012). Well-designed exercises challenge this system in manageable ways.
+                    They encourage active maintenance rather than simple repetition.
+                </p>
+                <p>
+                    These exercises are not about memorising facts or pushing capacity to its limits. The goal is
+                    to strengthen the ability to keep information available long enough to work with it. By
+                    practising short, focused memory tasks, you are supporting a cognitive function that underlies
+                    clear thinking in many areas of life.
+                </p>
+                <p>
+                    To get the most out of these exercises, read the passage slowly, and only once.
+                </p>
+            </section>
+
+            <hr class="my-5" />
+
+            <section class="mb-4">
+                <h2 class="h5 mb-3">References</h2>
+                <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
+                    <li class="mb-2">
+                        Baddeley, A. (2003). Working memory: Looking back and looking forward.
+                        <em>Nature Reviews Neuroscience, 4</em>(10), 829&ndash;839.
+                    </li>
+                    <li class="mb-2">
+                        Cowan, N. (2010). The magical mystery four: How is working memory capacity limited,
+                        and why? <em>Current Directions in Psychological Science, 19</em>(1), 51&ndash;57.
+                    </li>
+                    <li class="mb-2">
+                        Klingberg, T. (2010). Training and plasticity of working memory.
+                        <em>Trends in Cognitive Sciences, 14</em>(7), 317&ndash;324.
+                    </li>
+                    <li class="mb-2">
+                        Shipstead, Z., Redick, T. S., &amp; Engle, R. W. (2012). Is working memory training
+                        effective? <em>Psychological Bulletin, 138</em>(4), 628&ndash;654.
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</div>

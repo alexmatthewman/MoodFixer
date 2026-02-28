@@ -239,6 +239,14 @@ namespace AIRelief.Controllers
                 return View("~/Views/Admin/SystemAdmin/AddUser.cshtml", user);
             }
 
+            // System Admins cannot be created through group user add
+            if (user.AuthLevel == AuthLevel.SystemAdmin)
+            {
+                ModelState.AddModelError("AuthLevel", "System Admin accounts cannot be created here.");
+                ViewBag.Group = group;
+                return View("~/Views/Admin/SystemAdmin/AddUser.cshtml", user);
+            }
+
             // Check license capacity
             var usedLicenses = await _context.Users.CountAsync(u => u.GroupId == groupId);
             if (usedLicenses >= group.NumberOfUserLicenses)
@@ -457,6 +465,52 @@ namespace AIRelief.Controllers
             return RedirectToAction(nameof(Users));
         }
 
+        [Route("Users/Edit/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var user = await _context.Users.Include(u => u.Group).FirstOrDefaultAsync(u => u.ID == id);
+            if (user == null)
+                return NotFound();
+
+            return View("~/Views/Admin/SystemAdmin/EditUser.cshtml", user);
+        }
+
+        [Route("Users/Edit/{id}")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(int id, QueryFrequency? queryFrequency)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var user = await _context.Users.Include(u => u.Group).FirstOrDefaultAsync(u => u.ID == id);
+            if (user == null)
+                return NotFound();
+
+            // Group members inherit QueryFrequency from their group; only standalone users have it set directly
+            if (user.GroupId == null)
+            {
+                if (queryFrequency == null)
+                {
+                    ModelState.AddModelError("QueryFrequency", "Query Frequency is required for users not in a group.");
+                    return View("~/Views/Admin/SystemAdmin/EditUser.cshtml", user);
+                }
+                user.QueryFrequency = queryFrequency;
+            }
+
+            user.LastModifiedDate = System.DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"{user.Name}'s settings have been updated.";
+            return RedirectToAction(nameof(Users));
+        }
+
         // ========== SYSTEM ADMINS ==========
 
         [Route("SystemAdmins")]
@@ -555,6 +609,275 @@ namespace AIRelief.Controllers
 
             TempData["SuccessMessage"] = $"{admin.Name} has been removed as a System Admin.";
             return RedirectToAction(nameof(ManageSystemAdmins));
+        }
+
+        // ========== BULK QUESTIONS ==========
+
+        private static readonly string[] CsvHeaders = new[]
+        {
+            "Category", "QuestionText", "MainText", "Image",
+            "Option1", "Option2", "Option3", "Option4", "Option5",
+            "CorrectAnswer", "BestAnswersRaw",
+            "ExplanationText", "ExplanationImage"
+        };
+
+        private static string ToCsvRow(params string?[] fields)
+        {
+            return string.Join(",", fields.Select(f =>
+            {
+                if (f == null) return string.Empty;
+                if (f.Contains(',') || f.Contains('"') || f.Contains('\n'))
+                    return $"\"{f.Replace("\"", "\"\"")}\"";
+                return f;
+            }));
+        }
+
+        private static string QuestionToCsvRow(Question q) =>
+            ToCsvRow(q.Category, q.QuestionText, q.MainText, q.Image,
+                     q.Option1, q.Option2, q.Option3, q.Option4, q.Option5,
+                     q.CorrectAnswer, q.BestAnswersRaw,
+                     q.ExplanationText, q.ExplanationImage);
+
+        [Route("BulkQuestions")]
+        public async Task<IActionResult> BulkQuestions()
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            return View("~/Views/Admin/SystemAdmin/BulkQuestions.cshtml");
+        }
+
+        [Route("BulkQuestions/Download")]
+        public async Task<IActionResult> BulkQuestionsDownload()
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var questions = await _context.Questions.OrderBy(q => q.Category).ThenBy(q => q.ID).ToListAsync();
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(string.Join(",", CsvHeaders));
+            foreach (var q in questions)
+                sb.AppendLine(QuestionToCsvRow(q));
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(bytes, "text/csv", $"questions_{System.DateTime.UtcNow:yyyyMMdd}.csv");
+        }
+
+        [Route("BulkQuestions/Upload")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BulkQuestionsUpload(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            if (file == null || file.Length == 0)
+            {
+                TempData["ErrorMessage"] = "Please select a CSV file to upload.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            var added = 0;
+            var skipped = 0;
+            var errors = new System.Collections.Generic.List<string>();
+
+            using var reader = new System.IO.StreamReader(file.OpenReadStream(), System.Text.Encoding.UTF8);
+            var headerLine = await reader.ReadLineAsync();
+            if (headerLine == null)
+            {
+                TempData["ErrorMessage"] = "The uploaded file is empty.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            var headers = ParseCsvRow(headerLine);
+            int Idx(string name)
+            {
+                var i = System.Array.FindIndex(headers, h => h.Trim().Equals(name, System.StringComparison.OrdinalIgnoreCase));
+                return i;
+            }
+
+            int rowNumber = 1;
+            string? line;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                rowNumber++;
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                var cols = ParseCsvRow(line);
+
+                string Get(string name)
+                {
+                    var i = Idx(name);
+                    return (i >= 0 && i < cols.Length) ? cols[i].Trim() : string.Empty;
+                }
+
+                var mainText = Get("MainText");
+                var option1  = Get("Option1");
+                var option2  = Get("Option2");
+                var correct  = Get("CorrectAnswer");
+
+                if (string.IsNullOrWhiteSpace(mainText) || string.IsNullOrWhiteSpace(option1)
+                    || string.IsNullOrWhiteSpace(option2) || string.IsNullOrWhiteSpace(correct))
+                {
+                    errors.Add($"Row {rowNumber}: skipped — MainText, Option1, Option2 and CorrectAnswer are required.");
+                    skipped++;
+                    continue;
+                }
+
+                var questionText = Get("QuestionText");
+
+                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == mainText);
+                bool questionTextExists = !string.IsNullOrWhiteSpace(questionText)
+                    && await _context.Questions.AnyAsync(q => q.QuestionText == questionText);
+
+                if (mainTextExists || questionTextExists)
+                {
+                    skipped++;
+                    continue;
+                }
+
+                var question = new Question
+                {
+                    Category        = Get("Category").NullIfEmpty(),
+                    QuestionText    = questionText.NullIfEmpty(),
+                    MainText        = mainText,
+                    Image           = Get("Image").NullIfEmpty(),
+                    Option1         = option1,
+                    Option2         = option2,
+                    Option3         = Get("Option3").NullIfEmpty(),
+                    Option4         = Get("Option4").NullIfEmpty(),
+                    Option5         = Get("Option5").NullIfEmpty(),
+                    CorrectAnswer   = correct,
+                    BestAnswersRaw  = Get("BestAnswersRaw").NullIfEmpty(),
+                    ExplanationText = Get("ExplanationText").NullIfEmpty(),
+                    ExplanationImage= Get("ExplanationImage").NullIfEmpty()
+                };
+
+                _context.Questions.Add(question);
+                added++;
+            }
+
+            if (added > 0)
+                await _context.SaveChangesAsync();
+
+            var summary = $"{added} question(s) imported, {skipped} skipped.";
+            if (errors.Count > 0)
+                summary += " Errors: " + string.Join(" | ", errors);
+
+            TempData[added > 0 || skipped > 0 ? "SuccessMessage" : "ErrorMessage"] = summary;
+            return RedirectToAction(nameof(BulkQuestions));
+        }
+
+        [Route("BulkQuestions/Template")]
+        public IActionResult BulkQuestionsTemplate()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(string.Join(",", CsvHeaders));
+
+            sb.AppendLine(ToCsvRow(
+                "Trial",
+                "",
+                "A pencil costs 50 cents more than an eraser. The total cost of both is $1. How much does the eraser cost?",
+                "q1.png",
+                "$0.50", "$0.25", "$0.75", "$0.05", "",
+                "$0.25", "",
+                "The correct breakdown is $0.25 for the eraser and $0.75 for the pencil.", "q1x.png"
+            ));
+
+            sb.AppendLine(ToCsvRow(
+                "Causal Reasoning",
+                "Which answer best explains why the bike-sharing program may not be the real cause of fewer accidents?",
+                "A small town introduces a bike-sharing program and traffic accidents decline. However, new traffic lights and road improvements were also installed at the same time.",
+                "",
+                "Traffic lights and road improvements could explain the decline",
+                "Cyclists may still get into accidents",
+                "People might dislike cycling in bad weather",
+                "Bicycle ownership is unrelated to traffic accidents",
+                "The town's population may have decreased",
+                "Traffic lights and road improvements could explain the decline",
+                "1",
+                "Multiple interventions occurred simultaneously.", ""
+            ));
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(bytes, "text/csv", "questions_template.csv");
+        }
+
+        [Route("BulkQuestions/RemoveAll")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAllQuestions()
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var questions = await _context.Questions.OrderBy(q => q.Category).ThenBy(q => q.ID).ToListAsync();
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(string.Join(",", CsvHeaders));
+            foreach (var q in questions)
+                sb.AppendLine(QuestionToCsvRow(q));
+
+            _context.Questions.RemoveRange(questions);
+            await _context.SaveChangesAsync();
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(bytes, "text/csv", $"questions_backup_{System.DateTime.UtcNow:yyyyMMdd_HHmmss}.csv");
+        }
+
+        private static string[] ParseCsvRow(string line)
+        {
+            var fields = new System.Collections.Generic.List<string>();
+            var current = new System.Text.StringBuilder();
+            bool inQuotes = false;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (inQuotes)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < line.Length && line[i + 1] == '"')
+                        {
+                            current.Append('"');
+                            i++;
+                        }
+                        else
+                        {
+                            inQuotes = false;
+                        }
+                    }
+                    else
+                    {
+                        current.Append(c);
+                    }
+                }
+                else
+                {
+                    if (c == '"')
+                    {
+                        inQuotes = true;
+                    }
+                    else if (c == ',')
+                    {
+                        fields.Add(current.ToString());
+                        current.Clear();
+                    }
+                    else
+                    {
+                        current.Append(c);
+                    }
+                }
+            }
+
+            fields.Add(current.ToString());
+            return fields.ToArray();
         }
     }
 }

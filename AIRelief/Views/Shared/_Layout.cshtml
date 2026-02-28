@@ -25,8 +25,20 @@
 
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                About
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CausalReasoning">Causal Reasoning</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CognitiveReflection">Cognitive Reflection</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Metacognition">Metacognition</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ReadingComprehension">Reading Comprehension</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ShortTermMemory">Short-Term Memory</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ConfidenceCalibration">Confidence Calibration</a></li>
+                            </ul>
                         </li>
 
                         @if (User.Identity?.IsAuthenticated ?? false)

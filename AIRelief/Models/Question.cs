@@ -27,26 +27,26 @@ namespace AIRelief.Models
         [Key]
         public int ID { get; set; }
 
-        [StringLength(1000, ErrorMessage = "Heading cannot exceed 1000 characters.")]
-        [Display(Name = "Heading")]
-        public string? heading { get; set; }
+        [StringLength(1000, ErrorMessage = "Question Text cannot exceed 1000 characters.")]
+        [Display(Name = "Question Text")]
+        public string? QuestionText { get; set; }
 
         [Required(ErrorMessage = "Main Text is required.")]
         [StringLength(1000, ErrorMessage = "Main Text cannot exceed 1000 characters.")]
         [Display(Name = "Main Text")]
-        public string maintext { get; set; } = string.Empty;
+        public string MainText { get; set; } = string.Empty;
 
         [StringLength(1000, ErrorMessage = "Image path cannot exceed 1000 characters.")]
         [Display(Name = "Image")]
-        public string? image { get; set; }
+        public string? Image { get; set; }
 
         [StringLength(2000, ErrorMessage = "Explanation Text cannot exceed 2000 characters.")]
         [Display(Name = "Explanation Text")]
-        public string? explanationtext { get; set; }
+        public string? ExplanationText { get; set; }
 
         [StringLength(300, ErrorMessage = "Explanation Image path cannot exceed 300 characters.")]
         [Display(Name = "Explanation Image")]
-        public string? explanationimage { get; set; }
+        public string? ExplanationImage { get; set; }
 
         // Required options (first two)
         [Required(ErrorMessage = "Option 1 is required.")]

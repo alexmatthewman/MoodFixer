@@ -3,6 +3,7 @@ using System;
 using AIRelief.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRelief.Migrations
 {
     [DbContext(typeof(AIReliefContext))]
-    partial class AIReliefContextModelSnapshot : ModelSnapshot
+    [Migration("20260228023216_AddQueryFrequencyToUser")]
+    partial class AddQueryFrequencyToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");

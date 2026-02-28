@@ -39,6 +39,13 @@ namespace AIRelief.Models
         [Display(Name = "Last Modified Date")]
         public DateTime? LastModifiedDate { get; set; }
 
+        [ScaffoldColumn(false)]
+        [Display(Name = "Last Question Attempt")]
+        public DateTime? DatetimeOfLastQuestionAttempt { get; set; }
+
+        [Display(Name = "Query Frequency")]
+        public QueryFrequency? QueryFrequency { get; set; }
+
         // Navigation property
         public UserStatistics Statistics { get; set; }
     }

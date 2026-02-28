@@ -1,0 +1,103 @@
+@{
+    ViewData["Title"] = "Causal Reasoning";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <h1 class="mb-4">Causal Reasoning</h1>
+
+            <div class="text-center mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
+                     style="max-width:100%; height:auto; border:1px solid var(--border-color); border-radius:0.5rem; background:var(--bg-secondary); padding:1rem;"
+                     aria-label="Diagram showing three causal paths from a confounding variable to both the cause and the effect, illustrating the difference between association and causation"
+                     role="img">
+                    <!-- Confounder node -->
+                    <ellipse cx="240" cy="40" rx="70" ry="24" fill="none" stroke="var(--border-accent)" stroke-width="1.5"/>
+                    <text x="240" y="45" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="var(--text-secondary)">Confounder</text>
+
+                    <!-- Confounder ? Cause arrow -->
+                    <line x1="178" y1="56" x2="108" y2="116" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <!-- Confounder ? Effect arrow -->
+                    <line x1="302" y1="56" x2="372" y2="116" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                    <!-- Cause node -->
+                    <ellipse cx="90" cy="138" rx="60" ry="24" fill="none" stroke="var(--border-accent)" stroke-width="1.5"/>
+                    <text x="90" y="143" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="var(--text-secondary)">Cause?</text>
+
+                    <!-- Effect node -->
+                    <ellipse cx="390" cy="138" rx="60" ry="24" fill="none" stroke="var(--border-accent)" stroke-width="1.5"/>
+                    <text x="390" y="143" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="var(--text-secondary)">Effect</text>
+
+                    <!-- Spurious association dashed line -->
+                    <line x1="152" y1="138" x2="328" y2="138" stroke="var(--text-accent)" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrAccent)"/>
+                    <text x="240" y="130" text-anchor="middle" font-size="11" font-family="Courier New, monospace" fill="var(--text-accent)">spurious association?</text>
+
+                    <defs>
+                        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-muted)"/>
+                        </marker>
+                        <marker id="arrAccent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-accent)"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <section class="mb-5">
+                <p>
+                    Causal reasoning is the ability to understand how and why things happen, not just whether they
+                    occur together. It helps us tell real causes from coincidences, recognize when outcomes have
+                    multiple contributing factors, and evaluate what might happen if we intervene or make a change
+                    (Pearl, 2009). These skills are important in everyday life. They help us interpret health advice,
+                    assess policy claims, and judge whether a product, habit, or decision is actually responsible
+                    for an observed result.
+                </p>
+                <p>
+                    In the age of AI, causal reasoning faces a particular risk. Many AI systems excel at finding
+                    patterns and associations, but they do not explain causal structures. When people rely on
+                    AI-generated summaries or predictions without questioning the underlying causal logic, they
+                    may become more vulnerable to misleading before-and-after comparisons, spurious correlations,
+                    and overconfident policy claims (Hernán &amp; Robins, 2020). Maintaining causal reasoning
+                    skills helps users question conclusions, ask the right follow-up questions, and avoid accepting
+                    polished explanations that rest on weak causal foundations.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="h4 mb-3">How practice helps</h2>
+                <p>
+                    Causal reasoning improves with deliberate practice that focuses on thinking about structure
+                    rather than doing calculations. Exercises that ask people to identify confounders, consider
+                    alternative explanations, separate causes from mechanisms, or reason about counterfactuals
+                    build the mental habits needed to evaluate causal claims (Sloman &amp; Lagnado, 2015).
+                    Practicing these scenarios helps people recognize common pitfalls and become more skilled at
+                    spotting weak arguments. The goal is not to turn users into statisticians. It is to help them
+                    think more carefully about &ldquo;what caused what&rdquo; in a world full of complex information.
+                </p>
+            </section>
+
+            <hr class="my-5" />
+
+            <section class="mb-4">
+                <h2 class="h5 mb-3">References</h2>
+                <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
+                    <li class="mb-2">
+                        Hernán, M. A., &amp; Robins, J. M. (2020). <em>Causal inference: What if.</em>
+                        Boca Raton, FL: Chapman &amp; Hall/CRC.
+                    </li>
+                    <li class="mb-2">
+                        Pearl, J. (2009). <em>Causality: Models, reasoning, and inference</em> (2nd ed.).
+                        Cambridge: Cambridge University Press.
+                    </li>
+                    <li class="mb-2">
+                        Sloman, S. A., &amp; Lagnado, D. A. (2015). Causal inference in thinking and decision
+                        making. <em>Annual Review of Psychology, 66</em>, 245–267.
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</div>

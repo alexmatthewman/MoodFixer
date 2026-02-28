@@ -28,6 +28,36 @@ namespace AIRelief.Controllers
             return View();
         }
 
+        public IActionResult CausalReasoning()
+        {
+            return View();
+        }
+
+        public IActionResult CognitiveReflection()
+        {
+            return View();
+        }
+
+        public IActionResult Metacognition()
+        {
+            return View();
+        }
+
+        public IActionResult ReadingComprehension()
+        {
+            return View();
+        }
+
+        public IActionResult ShortTermMemory()
+        {
+            return View();
+        }
+
+        public IActionResult ConfidenceCalibration()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

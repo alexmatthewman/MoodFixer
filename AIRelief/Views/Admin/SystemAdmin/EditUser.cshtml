@@ -1,0 +1,76 @@
+@model AIRelief.Models.User
+@{
+    ViewData["Title"] = "Edit User";
+    bool isGroupMember = Model.GroupId != null;
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">Edit User - @Model.Name</h1>
+        <a href="/Admin/SystemAdmin/Users" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>User Settings</h5>
+        </div>
+        <div class="admin-card-body">
+            <form method="post" action="/Admin/SystemAdmin/Users/Edit/@Model.ID">
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="admin-form-group">
+                            <label class="form-label" style="color: var(--text-secondary);">Full Name</label>
+                            <p class="form-control-plaintext">@Model.Name</p>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="form-label" style="color: var(--text-secondary);">Email</label>
+                            <p class="form-control-plaintext">@Model.Email</p>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="form-label" style="color: var(--text-secondary);">Group</label>
+                            <p class="form-control-plaintext">@(Model.Group?.Name ?? "— No group —")</p>
+                        </div>
+                        <div class="admin-form-group">
+                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">Query Frequency</label>
+                            @if (isGroupMember)
+                            {
+                                <p class="form-control-plaintext text-muted">
+                                    Inherited from group: <strong>@Model.Group!.QueryFrequency</strong>
+                                </p>
+                            }
+                            else
+                            {
+                                <select name="queryFrequency" class="form-select" required>
+                                    <option value="">— Select frequency —</option>
+                                    @foreach (AIRelief.Models.QueryFrequency freq in Enum.GetValues(typeof(AIRelief.Models.QueryFrequency)))
+                                    {
+                                        <option value="@freq" selected="@(Model.QueryFrequency == freq ? "selected" : null)">@freq</option>
+                                    }
+                                </select>
+                                <span class="text-danger" data-valmsg-for="QueryFrequency" data-valmsg-replace="true"></span>
+                                <small class="text-muted">Required for users not in a group.</small>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="admin-card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="/Admin/SystemAdmin/Users" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

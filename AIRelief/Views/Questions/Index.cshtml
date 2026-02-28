@@ -15,10 +15,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.heading)
+                @Html.DisplayNameFor(model => model.QuestionText)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.maintext)
+                @Html.DisplayNameFor(model => model.MainText)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Option1)
@@ -48,10 +48,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.heading)
+                @Html.DisplayFor(modelItem => item.QuestionText)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.maintext)
+                @Html.DisplayFor(modelItem => item.MainText)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Option1)

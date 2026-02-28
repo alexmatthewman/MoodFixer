@@ -27,6 +27,7 @@
                 <div class="user-stats">
                     <span class="stat-badge">Auth Level: @Model.AuthLevel</span>
                     <span class="stat-badge">Created: @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
+                    <span class="stat-badge">Last Question Attempt: @(Model.DatetimeOfLastQuestionAttempt.HasValue ? Model.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</span>
                 </div>
             </div>
         </div>

@@ -136,7 +136,7 @@ namespace AIRelief.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("heading")
+                    b.Property<string>("QuestionText")
                         .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 

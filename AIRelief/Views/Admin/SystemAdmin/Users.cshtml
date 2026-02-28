@@ -38,7 +38,9 @@
                                 <th>Email</th>
                                 <th>Group</th>
                                 <th>Auth Level</th>
+                                <th>Query Frequency</th>
                                 <th>Created</th>
+                                <th>Last Question Attempt</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -52,7 +54,18 @@
                                     <td>
                                         <span class="badge bg-info text-dark">@user.AuthLevel</span>
                                     </td>
+                                    <td>
+                                        @if (user.GroupId != null)
+                                        {
+                                            <span class="text-muted">@user.Group?.QueryFrequency <small>(group)</small></span>
+                                        }
+                                        else
+                                        {
+                                            @(user.QueryFrequency.HasValue ? user.QueryFrequency.Value.ToString() : "—")
+                                        }
+                                    </td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>
                                     <td class="action-cell">
                                         @if (user.ID == currentUserId)
                                         {
@@ -60,6 +73,9 @@
                                         }
                                         else
                                         {
+                                            <a href="/Admin/SystemAdmin/Users/Edit/@user.ID" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
                                             <form method="post" action="/Admin/SystemAdmin/Users/Remove/@user.ID" style="display:inline;">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-sm btn-danger"

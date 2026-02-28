@@ -1,0 +1,125 @@
+@{
+    ViewData["Title"] = "Bulk Question Management";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">Bulk Question Management</h1>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-md-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-header">
+                    <h5><i class="fas fa-download"></i> Download All Questions</h5>
+                </div>
+                <div class="admin-card-body d-flex flex-column">
+                    <p>Export every question currently in the database as a CSV file.</p>
+                    <div class="mt-auto">
+                        <a href="/Admin/SystemAdmin/BulkQuestions/Download"
+                           class="btn btn-primary w-100">
+                            <i class="fas fa-file-csv"></i> Bulk Question Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-header">
+                    <h5><i class="fas fa-upload"></i> Upload Questions</h5>
+                </div>
+                <div class="admin-card-body d-flex flex-column">
+                    <p>Upload a CSV file to import questions. Rows where <strong>MainText</strong> or <strong>QuestionText</strong> already exists in the database will be skipped.</p>
+                    <form method="post" action="/Admin/SystemAdmin/BulkQuestions/Upload"
+                          enctype="multipart/form-data" class="mt-auto">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <input type="file" name="file" accept=".csv" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-file-upload"></i> Bulk Question Upload
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-header">
+                    <h5><i class="fas fa-file-alt"></i> Download Template</h5>
+                </div>
+                <div class="admin-card-body d-flex flex-column">
+                    <p>Download a CSV template with two example questions showing the correct column format for upload.</p>
+                    <div class="mt-auto">
+                        <a href="/Admin/SystemAdmin/BulkQuestions/Template"
+                           class="btn btn-secondary w-100">
+                            <i class="fas fa-file-csv"></i> Bulk Question Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="admin-card h-100 border-danger">
+                <div class="admin-card-header bg-danger text-white">
+                    <h5><i class="fas fa-trash-alt"></i> Remove All Questions</h5>
+                </div>
+                <div class="admin-card-body d-flex flex-column">
+                    <p>Permanently delete every question from the database. A full CSV backup will be downloaded automatically before deletion.</p>
+                    <div class="mt-auto">
+                        <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#removeAllModal">
+                            <i class="fas fa-trash-alt"></i> Remove All Questions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeAllModal" tabindex="-1" aria-labelledby="removeAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="removeAllModalLabel"><i class="fas fa-exclamation-triangle"></i> Are you sure?</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This will <strong>permanently delete all questions</strong> from the database.</p>
+                    <p>A CSV backup of all questions will be downloaded to your computer before deletion.</p>
+                    <p class="text-danger mb-0"><strong>This action cannot be undone.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="post" action="/Admin/SystemAdmin/BulkQuestions/RemoveAll">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Yes, delete all and download backup
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

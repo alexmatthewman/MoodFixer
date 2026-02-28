@@ -1,0 +1,126 @@
+@{
+    ViewData["Title"] = "Confidence Calibration";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <h1 class="mb-4">Confidence Calibration</h1>
+
+            <div class="text-center mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
+                     style="max-width:100%; height:auto; border:1px solid var(--border-color); border-radius:0.5rem; background:var(--bg-secondary); padding:1rem;"
+                     aria-label="Diagram showing a calibration curve comparing expressed confidence against actual accuracy, with a well-calibrated diagonal reference line and an overconfidence curve above it"
+                     role="img">
+                    <defs>
+                        <marker id="cal-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-muted)" />
+                        </marker>
+                        <marker id="cal-arr-accent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-accent)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Axes -->
+                    <line x1="60" y1="20" x2="60" y2="160" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#cal-arr)" />
+                    <line x1="60" y1="160" x2="420" y2="160" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#cal-arr)" />
+
+                    <!-- Axis labels -->
+                    <text x="240" y="185" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">Expressed Confidence</text>
+                    <text x="16" y="95" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-muted)"
+                          transform="rotate(-90,16,95)">Actual Accuracy</text>
+
+                    <!-- Perfect calibration diagonal -->
+                    <line x1="60" y1="160" x2="400" y2="28"
+                          stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="6,4" />
+                    <text x="390" y="22" text-anchor="end" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">perfect calibration</text>
+
+                    <!-- Overconfidence curve (bowed above diagonal) -->
+                    <path d="M 60,160 Q 160,130 240,90 Q 320,52 400,28"
+                          fill="none" stroke="var(--text-accent)" stroke-width="2" />
+                    <text x="270" y="72" text-anchor="start" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">overconfidence</text>
+
+                    <!-- Underconfidence curve (bowed below diagonal) -->
+                    <path d="M 60,160 Q 150,155 240,130 Q 320,105 400,28"
+                          fill="none" stroke="var(--border-accent)" stroke-width="1.5" stroke-dasharray="4,3" />
+                    <text x="244" y="148" text-anchor="start" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--border-accent)">underconfidence</text>
+
+                    <!-- Tick labels -->
+                    <text x="56" y="164" text-anchor="end" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">0%</text>
+                    <text x="396" y="174" text-anchor="middle" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">100%</text>
+                    <text x="50" y="32" text-anchor="end" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">100%</text>
+                </svg>
+            </div>
+
+            <section class="mb-5">
+                <p>
+                    Most people are overconfident in their judgements about the world, which can lead to reckless
+                    or unwise decision-making. This problem may worsen with AI use due to its ability to write
+                    authoritative and superficially compelling text that sweeps nuance and uncertainty under the
+                    rug. When answers are frequently provided by external systems, opportunities to practise
+                    evaluating one&rsquo;s own uncertainty may diminish, increasing the risk of poor
+                    decision-making.
+                </p>
+                <p>
+                    Being well calibrated means expressing high confidence when one is likely to be correct and
+                    appropriate uncertainty when one is not. This skill plays a central role in learning,
+                    reasoning, and decision-making, helping people avoid both systematic overconfidence as well
+                    as unwarranted doubt (Lichtenstein, Fischhoff, &amp; Phillips, 1982; Griffin &amp;
+                    Tversky, 1992).
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="h4 mb-3">How practice helps</h2>
+                <p>
+                    These exercises make uncertainty explicit, and force the user to think methodically about
+                    the limits of their knowledge. Typical problems involve estimating how many statements are
+                    true or judging the likelihood that an answer is correct, which encourages people to grapple
+                    with uncertainty. Even brief exposure to this kind of feedback can improve awareness of
+                    confidence errors and promote more accurate self-assessment over time (Koriat, Lichtenstein,
+                    &amp; Fischhoff, 1980; Moore &amp; Healy, 2008).
+                </p>
+                <p>
+                    Note that the exercises on confidence calibration usually don&rsquo;t have correct answers,
+                    although we do suggest the answers we believe reflect appropriate levels of uncertainty.
+                </p>
+            </section>
+
+            <hr class="my-5" />
+
+            <section class="mb-4">
+                <h2 class="h5 mb-3">References</h2>
+                <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
+                    <li class="mb-2">
+                        Lichtenstein, S., Fischhoff, B., &amp; Phillips, L. D. (1982). Calibration of
+                        probabilities: The state of the art to 1980. In <em>Judgment under uncertainty:
+                        Heuristics and biases</em> (pp. 306&ndash;334). Cambridge University Press.
+                    </li>
+                    <li class="mb-2">
+                        Griffin, D., &amp; Tversky, A. (1992). The weighing of evidence and the determinants
+                        of confidence. <em>Cognitive Psychology, 24</em>(3), 411&ndash;435.
+                    </li>
+                    <li class="mb-2">
+                        Koriat, A., Lichtenstein, S., &amp; Fischhoff, B. (1980). Reasons for confidence.
+                        <em>Journal of Experimental Psychology: Human Learning and Memory, 6</em>(2),
+                        107&ndash;118.
+                    </li>
+                    <li class="mb-2">
+                        Moore, D. A., &amp; Healy, P. J. (2008). The trouble with overconfidence.
+                        <em>Psychological Review, 115</em>(2), 502&ndash;517.
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</div>

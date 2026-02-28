@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Reading Comprehension";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <h1 class="mb-4">Reading Comprehension</h1>
+
+            <div class="text-center mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
+                     style="max-width:100%; height:auto; border:1px solid var(--border-color); border-radius:0.5rem; background:var(--bg-secondary); padding:1rem;"
+                     aria-label="Diagram showing the layers of reading comprehension: words on the page lead to literal meaning, which leads to inference, which leads to critical evaluation"
+                     role="img">
+                    <defs>
+                        <marker id="rc-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="var(--text-muted)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Stage 1: Words on the page -->
+                    <rect x="16" y="70" width="95" height="60" rx="6"
+                          fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+                    <text x="63" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Words</text>
+                    <text x="63" y="112" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">on the page</text>
+
+                    <!-- Arrow 1 -->
+                    <line x1="113" y1="100" x2="141" y2="100"
+                          stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#rc-arr)" />
+
+                    <!-- Stage 2: Literal meaning -->
+                    <rect x="143" y="70" width="95" height="60" rx="6"
+                          fill="none" stroke="var(--border-color)" stroke-width="1.5" />
+                    <text x="190" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Literal</text>
+                    <text x="190" y="112" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">meaning</text>
+
+                    <!-- Arrow 2 -->
+                    <line x1="240" y1="100" x2="268" y2="100"
+                          stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#rc-arr)" />
+
+                    <!-- Stage 3: Inference -->
+                    <rect x="270" y="70" width="95" height="60" rx="6"
+                          fill="none" stroke="var(--border-accent)" stroke-width="1.5" />
+                    <text x="317" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-secondary)">Inference</text>
+                    <text x="317" y="112" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">&amp; implication</text>
+
+                    <!-- Arrow 3 -->
+                    <line x1="367" y1="100" x2="395" y2="100"
+                          stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#rc-arr)" />
+
+                    <!-- Stage 4: Critical evaluation -->
+                    <rect x="397" y="70" width="67" height="60" rx="6"
+                          fill="none" stroke="var(--text-accent)" stroke-width="1.5" />
+                    <text x="430" y="96" text-anchor="middle" font-size="11"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">Critical</text>
+                    <text x="430" y="112" text-anchor="middle" font-size="10"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">evaluation</text>
+
+                    <!-- Label row above -->
+                    <text x="63"  y="58" text-anchor="middle" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">decode</text>
+                    <text x="190" y="58" text-anchor="middle" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">understand</text>
+                    <text x="317" y="58" text-anchor="middle" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-muted)">interpret</text>
+                    <text x="430" y="58" text-anchor="middle" font-size="9"
+                          font-family="Courier New, monospace" fill="var(--text-accent)">evaluate</text>
+                </svg>
+            </div>
+
+            <section class="mb-5">
+                <p>
+                    Even in the age of AI, reading comprehension remains an important human skill. Truly
+                    understanding a text is about more than recognising words or pulling out facts; it requires
+                    making sense of ideas, drawing inferences, following arguments, and noticing when something
+                    does not quite add up (Kintsch, 1998; Perfetti &amp; Stafura, 2014). These abilities support
+                    learning and critical thinking in every domain, and they are especially important when
+                    engaging with AI-generated content, which still requires human judgement to interpret and
+                    evaluate.
+                </p>
+                <p>
+                    At the same time, reading comprehension may be especially vulnerable as AI tools increasingly
+                    summarise, explain, and answer for us. When machines do more of the interpreting, we spend
+                    less time practising the effortful work of deep reading. Over time, this is likely to weaken
+                    our ability to follow complex texts or retain what we have read. The good news is that
+                    comprehension is highly trainable: research shows that active practice &mdash; such as
+                    answering targeted questions and reflecting on meaning &mdash; can significantly improve
+                    understanding (National Reading Panel, 2000; McNamara, 2007). Well-designed multiple-choice
+                    exercises help make this practice easy and effective.
+                </p>
+                <p>
+                    These exercises are not designed to trick you, and they should not feel excessively difficult
+                    for someone who actively engages their mind. The goal is less about finding a single
+                    &ldquo;correct&rdquo; answer and more about encouraging careful reading, reflection, and
+                    mental engagement. By thoughtfully considering the passages and answer choices, you are
+                    exercising your comprehension skills and keeping your cognitive faculties sharp.
+                </p>
+            </section>
+
+            <hr class="my-5" />
+
+            <section class="mb-4">
+                <h2 class="h5 mb-3">References</h2>
+                <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
+                    <li class="mb-2">
+                        Kintsch, W. (1998). <em>Comprehension: A paradigm for cognition.</em>
+                        Cambridge University Press.
+                    </li>
+                    <li class="mb-2">
+                        McNamara, D. S. (2007). <em>Reading comprehension strategies: Theories, interventions,
+                        and technologies.</em> Lawrence Erlbaum Associates.
+                    </li>
+                    <li class="mb-2">
+                        National Reading Panel. (2000). <em>Teaching children to read: An evidence-based
+                        assessment of the scientific research literature on reading and its implications for
+                        reading instruction.</em> National Institute of Child Health and Human Development.
+                    </li>
+                    <li class="mb-2">
+                        Perfetti, C. A., &amp; Stafura, J. (2014). Word knowledge in a theory of reading
+                        comprehension. <em>Scientific Studies of Reading, 18</em>(1), 22&ndash;37.
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</div>

@@ -76,6 +76,7 @@
                                 <th>Email</th>
                                 <th>Auth Level</th>
                                 <th>Created</th>
+                                <th>Last Question Attempt</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -89,6 +90,7 @@
                                         <span class="badge bg-info text-dark">@user.AuthLevel</span>
                                     </td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>
                                     <td class="action-cell">
                                         <a href="/Admin/GroupAdmin/Details/@user.ID" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i> View
