@@ -70,9 +70,6 @@ namespace AIRelief
                 {
                     var context = services.GetRequiredService<AIReliefContext>();
                     context.Database.Migrate();
-
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-                    AIRelief.SeedHelpers.EnsureInitialSystemUser(userManager, context).GetAwaiter().GetResult();
                 }
                 catch
                 {

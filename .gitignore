@@ -2,6 +2,51 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/AIRelief/bin/Debug
-/AIRelief/obj
+## Visual Studio / IDE
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+## Build output
+[Bb]in/
+[Oo]bj/
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Publish profiles (may contain machine-specific paths)
+**/Properties/PublishProfiles/*.pubxml
+!**/Properties/PublishProfiles/*.pubxml.user
+
+## ASP.NET Core - client-side libraries (restored by libman/npm, not source)
+**/wwwroot/lib/
+
+## User secrets & environment-specific config
+appsettings.Development.json
+appsettings.Staging.json
+appsettings.Production.json
+secrets.json
+
+## Roslyn / Compiler
+*.pidb
+*.svclog
+*.scc
+
+## Logs
+*.log
+
+## Ensure solution-root web.config remnant is not re-added
+/web.config
+
+## Secrets / tokens - never commit these
+*.pat
+GithubPAT.txt

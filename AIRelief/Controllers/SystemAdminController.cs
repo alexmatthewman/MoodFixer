@@ -742,19 +742,19 @@ namespace AIRelief.Controllers
 
                 var question = new Question
                 {
-                    Category        = Get("Category").NullIfEmpty(),
-                    QuestionText    = questionText.NullIfEmpty(),
+                    Category        = string.IsNullOrEmpty(Get("Category")) ? null : Get("Category"),
+                    QuestionText    = string.IsNullOrEmpty(questionText) ? null : questionText,
                     MainText        = mainText,
-                    Image           = Get("Image").NullIfEmpty(),
+                    Image           = string.IsNullOrEmpty(Get("Image")) ? null : Get("Image"),
                     Option1         = option1,
                     Option2         = option2,
-                    Option3         = Get("Option3").NullIfEmpty(),
-                    Option4         = Get("Option4").NullIfEmpty(),
-                    Option5         = Get("Option5").NullIfEmpty(),
+                    Option3         = string.IsNullOrEmpty(Get("Option3")) ? null : Get("Option3"),
+                    Option4         = string.IsNullOrEmpty(Get("Option4")) ? null : Get("Option4"),
+                    Option5         = string.IsNullOrEmpty(Get("Option5")) ? null : Get("Option5"),
                     CorrectAnswer   = correct,
-                    BestAnswersRaw  = Get("BestAnswersRaw").NullIfEmpty(),
-                    ExplanationText = Get("ExplanationText").NullIfEmpty(),
-                    ExplanationImage= Get("ExplanationImage").NullIfEmpty()
+                    BestAnswersRaw  = string.IsNullOrEmpty(Get("BestAnswersRaw")) ? null : Get("BestAnswersRaw"),
+                    ExplanationText = string.IsNullOrEmpty(Get("ExplanationText")) ? null : Get("ExplanationText"),
+                    ExplanationImage= string.IsNullOrEmpty(Get("ExplanationImage")) ? null : Get("ExplanationImage")
                 };
 
                 _context.Questions.Add(question);
