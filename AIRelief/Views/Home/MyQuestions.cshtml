@@ -1,0 +1,126 @@
+@model IList<AIRelief.Models.UserQuestion>
+@{
+    ViewData["Title"] = "My Question History";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">My Question History</h1>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> You have not attempted any questions yet.
+        </div>
+    }
+    else
+    {
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5>Attempted Questions (@Model.Count)</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Question Text</th>
+                                <th>Main Text</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Correct</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var attempt in Model)
+                            {
+                                var questionText = attempt.Question?.QuestionText ?? string.Empty;
+                                var mainText = attempt.Question?.MainText ?? string.Empty;
+                                var date = (attempt.DateLastAttempted ?? attempt.DateFirstAttempted).ToString("dd MMM yyyy HH:mm");
+                                <tr>
+                                    <td>
+                                        @if (questionText.Length > 50)
+                                        {
+                                            <span class="truncated-text" title="@questionText"
+                                                  data-bs-toggle="tooltip" data-bs-placement="top">
+                                                @questionText.Substring(0, 50)&hellip;
+                                            </span>
+                                            <a class="expand-link ms-1" href="#" onclick="toggleExpand(this); return false;">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </a>
+                                            <span class="full-text d-none">@questionText</span>
+                                        }
+                                        else
+                                        {
+                                            @questionText
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (mainText.Length > 50)
+                                        {
+                                            <span class="truncated-text" title="@mainText"
+                                                  data-bs-toggle="tooltip" data-bs-placement="top">
+                                                @mainText.Substring(0, 50)&hellip;
+                                            </span>
+                                            <a class="expand-link ms-1" href="#" onclick="toggleExpand(this); return false;">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </a>
+                                            <span class="full-text d-none">@mainText</span>
+                                        }
+                                        else
+                                        {
+                                            @mainText
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(attempt.Question?.Category))
+                                        {
+                                            <span class="badge bg-secondary">@attempt.Question.Category</span>
+                                        }
+                                    </td>
+                                    <td>@date</td>
+                                    <td>
+                                        @if (attempt.AnsweredCorrectly)
+                                        {
+                                            <span class="badge bg-success"><i class="fas fa-check"></i> Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger"><i class="fas fa-times"></i> No</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function toggleExpand(link) {
+            var td = link.closest('td');
+            var truncated = td.querySelector('.truncated-text');
+            var full = td.querySelector('.full-text');
+            var icon = link.querySelector('i');
+            if (full.classList.contains('d-none')) {
+                full.classList.remove('d-none');
+                truncated.classList.add('d-none');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                full.classList.add('d-none');
+                truncated.classList.remove('d-none');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipEls = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipEls.forEach(function (el) { new bootstrap.Tooltip(el); });
+        });
+    </script>
+}

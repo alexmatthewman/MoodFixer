@@ -14,11 +14,6 @@ namespace AIRelief.Models
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Filename=aireliefdb.db");
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -36,6 +31,19 @@ namespace AIRelief.Models
                 .WithOne(s => s.User)
                 .HasForeignKey<UserStatistics>(s => s.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure UserQuestion relationships
+            modelBuilder.Entity<UserQuestion>()
+                .HasOne(uq => uq.User)
+                .WithMany(u => u.UserQuestions)
+                .HasForeignKey(uq => uq.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserQuestion>()
+                .HasOne(uq => uq.Question)
+                .WithMany()
+                .HasForeignKey(uq => uq.QuestionID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         // Note: SaveChanges overrides below ensure Group defaults are applied before persisting.
@@ -45,6 +53,7 @@ namespace AIRelief.Models
         // Hide IdentityDbContext.Users member to use application User entity
         public new DbSet<User> Users { get; set; }
         public DbSet<UserStatistics> UserStatistics { get; set; }
+        public DbSet<UserQuestion> UserQuestions { get; set; }
 
         // No SaveChanges overrides here — PlanName is optional and should not be forced.
     }

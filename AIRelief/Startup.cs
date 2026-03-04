@@ -22,7 +22,7 @@ namespace AIRelief
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AIReliefContext>(options => options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
+            services.AddDbContext<AIReliefContext>(options => options.UseNpgsql(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options =>
             {

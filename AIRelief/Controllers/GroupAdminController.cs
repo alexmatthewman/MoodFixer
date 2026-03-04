@@ -361,6 +361,29 @@ namespace AIRelief.Controllers
             return View("~/Views/Admin/GroupAdmin/GroupStatistics.cshtml", users);
         }
 
+        [Route("Users/{id}/Questions")]
+        public async Task<IActionResult> UserQuestions(int id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (!await _authService.IsValidGroupAdminAsync(appUser))
+                return Forbid();
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.ID == id && u.GroupId == appUser.GroupId);
+
+            if (user == null)
+                return NotFound();
+
+            var attempts = await _context.UserQuestions
+                .Include(uq => uq.Question)
+                .Where(uq => uq.UserID == id)
+                .OrderByDescending(uq => uq.DateLastAttempted ?? uq.DateFirstAttempted)
+                .ToListAsync();
+
+            ViewBag.TargetUser = user;
+            return View("~/Views/Admin/GroupAdmin/UserQuestions.cshtml", attempts);
+        }
+
         [Route("Users/Remove/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]

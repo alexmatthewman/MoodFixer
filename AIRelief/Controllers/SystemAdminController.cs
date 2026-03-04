@@ -511,6 +511,27 @@ namespace AIRelief.Controllers
             return RedirectToAction(nameof(Users));
         }
 
+        [Route("Users/{id}/Questions")]
+        public async Task<IActionResult> UserQuestions(int id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.ID == id);
+            if (user == null)
+                return NotFound();
+
+            var attempts = await _context.UserQuestions
+                .Include(uq => uq.Question)
+                .Where(uq => uq.UserID == id)
+                .OrderByDescending(uq => uq.DateLastAttempted ?? uq.DateFirstAttempted)
+                .ToListAsync();
+
+            ViewBag.TargetUser = user;
+            return View("~/Views/Admin/SystemAdmin/UserQuestions.cshtml", attempts);
+        }
+
         // ========== SYSTEM ADMINS ==========
 
         [Route("SystemAdmins")]

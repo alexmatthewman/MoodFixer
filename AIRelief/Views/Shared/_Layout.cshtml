@@ -56,6 +56,12 @@
 
                             @* Render admin nav partial that handles Group/System admin links based on app user level *@
                             <partial name="_AdminNavPartial" />
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="MyQuestions">
+                                    <i class="fas fa-history"></i> My Questions
+                                </a>
+                            </li>
                         }
                     </ul>
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -46,7 +47,8 @@ namespace AIRelief.Models
         [Display(Name = "Query Frequency")]
         public QueryFrequency? QueryFrequency { get; set; }
 
-        // Navigation property
+        // Navigation properties
         public UserStatistics Statistics { get; set; }
+        public ICollection<UserQuestion> UserQuestions { get; set; }
     }
 }

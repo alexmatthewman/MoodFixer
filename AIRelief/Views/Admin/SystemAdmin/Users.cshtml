@@ -76,6 +76,9 @@
                                             <a href="/Admin/SystemAdmin/Users/Edit/@user.ID" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
+                                            <a href="/Admin/SystemAdmin/Users/@user.ID/Questions" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-question-circle"></i> Questions
+                                            </a>
                                             <form method="post" action="/Admin/SystemAdmin/Users/Remove/@user.ID" style="display:inline;">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-sm btn-danger"
