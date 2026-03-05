@@ -44,6 +44,13 @@ namespace AIRelief.Models
                 .WithMany()
                 .HasForeignKey(uq => uq.QuestionID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure ActiveLesson – one active lesson per user at most
+            modelBuilder.Entity<ActiveLesson>()
+                .HasOne(al => al.User)
+                .WithOne(u => u.ActiveLesson)
+                .HasForeignKey<ActiveLesson>(al => al.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         // Note: SaveChanges overrides below ensure Group defaults are applied before persisting.
@@ -54,6 +61,7 @@ namespace AIRelief.Models
         public new DbSet<User> Users { get; set; }
         public DbSet<UserStatistics> UserStatistics { get; set; }
         public DbSet<UserQuestion> UserQuestions { get; set; }
+        public DbSet<ActiveLesson> ActiveLessons { get; set; }
 
         // No SaveChanges overrides here — PlanName is optional and should not be forced.
     }

@@ -32,10 +32,6 @@ namespace AIRelief.Models
         public int CognitiveReflectionPassed { get; set; }
 
         [Range(0, 100)]
-        [Display(Name = "Cognitive Reflection Score")]
-        public int CognitiveReflectionScore { get; set; }
-
-        [Range(0, 100)]
         [Display(Name = "Cognitive Reflection Weighted Average")]
         public decimal CognitiveReflectionWeightedAverage { get; set; }
 
@@ -45,10 +41,6 @@ namespace AIRelief.Models
 
         [Display(Name = "Reading Comprehension Passed")]
         public int ReadingComprehensionPassed { get; set; }
-
-        [Range(0, 100)]
-        [Display(Name = "Reading Comprehension Score")]
-        public int ReadingComprehensionScore { get; set; }
 
         [Range(0, 100)]
         [Display(Name = "Reading Comprehension Weighted Average")]
@@ -62,10 +54,6 @@ namespace AIRelief.Models
         public int CausalReasoningPassed { get; set; }
 
         [Range(0, 100)]
-        [Display(Name = "Causal Reasoning Score")]
-        public int CausalReasoningScore { get; set; }
-
-        [Range(0, 100)]
         [Display(Name = "Causal Reasoning Weighted Average")]
         public decimal CausalReasoningWeightedAverage { get; set; }
 
@@ -75,10 +63,6 @@ namespace AIRelief.Models
 
         [Display(Name = "Metacognition Passed")]
         public int MetacognitionPassed { get; set; }
-
-        [Range(0, 100)]
-        [Display(Name = "Metacognition Score")]
-        public int MetacognitionScore { get; set; }
 
         [Range(0, 100)]
         [Display(Name = "Metacognition Weighted Average")]
@@ -92,10 +76,6 @@ namespace AIRelief.Models
         public int ShortTermMemoryPassed { get; set; }
 
         [Range(0, 100)]
-        [Display(Name = "Short-Term Memory Score")]
-        public int ShortTermMemoryScore { get; set; }
-
-        [Range(0, 100)]
         [Display(Name = "Short-Term Memory Weighted Average")]
         public decimal ShortTermMemoryWeightedAverage { get; set; }
 
@@ -107,10 +87,6 @@ namespace AIRelief.Models
         public int ConfidenceCalibrationPassed { get; set; }
 
         [Range(0, 100)]
-        [Display(Name = "Confidence Calibration Score")]
-        public int ConfidenceCalibrationScore { get; set; }
-
-        [Range(0, 100)]
         [Display(Name = "Confidence Calibration Weighted Average")]
         public decimal ConfidenceCalibrationWeightedAverage { get; set; }
 
@@ -120,37 +96,37 @@ namespace AIRelief.Models
         public decimal OverallWeightedAverage { get; set; }
 
         /// <summary>
-        /// Calculates weighted average for a given domain based on attempts and score.
-        /// Formula: (Passed / Attempts) * 0.4 + (Score / 100) * 0.6
-        /// This weights recent accuracy at 40% and current score proficiency at 60%.
+        /// Calculates weighted average for a given domain based on attempts and passed questions.
+        /// Formula: Passed / Attempts (returns a 0–1 decimal, multiply by 100 for display).
         /// </summary>
-        public decimal CalculateWeightedAverage(int passed, int attempts, int score)
+        public decimal CalculateWeightedAverage(int passed, int attempts)
         {
             if (attempts == 0)
                 return 0;
 
-            decimal accuracyWeight = ((decimal)passed / attempts) * 0.4m;
-            decimal scoreWeight = ((decimal)score / 100) * 0.6m;
-
-            return Math.Round(accuracyWeight + scoreWeight, 2);
+            return Math.Round((decimal)passed / attempts, 2);
         }
 
         /// <summary>
         /// Calculates the overall weighted average across all six domains.
+        /// Only categories with at least one attempt are included in the average.
         /// </summary>
         public void CalculateOverallWeightedAverage()
         {
             var averages = new[]
             {
-                CognitiveReflectionWeightedAverage,
-                ReadingComprehensionWeightedAverage,
-                CausalReasoningWeightedAverage,
-                MetacognitionWeightedAverage,
-                ShortTermMemoryWeightedAverage,
-                ConfidenceCalibrationWeightedAverage
+                (CognitiveReflectionAttempts,    CognitiveReflectionWeightedAverage),
+                (ReadingComprehensionAttempts,   ReadingComprehensionWeightedAverage),
+                (CausalReasoningAttempts,        CausalReasoningWeightedAverage),
+                (MetacognitionAttempts,          MetacognitionWeightedAverage),
+                (ShortTermMemoryAttempts,        ShortTermMemoryWeightedAverage),
+                (ConfidenceCalibrationAttempts,  ConfidenceCalibrationWeightedAverage)
             };
 
-            OverallWeightedAverage = Math.Round(averages.Average(), 2);
+            var active = averages.Where(a => a.Item1 > 0).ToArray();
+            OverallWeightedAverage = active.Length > 0
+                ? Math.Round(active.Average(a => a.Item2), 2)
+                : 0m;
         }
     }
 }

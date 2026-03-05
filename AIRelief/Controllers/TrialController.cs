@@ -19,8 +19,10 @@ namespace AIRelief.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Get all questions first, then randomize in memory
-            var allQuestions = await _context.Questions.ToListAsync();
+            // Get only Trial category questions
+            var allQuestions = await _context.Questions
+                .Where(q => q.Category == QuestionCategory.Trial)
+                .ToListAsync();
 
             if (allQuestions.Count < 3)
             {

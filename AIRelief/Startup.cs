@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using AIRelief.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -66,14 +67,16 @@ namespace AIRelief
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<Startup>>();
                 try
                 {
                     var context = services.GetRequiredService<AIReliefContext>();
                     context.Database.Migrate();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // ignore
+                    logger.LogError(ex, "An error occurred applying database migrations.");
+                    throw;
                 }
             }
 

@@ -1,0 +1,229 @@
+@model UserStatistics
+
+@{
+    ViewData["Title"] = "My Statistics";
+    int hoursUntilNext   = TempData["HoursUntilNext"]   is int h ? h : 0;
+    int minutesUntilNext = TempData["MinutesUntilNext"] is int m ? m : 0;
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+            @if (hoursUntilNext > 0 || minutesUntilNext > 0)
+            {
+                <text>
+                var countdownModal = new bootstrap.Modal(document.getElementById('countdownModal'), { backdrop: 'static', keyboard: false });
+                countdownModal.show();
+                </text>
+            }
+
+            @if (Model != null)
+            {
+                <text>
+                var labels = [
+                    'Causal Reasoning',
+                    'Cognitive Reflection',
+                    'Confidence Calibration',
+                    'Metacognition',
+                    'Reading Comprehension',
+                    'Short-Term Memory'
+                ];
+
+                // Polar area – weighted averages
+                new Chart(document.getElementById('radarChart'), {
+                    type: 'polarArea',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Weighted Average %',
+                            data: [
+                                @((Model.CausalReasoningWeightedAverage * 100).ToString("F0")),
+                                @((Model.CognitiveReflectionWeightedAverage * 100).ToString("F0")),
+                                @((Model.ConfidenceCalibrationWeightedAverage * 100).ToString("F0")),
+                                @((Model.MetacognitionWeightedAverage * 100).ToString("F0")),
+                                @((Model.ReadingComprehensionWeightedAverage * 100).ToString("F0")),
+                                @((Model.ShortTermMemoryWeightedAverage * 100).ToString("F0"))
+                            ],
+                            backgroundColor: [
+                                'rgba(100, 160, 255, 0.6)',
+                                'rgba(255, 160, 100, 0.6)',
+                                'rgba(100, 220, 160, 0.6)',
+                                'rgba(220, 100, 180, 0.6)',
+                                'rgba(255, 220, 80, 0.6)',
+                                'rgba(140, 100, 255, 0.6)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } } },
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+
+                // Bar – attempts vs passed
+                new Chart(document.getElementById('attemptsChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Attempts',
+                                data: [
+                                    @Model.CausalReasoningAttempts,
+                                    @Model.CognitiveReflectionAttempts,
+                                    @Model.ConfidenceCalibrationAttempts,
+                                    @Model.MetacognitionAttempts,
+                                    @Model.ReadingComprehensionAttempts,
+                                    @Model.ShortTermMemoryAttempts
+                                ],
+                                backgroundColor: 'rgba(100, 160, 255, 0.6)'
+                            },
+                            {
+                                label: 'Passed',
+                                data: [
+                                    @Model.CausalReasoningPassed,
+                                    @Model.CognitiveReflectionPassed,
+                                    @Model.ConfidenceCalibrationPassed,
+                                    @Model.MetacognitionPassed,
+                                    @Model.ReadingComprehensionPassed,
+                                    @Model.ShortTermMemoryPassed
+                                ],
+                                backgroundColor: 'rgba(100, 220, 150, 0.6)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { y: { beginAtZero: true } },
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+                </text>
+            }
+        });
+    </script>
+}
+
+<!-- Countdown modal -->
+@if (hoursUntilNext > 0 || minutesUntilNext > 0)
+{
+    <div class="modal fade" id="countdownModal" tabindex="-1" aria-labelledby="countdownModalLabel" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="countdownModalLabel">Not Quite Yet!</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Your next question set is not available yet. Please check back in:</p>
+                    <p class="display-6 text-center fw-bold">
+                        @hoursUntilNext h @minutesUntilNext min
+                    </p>
+                    <p class="text-muted small text-center">In the meantime, review your progress below.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK, Got It</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <h1 class="mb-1">My Statistics</h1>
+            <p class="text-muted mb-4">Here is your overall progress across all cognitive skill categories.</p>
+
+            @if (Model == null)
+            {
+                <div class="alert alert-info">You have not attempted any questions yet. Come back once you have completed a lesson.</div>
+            }
+            else
+            {
+                <div class="text-center mb-4">
+                    <span class="display-5 fw-bold">@((Model.OverallWeightedAverage * 100).ToString("F0"))%</span>
+                    <div class="text-muted">Overall Weighted Average</div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header fw-semibold">Skill Overview</div>
+                    <div class="card-body">
+                        <canvas id="radarChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header fw-semibold">Attempts vs Passed</div>
+                    <div class="card-body">
+                        <canvas id="attemptsChart" height="140"></canvas>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header fw-semibold">Category Breakdown</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th class="text-center">Attempts</th>
+                                        <th class="text-center">Passed</th>
+                                        <th class="text-center">Weighted Avg</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Causal Reasoning</td>
+                                        <td class="text-center">@Model.CausalReasoningAttempts</td>
+                                        <td class="text-center">@Model.CausalReasoningPassed</td>
+                                        <td class="text-center">@((Model.CausalReasoningWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cognitive Reflection</td>
+                                        <td class="text-center">@Model.CognitiveReflectionAttempts</td>
+                                        <td class="text-center">@Model.CognitiveReflectionPassed</td>
+                                        <td class="text-center">@((Model.CognitiveReflectionWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Confidence Calibration</td>
+                                        <td class="text-center">@Model.ConfidenceCalibrationAttempts</td>
+                                        <td class="text-center">@Model.ConfidenceCalibrationPassed</td>
+                                        <td class="text-center">@((Model.ConfidenceCalibrationWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Metacognition</td>
+                                        <td class="text-center">@Model.MetacognitionAttempts</td>
+                                        <td class="text-center">@Model.MetacognitionPassed</td>
+                                        <td class="text-center">@((Model.MetacognitionWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reading Comprehension</td>
+                                        <td class="text-center">@Model.ReadingComprehensionAttempts</td>
+                                        <td class="text-center">@Model.ReadingComprehensionPassed</td>
+                                        <td class="text-center">@((Model.ReadingComprehensionWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Short-Term Memory</td>
+                                        <td class="text-center">@Model.ShortTermMemoryAttempts</td>
+                                        <td class="text-center">@Model.ShortTermMemoryPassed</td>
+                                        <td class="text-center">@((Model.ShortTermMemoryWeightedAverage * 100).ToString("F0"))%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="text-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>

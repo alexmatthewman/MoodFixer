@@ -1,0 +1,182 @@
+﻿@model AIRelief.Models.Group
+@{
+    ViewData["Title"] = "Group Settings";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">
+            @Model.Name
+            <small class="text-muted fs-6 fw-normal">Group Settings</small>
+        </h1>
+        <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form method="post" action="/Admin/GroupAdmin/GroupSettings">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="Name" />
+        <input type="hidden" asp-for="PlanName" />
+        <input type="hidden" asp-for="NumberOfUserLicenses" />
+        <input type="hidden" asp-for="ExpiryDays" />
+        <input type="hidden" asp-for="ExpiryDateTime" />
+        <input type="hidden" asp-for="QueryFrequency" />
+        <input type="hidden" asp-for="CreatedDate" />
+
+        <!-- Appearance -->
+        <div class="admin-card mb-3">
+            <div class="admin-card-header">
+                <h5>Appearance</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="admin-form-group">
+                            <label asp-for="GroupImageUrl" class="form-label" style="color: var(--text-secondary);">
+                                Group / Company Logo URL
+                            </label>
+                            <input asp-for="GroupImageUrl" class="form-control" type="url" placeholder="https://example.com/logo.png" />
+                            <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
+                            <small class="form-text text-muted">Optional - displayed on lesson and summary pages.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-form-group">
+                            <label asp-for="PrimaryThemeColor" class="form-label" style="color: var(--text-secondary);">Primary Theme Color</label>
+                            <div class="input-group">
+                                <input asp-for="PrimaryThemeColor" class="form-control" placeholder="#dd9292" />
+                                <input type="color" class="btn border" id="primaryColorPicker" title="Pick a colour" />
+                            </div>
+                            <span asp-validation-for="PrimaryThemeColor" class="text-danger"></span>
+                            <small class="form-text text-muted">Hex code, e.g. #dd9292</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-form-group">
+                            <label asp-for="SecondaryThemeColor" class="form-label" style="color: var(--text-secondary);">Secondary Theme Color</label>
+                            <div class="input-group">
+                                <input asp-for="SecondaryThemeColor" class="form-control" placeholder="#bfc0df" />
+                                <input type="color" class="btn border" id="secondaryColorPicker" title="Pick a colour" />
+                            </div>
+                            <span asp-validation-for="SecondaryThemeColor" class="text-danger"></span>
+                            <small class="form-text text-muted">Hex code, e.g. #bfc0df</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lesson Settings -->
+        <div class="admin-card mb-3">
+            <div class="admin-card-header">
+                <h5>Lesson Settings</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="admin-form-group">
+                            <label asp-for="QueryTimeToCompleteDays" class="form-label" style="color: var(--text-secondary);">
+                                Time to Complete (Days)
+                            </label>
+                            <input asp-for="QueryTimeToCompleteDays" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="QueryTimeToCompleteDays" class="text-danger"></span>
+                            <small class="form-text text-muted">How many days users have to complete each lesson set.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-form-group">
+                            <label asp-for="QueryPassingGrade" class="form-label" style="color: var(--text-secondary);">
+                                Passing Grade (%)
+                            </label>
+                            <input asp-for="QueryPassingGrade" class="form-control" type="number" min="0" max="100" />
+                            <span asp-validation-for="QueryPassingGrade" class="text-danger"></span>
+                            <small class="form-text text-muted">Minimum percentage to be considered passing.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-form-group">
+                            <label class="form-label d-block" style="color: var(--text-secondary);">Question Selection Mode</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="QuestionMode" id="modeFocussed" value="Focussed" />
+                                <label class="form-check-label" for="modeFocussed">Focussed Questions</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="QuestionMode" id="modeRandom" value="Random" />
+                                <label class="form-check-label" for="modeRandom">Random Questions</label>
+                            </div>
+                            <small class="form-text text-muted d-block mt-1">Only one mode may be active at a time.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-card-footer" style="padding: 0; border: none; background: none;">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-save"></i> Save Settings
+            </button>
+            <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary btn-sm">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Sync colour pickers with text inputs
+        (function () {
+            var primaryText   = document.getElementById('PrimaryThemeColor');
+            var primaryPicker = document.getElementById('primaryColorPicker');
+            var secondaryText   = document.getElementById('SecondaryThemeColor');
+            var secondaryPicker = document.getElementById('secondaryColorPicker');
+
+            function syncToText(picker, text) {
+                picker.addEventListener('input', function () { text.value = this.value; });
+            }
+            function syncToPicker(text, picker) {
+                text.addEventListener('change', function () {
+                    if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) picker.value = this.value;
+                });
+            }
+
+            syncToText(primaryPicker, primaryText);
+            syncToPicker(primaryText, primaryPicker);
+            syncToText(secondaryPicker, secondaryText);
+            syncToPicker(secondaryText, secondaryPicker);
+
+            if (/^#[0-9A-Fa-f]{6}$/.test(primaryText.value))   primaryPicker.value   = primaryText.value;
+            if (/^#[0-9A-Fa-f]{6}$/.test(secondaryText.value)) secondaryPicker.value = secondaryText.value;
+        })();
+
+        // Initialise radio buttons and inject hidden booleans on submit
+        (function () {
+            var focussed = @((Model.QueryQuestionsFocussed) ? "true" : "false");
+            document.getElementById(focussed ? 'modeFocussed' : 'modeRandom').checked = true;
+
+            document.querySelector('form').addEventListener('submit', function () {
+                var mode = document.querySelector('input[name="QuestionMode"]:checked')?.value;
+                var isFocussed = (mode === 'Focussed');
+                ['QueryQuestionsFocussed', 'QueryQuestionsRandom'].forEach(function (name) {
+                    var el = document.querySelector('input[name="' + name + '"]');
+                    if (!el) {
+                        el = document.createElement('input');
+                        el.type = 'hidden';
+                        el.name = name;
+                        document.querySelector('form').appendChild(el);
+                    }
+                    el.value = (name === 'QueryQuestionsFocussed') ? isFocussed : !isFocussed;
+                });
+            });
+        })();
+    </script>
+}

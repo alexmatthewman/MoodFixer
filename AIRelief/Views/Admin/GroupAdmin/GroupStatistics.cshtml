@@ -1,0 +1,268 @@
+﻿@model AIRelief.Models.GroupStatisticsViewModel
+@using AIRelief.Models
+@using System.Linq
+@{
+    ViewData["Title"] = "Group Statistics - " + Model.GroupName;
+
+    var colours = new[]
+    {
+        "rgba(100, 160, 255, 0.65)",
+        "rgba(255, 160, 100, 0.65)",
+        "rgba(100, 220, 160, 0.65)",
+        "rgba(220, 100, 180, 0.65)",
+        "rgba(255, 220,  80, 0.65)",
+        "rgba(140, 100, 255, 0.65)"
+    };
+
+    var categoryLabels = new[]
+    {
+        "Causal Reasoning", "Cognitive Reflection", "Confidence Calibration",
+        "Metacognition", "Reading Comprehension", "Short-Term Memory"
+    };
+
+    int?[] groupAvgs = new int?[]
+    {
+        Model.GroupCausalReasoningAvg,
+        Model.GroupCognitiveReflectionAvg,
+        Model.GroupConfidenceCalibrationAvg,
+        Model.GroupMetacognitionAvg,
+        Model.GroupReadingComprehensionAvg,
+        Model.GroupShortTermMemoryAvg
+    };
+
+    bool hasGroupData = groupAvgs.Any(v => v.HasValue);
+    var groupAvgsJson = System.Text.Json.JsonSerializer.Serialize(groupAvgs.Select(v => v ?? 0).ToArray());
+    bool isSystemAdmin = Context.Request.Path.Value?.Contains("SystemAdmin") == true;
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (hasGroupData)
+            {
+                <text>
+                var style = getComputedStyle(document.documentElement);
+                var textColor = style.getPropertyValue('--text-primary').trim();
+                var mutedColor = style.getPropertyValue('--text-muted').trim();
+                var gridColor = style.getPropertyValue('--border-color').trim();
+                new Chart(document.getElementById('groupPolarChart'), {
+                    type: 'polarArea',
+                    data: {
+                        labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(categoryLabels)),
+                        datasets: [{
+                            label: 'Group Avg %',
+                            data: @Html.Raw(groupAvgsJson),
+                            backgroundColor: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(colours)),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { stepSize: 20, color: mutedColor },
+                                grid: { color: gridColor },
+                                pointLabels: { color: textColor }
+                            }
+                        },
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: textColor } }
+                        }
+                    }
+                });
+                </text>
+            }
+        });
+    </script>
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">
+            @Model.GroupName
+            <small class="text-muted fs-6 fw-normal">Group Statistics</small>
+        </h1>
+        <div>
+            @if (isSystemAdmin)
+            {
+                <a href="/Admin/SystemAdmin/Groups/Details/@Model.GroupId" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back to Group
+                </a>
+            }
+            else
+            {
+                <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Back to Users
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Summary tiles -->
+    <div class="admin-card mb-3">
+        <div class="admin-card-body">
+            <div class="admin-stats">
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Total Members</div>
+                    <div class="admin-stat-value">@Model.Members.Count</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Active (1+ Lessons)</div>
+                    <div class="admin-stat-value">@Model.ActiveMembers</div>
+                </div>
+                <div class="admin-stat-item">
+                    <div class="admin-stat-label">Group Overall Avg</div>
+                    <div class="admin-stat-value">
+                        @(Model.GroupOverallAvg.HasValue ? Model.GroupOverallAvg + "%" : "-")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!hasGroupData)
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            No members have completed a lesson yet. Group statistics will appear once lessons are underway.
+        </div>
+    }
+    else
+    {
+        <!-- Polar area chart -->
+        <div class="admin-card mb-3">
+            <div class="admin-card-header">
+                <h5>Group Category Averages</h5>
+            </div>
+            <div class="admin-card-body d-flex justify-content-center">
+                <div style="max-width: 480px; width: 100%;">
+                    <canvas id="groupPolarChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category averages table -->
+        <div class="admin-card mb-3">
+            <div class="admin-card-header">
+                <h5>Category Averages Across Group</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="table-responsive">
+                        <table class="table table-sm table-bordered align-middle mb-0">
+                        <thead class="admin-thead">
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-center">Group Avg</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var catAvgRows = new (string Label, int? Value)[]
+                                {
+                                    ("Causal Reasoning",       Model.GroupCausalReasoningAvg),
+                                    ("Cognitive Reflection",   Model.GroupCognitiveReflectionAvg),
+                                    ("Confidence Calibration", Model.GroupConfidenceCalibrationAvg),
+                                    ("Metacognition",          Model.GroupMetacognitionAvg),
+                                    ("Reading Comprehension",  Model.GroupReadingComprehensionAvg),
+                                    ("Short-Term Memory",      Model.GroupShortTermMemoryAvg),
+                                };
+                            }
+                            @foreach (var (label, value) in catAvgRows)
+                            {
+                                <tr>
+                                    <td>@label</td>
+                                    <td class="text-center">
+                                        @if (value.HasValue)
+                                        {
+                                            <span class="badge @(value >= 50 ? "bg-success" : "bg-danger")">@value%</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Per-member table -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h5>Member Breakdown (@Model.Members.Count)</h5>
+        </div>
+        <div class="admin-card-body p-0">
+            @if (Model.Members.Count == 0)
+            {
+                <div class="p-3 text-muted">No members in this group.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                        <thead class="admin-thead">
+                            <tr>
+                                <th>Name</th>
+                                <th class="text-center">Lessons</th>
+                                <th class="text-center">Overall</th>
+                                <th class="text-center d-none d-xl-table-cell">Causal</th>
+                                <th class="text-center d-none d-xl-table-cell">Cognitive</th>
+                                <th class="text-center d-none d-xl-table-cell">Confidence</th>
+                                <th class="text-center d-none d-xl-table-cell">Meta</th>
+                                <th class="text-center d-none d-xl-table-cell">Reading</th>
+                                <th class="text-center d-none d-xl-table-cell">Memory</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.Members.OrderByDescending(m => m.OverallPercent ?? -1))
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">@m.Name</div>
+                                        <div class="small text-muted">@m.Email</div>
+                                    </td>
+                                    <td class="text-center">@m.LessonsCompleted</td>
+                                    <td class="text-center">
+                                        @if (m.OverallPercent.HasValue)
+                                        {
+                                            <span class="badge @(m.OverallPercent >= 50 ? "bg-success" : "bg-danger")">
+                                                @m.OverallPercent%
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">-</span>
+                                        }
+                                    </td>
+                                    @{
+                                        int?[] cats = { m.CausalReasoning, m.CognitiveReflection, m.ConfidenceCalibration, m.Metacognition, m.ReadingComprehension, m.ShortTermMemory };
+                                    }
+                                    @foreach (var val in cats)
+                                    {
+                                        <td class="text-center d-none d-xl-table-cell">
+                                            @if (val.HasValue)
+                                            {
+                                                <span class="badge @(val >= 50 ? "bg-success" : "bg-danger")">@val%</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted small">-</span>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

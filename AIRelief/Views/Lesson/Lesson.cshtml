@@ -1,0 +1,211 @@
+@model AIRelief.Models.ActiveLesson
+@{
+    ViewData["Title"] = "AI Relief - Lesson";
+    var remainingQuestions = Model.GetRemainingQuestions(
+        (List<AIRelief.Models.Question>)ViewBag.Questions);
+    var firstQuestion = remainingQuestions.FirstOrDefault();
+    int totalQ      = Model.TotalQuestions;
+    int startIndex  = Model.CurrentIndex;
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        window.currentQuestionId = @(firstQuestion?.Question.ID ?? 0);
+        window.lessonTotalQuestions = @totalQ;
+        window.lessonCurrentIndex = @startIndex;
+
+        // Category descriptions for popup
+        var categoryDescriptions = {
+            "Causal Reasoning":        "Causal Reasoning tests your ability to identify cause-and-effect relationships and avoid confusing correlation with causation.",
+            "Cognitive Reflection":    "Cognitive Reflection measures your tendency to override an initial gut response and engage in deeper, more analytical thinking.",
+            "Confidence Calibration":  "Confidence Calibration assesses how accurately you gauge your own certainty – neither overconfident nor underconfident.",
+            "Metacognition":           "Metacognition is thinking about your own thinking – understanding what you know and don't know, and how you learn.",
+            "Reading Comprehension":   "Reading Comprehension evaluates how well you extract meaning, draw inferences, and critically evaluate written information.",
+            "Short Term Memory":       "Short-Term Memory questions test your ability to hold and manipulate information over brief time periods."
+        };
+
+        function selectAnswer(answer, button) {
+            // Disable all buttons while processing
+            var buttons = document.querySelectorAll('.answer-option');
+            buttons.forEach(function (b) { b.disabled = true; });
+
+            $.ajax({
+                url: '@Url.Action("SubmitAnswer", "Lesson")',
+                type: 'POST',
+                data: {
+                    questionId: window.currentQuestionId,
+                    selectedAnswer: answer,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (!response.success) {
+                        alert('Error submitting answer. Please try again.');
+                        buttons.forEach(function (b) { b.disabled = false; });
+                        return;
+                    }
+
+                    // Highlight selected button
+                    if (response.isCorrect) {
+                        button.classList.add('btn-success');
+                    } else {
+                        button.classList.add('btn-danger');
+                    }
+
+                    // Build feedback panel
+                    var feedbackHtml = '<div class="feedback-panel mt-3 p-3 rounded border">';
+                    if (response.isCorrect) {
+                        feedbackHtml += '<div class="alert alert-success mb-2"><strong>Correct! Well done!</strong></div>';
+                    } else {
+                        feedbackHtml += '<div class="alert alert-danger mb-2"><strong>Not quite.</strong> Here is the explanation:</div>';
+                    }
+
+                    if (response.correctionText) {
+                        feedbackHtml += '<p class="explanation-text">' + response.correctionText + '</p>';
+                    }
+                    if (response.correctionImage) {
+                        feedbackHtml += '<img src="/images/QuestionImages/' + response.correctionImage + '" class="img-fluid mt-2" alt="Explanation" />';
+                    }
+
+                    var nextLabel = response.isLastQuestion ? 'View My Results' : 'Next Question';
+                    feedbackHtml += '<div class="mt-3"><button class="btn btn-primary" onclick="goToNext(\'' + response.nextQuestionUrl + '\', ' + response.isLastQuestion + ', ' + response.currentIndex + ')">' + nextLabel + '</button></div>';
+                    feedbackHtml += '</div>';
+
+                    $('#feedback-container').html(feedbackHtml);
+                },
+                error: function () {
+                    alert('Network error. Please try again.');
+                    buttons.forEach(function (b) { b.disabled = false; });
+                }
+            });
+        }
+
+        function goToNext(url, isLast, currentIndex) {
+            // Advance the progress counter now that the user is moving on
+            window.lessonCurrentIndex = currentIndex;
+            updateProgress(currentIndex, window.lessonTotalQuestions);
+            if (isLast) {
+                window.location.href = url;
+                return;
+            }
+            $.get(url, function (html) {
+                $('#question-container').html(html);
+                $('#feedback-container').html('');
+            });
+        }
+
+        function updateProgress(current, total) {
+            var pct = Math.round((current / total) * 100);
+            $('#progress-bar').css('width', pct + '%').attr('aria-valuenow', pct);
+            $('#current-question-num').text(Math.min(current + 1, total));
+        }
+
+        // Category info popup
+        $(document).on('click', '.category-info-btn', function () {
+            var cat = $(this).data('category');
+            var desc = categoryDescriptions[cat] || 'No description available.';
+            $('#categoryInfoModalLabel').text(cat);
+            $('#categoryInfoModalBody').text(desc);
+        });
+    </script>
+}
+
+<!-- Welcome modal – only shown on first-ever lesson before any question is answered -->
+@if (Model.IsFirstEver && Model.CurrentIndex == 0)
+{
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="welcomeModalLabel">Welcome to AI Relief</h5>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to begin your first lesson. Each lesson contains <strong>6 questions</strong> – one from each of the six cognitive skill categories.</p>
+                    <p>Your progress is tracked and shown in your personal statistics after each lesson set.</p>
+                    <p>Good luck!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Let's Go!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'), { backdrop: 'static', keyboard: false });
+            welcomeModal.show();
+        });
+    </script>
+}
+
+<!-- Category info modal -->
+<div class="modal fade" id="categoryInfoModal" tabindex="-1" aria-labelledby="categoryInfoModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryInfoModalLabel">Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="categoryInfoModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="trial-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="trial-header mb-3">
+                    <div class="d-flex align-items-center gap-4">
+                        <h1 class="trial-title mb-0">Your Lesson</h1>
+                        <div class="progress-indicator flex-grow-1">
+                            <span class="progress-text">
+                                Question <span id="current-question-num">@(startIndex + 1)</span> of @totalQ
+                            </span>
+                            @{
+                                int initialPct = totalQ > 0 ? (int)((double)startIndex / totalQ * 100) : 0;
+                            }
+                            <div class="progress mt-1">
+                                <div id="progress-bar"
+                                     class="progress-bar"
+                                     role="progressbar"
+                                     style="width: @(initialPct)%"
+                                     aria-valuenow="@initialPct"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
+
+                @if (firstQuestion != null)
+                {
+                    <div id="question-container" data-question-id="@firstQuestion.Question.ID">
+                        @{
+                            ViewBag.Category       = firstQuestion.Category;
+                            ViewBag.CurrentIndex   = startIndex;
+                            ViewBag.TotalQuestions = totalQ;
+                        }
+                        @await Html.PartialAsync("_LessonQuestionPartial", firstQuestion.Question)
+                    </div>
+                    <div id="feedback-container"></div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">No questions are available for this lesson.</div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@Html.AntiForgeryToken()

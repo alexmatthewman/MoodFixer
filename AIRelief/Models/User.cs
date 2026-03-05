@@ -50,5 +50,6 @@ namespace AIRelief.Models
         // Navigation properties
         public UserStatistics Statistics { get; set; }
         public ICollection<UserQuestion> UserQuestions { get; set; }
+        public ActiveLesson ActiveLesson { get; set; }
     }
 }

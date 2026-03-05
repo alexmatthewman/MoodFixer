@@ -8,6 +8,9 @@
     <div class="admin-header">
         <h1 class="admin-title" style="margin: 0;">@Model.Name <small class="text-muted">(@Model.PlanName)</small></h1>
         <div>
+            <a href="/Admin/SystemAdmin/Groups/Statistics/@Model.ID" class="btn btn-info btn-sm">
+                <i class="fas fa-chart-pie"></i> Group Statistics
+            </a>
             <a href="/Admin/SystemAdmin/Groups/Edit/@Model.ID" class="btn btn-warning">
                 <i class="fas fa-edit"></i> Edit
             </a>
@@ -162,7 +165,7 @@
                                 <tr>
                                     <td>@user.Name</td>
                                     <td>@user.Email</td>
-                                    <td><span class="badge bg-info text-dark">@user.AuthLevel</span></td>
+                                    <td><span class="badge bg-info">@user.AuthLevel</span></td>
                                     <td>@user.ExpiryDate?.ToString("yyyy-MM-dd")</td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
                                     <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>

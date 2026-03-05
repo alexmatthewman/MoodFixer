@@ -3,6 +3,7 @@ using System;
 using AIRelief.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AIRelief.Migrations
 {
     [DbContext(typeof(AIReliefContext))]
-    partial class AIReliefContextModelSnapshot : ModelSnapshot
+    [Migration("20260304233555_AddActiveLesson")]
+    partial class AddActiveLesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,6 +294,9 @@ namespace AIRelief.Migrations
                     b.Property<int>("CausalReasoningPassed")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CausalReasoningScore")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("CausalReasoningWeightedAverage")
                         .HasColumnType("numeric");
 
@@ -300,6 +306,9 @@ namespace AIRelief.Migrations
                     b.Property<int>("CognitiveReflectionPassed")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CognitiveReflectionScore")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("CognitiveReflectionWeightedAverage")
                         .HasColumnType("numeric");
 
@@ -307,6 +316,9 @@ namespace AIRelief.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ConfidenceCalibrationPassed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ConfidenceCalibrationScore")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("ConfidenceCalibrationWeightedAverage")
@@ -321,6 +333,9 @@ namespace AIRelief.Migrations
                     b.Property<int>("MetacognitionPassed")
                         .HasColumnType("integer");
 
+                    b.Property<int>("MetacognitionScore")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("MetacognitionWeightedAverage")
                         .HasColumnType("numeric");
 
@@ -333,6 +348,9 @@ namespace AIRelief.Migrations
                     b.Property<int>("ReadingComprehensionPassed")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ReadingComprehensionScore")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("ReadingComprehensionWeightedAverage")
                         .HasColumnType("numeric");
 
@@ -340,6 +358,9 @@ namespace AIRelief.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ShortTermMemoryPassed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ShortTermMemoryScore")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("ShortTermMemoryWeightedAverage")

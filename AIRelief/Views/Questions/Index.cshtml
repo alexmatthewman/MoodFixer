@@ -11,70 +11,66 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div style="overflow-x: auto; width: 100%;">
+<table class="table" style="table-layout: fixed; width: 100%;">
+    <colgroup>
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+        <col style="width: 11.11%;" />
+    </colgroup>
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MainText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option4)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option5)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CorrectAnswer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.QuestionText)</th>
+            <th>@Html.DisplayNameFor(model => model.MainText)</th>
+            <th>@Html.DisplayNameFor(model => model.Option1)</th>
+            <th>@Html.DisplayNameFor(model => model.Option2)</th>
+            <th>@Html.DisplayNameFor(model => model.Option3)</th>
+            <th>@Html.DisplayNameFor(model => model.Option4)</th>
+            <th>@Html.DisplayNameFor(model => model.Option5)</th>
+            <th>@Html.DisplayNameFor(model => model.CorrectAnswer)</th>
+            <th>@Html.DisplayNameFor(model => model.Category)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionText)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                @{ var qt = item.QuestionText ?? ""; }
+                <span title="@qt">@(qt.Length > 50 ? qt.Substring(0, 50) + "…" : qt)</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainText)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                @{ var mt = item.MainText ?? ""; }
+                <span title="@mt">@(mt.Length > 50 ? mt.Substring(0, 50) + "…" : mt)</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option1)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Option1">@item.Option1</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option2)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Option2">@item.Option2</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option3)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Option3">@item.Option3</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option4)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Option4">@item.Option4</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option5)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Option5">@item.Option5</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorrectAnswer)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.CorrectAnswer">@item.CorrectAnswer</span>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
+            <td style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 0;">
+                <span title="@item.Category">@item.Category</span>
             </td>
-            <td>
+            <td style="white-space: nowrap;">
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
@@ -83,3 +79,4 @@
 }
     </tbody>
 </table>
+</div>

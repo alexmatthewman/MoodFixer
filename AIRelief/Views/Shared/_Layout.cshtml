@@ -1,4 +1,23 @@
 ﻿<!DOCTYPE html>
+@using AIRelief.Models
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@inject AIReliefContext LayoutContext
+@inject UserManager<IdentityUser> LayoutUserManager
+@{
+    var layoutIdentityUser = await LayoutUserManager.GetUserAsync(User);
+    var layoutAppUser = layoutIdentityUser == null ? null : await LayoutContext.Users
+        .Include(u => u.Group)
+        .FirstOrDefaultAsync(u => u.Email == layoutIdentityUser.Email);
+    var layoutIsSystemAdmin = layoutAppUser?.AuthLevel == AuthLevel.SystemAdmin;
+    var layoutGroup = (layoutAppUser?.AuthLevel == AuthLevel.GroupAdmin || layoutAppUser?.AuthLevel == AuthLevel.User)
+        ? layoutAppUser.Group
+        : null;
+    var layoutPrimary   = layoutGroup?.PrimaryThemeColor;
+    var layoutSecondary = layoutGroup?.SecondaryThemeColor;
+    var layoutLogoUrl   = layoutGroup?.GroupImageUrl;
+    bool hasGroupTheme  = layoutGroup != null && (!string.IsNullOrWhiteSpace(layoutPrimary) || !string.IsNullOrWhiteSpace(layoutSecondary));
+}
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,13 +30,39 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @if (hasGroupTheme)
+    {
+        <style>
+            :root {
+                @if (!string.IsNullOrWhiteSpace(layoutPrimary))
+                {
+                    @:--group-primary: @layoutPrimary;
+                }
+                @if (!string.IsNullOrWhiteSpace(layoutSecondary))
+                {
+                    @:--group-secondary: @layoutSecondary;
+                }
+            }
+            body { background-image: linear-gradient(160deg, color-mix(in srgb, var(--group-primary, transparent) 8%, transparent) 0%, color-mix(in srgb, var(--group-secondary, transparent) 8%, transparent) 100%); }
+            .navbar { border-bottom-color: var(--group-primary) !important; }
+            .container { border-color: color-mix(in srgb, var(--group-primary, var(--border-color)) 40%, var(--border-color)) !important; }
+            .admin-card { border-color: color-mix(in srgb, var(--group-secondary, var(--border-color)) 40%, var(--border-color)) !important; }
+            .admin-card:hover { border-color: var(--group-primary) !important; box-shadow: 0 8px 20px color-mix(in srgb, var(--group-primary) 20%, transparent) !important; }
+        </style>
+    }
 </head>
 <body class="d-flex flex-column min-vh-100">
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AI Relief</a>
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index">
+                    @if (!string.IsNullOrWhiteSpace(layoutLogoUrl))
+                    {
+                        <img src="@layoutLogoUrl" alt="@(layoutGroup?.Name ?? "Group") logo" style="height:28px;width:auto;object-fit:contain;border-radius:3px;" />
+                    }
+                    AI Relief
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -43,25 +88,31 @@
 
                         @if (User.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="questionsDropdown" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Questions
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="questionsDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Questions" asp-action="Index">List Questions</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Questions" asp-action="Create">Create New</a></li>
-                                </ul>
-                            </li>
+                            @if (layoutIsSystemAdmin)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="questionsDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        Questions
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="questionsDropdown">
+                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Index">List Questions</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Create">Create New</a></li>
+                                    </ul>
+                                </li>
+                            }
 
                             @* Render admin nav partial that handles Group/System admin links based on app user level *@
                             <partial name="_AdminNavPartial" />
 
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="MyQuestions">
-                                    <i class="fas fa-history"></i> My Questions
-                                </a>
-                            </li>
+                            @if (!layoutIsSystemAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="MyQuestions">
+                                        <i class="fas fa-history"></i> My Questions
+                                    </a>
+                                </li>
+                            }
                         }
                     </ul>
 

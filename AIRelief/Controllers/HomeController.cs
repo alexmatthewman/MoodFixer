@@ -22,8 +22,19 @@ namespace AIRelief.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
-        {           
+        public async Task<IActionResult> Index()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var identityUser = await _userManager.GetUserAsync(User);
+                if (identityUser != null)
+                {
+                    var appUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Email == identityUser.Email);
+                    if (appUser?.AuthLevel == AuthLevel.User || appUser?.AuthLevel == AuthLevel.GroupAdmin)
+                        return RedirectToAction("Index", "Lesson");
+                }
+            }
             return View();
         }
 
@@ -72,6 +83,9 @@ namespace AIRelief.Controllers
 
             var appUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == identityUser.Email);
             if (appUser == null)
+                return Forbid();
+
+            if (appUser.AuthLevel == AuthLevel.SystemAdmin)
                 return Forbid();
 
             var attempts = await _context.UserQuestions

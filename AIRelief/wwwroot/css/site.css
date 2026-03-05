@@ -333,12 +333,20 @@ hr {
    BUTTONS
    ================================= */
 
+.btn {
+    font-weight: bold;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
 .btn-primary {
     background-color: var(--success-color);
     color: var(--btn-text);
     border: 1px solid var(--success-color);
-    font-weight: bold;
-    padding: 0.75rem 1.25rem;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -983,32 +991,26 @@ img {
    ================================= */
 
 .trial-section {
-    padding: 3rem 0;
+    padding: 1.75rem 0;
     min-height: 80vh;
     background: var(--bg-primary);
 }
 
 .trial-header {
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 }
 
 .trial-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    margin-bottom: 0;
     color: var(--text-secondary);
     font-weight: 700;
-}
-
-.trial-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
+    white-space: nowrap;
 }
 
 /* Progress Indicator */
 .progress-indicator {
-    max-width: 400px;
-    margin: 0 auto;
+    min-width: 0;
 }
 
 .progress-text {
@@ -1038,38 +1040,66 @@ img {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 15px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
     .question-card:hover {
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
+        box-shadow: 0 0 0 2px var(--border-accent), 0 4px 12px var(--glow-color);
     }
 
 .question-heading {
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
+    margin-bottom: 0;
+    font-size: 1.1rem;
     font-weight: 600;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .question-content {
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 .question-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
 }
 
 .question-image {
     text-align: center;
-    margin: 2rem 0;
+    margin: 1rem 0;
+}
+
+.question-situation-box,
+.question-question-box {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    background-color: var(--bg-tertiary);
+}
+
+.question-box-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-accent);
+    margin-bottom: 0.35rem;
+}
+
+.question-situation-box {
+    border-left: 3px solid var(--border-accent);
+}
+
+.question-question-box {
+    border-left: 3px solid var(--text-accent);
 }
 
     .question-image img {
@@ -1082,23 +1112,52 @@ img {
 /* Answer Options */
 .answer-options {
     display: grid;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .answer-option {
     background-color: var(--bg-tertiary);
     border: 2px solid var(--border-color);
     color: var(--text-primary);
-    padding: 1rem 1.5rem;
+    padding: 0.55rem 1rem;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-align: left;
     transition: all 0.3s ease;
     cursor: pointer;
     width: 100%;
     position: relative;
     overflow: hidden;
+}
+
+.answer-letter {
+    font-weight: 700;
+    color: var(--text-accent);
+    margin-right: 0.4rem;
+}
+
+/* Feedback panel alerts – respect light/dark theme */
+.feedback-panel {
+    border-color: var(--border-color) !important;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.feedback-panel .alert-success {
+    background-color: var(--bg-tertiary);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.feedback-panel .alert-danger {
+    background-color: var(--bg-tertiary);
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+
+.feedback-panel .explanation-text {
+    color: var(--text-primary);
 }
 
     .answer-option::before {
@@ -1582,6 +1641,45 @@ img {
    ADMIN PAGES STYLING
    ================================= */
 
+/* Override Bootstrap alert colors to respect theme */
+.alert-info {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-accent) !important;
+    border-color: var(--border-accent) !important;
+}
+
+.alert-warning {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.alert-success {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--success-color) !important;
+    border-color: var(--success-color) !important;
+}
+
+.alert-danger {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--error-color) !important;
+    border-color: var(--error-color) !important;
+}
+
+.alert .btn-close {
+    filter: none;
+}
+
+[data-theme="dark"] .alert .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Badge: override bg-info which uses Bootstrap hard-coded colors */
+.badge.bg-info {
+    background-color: var(--text-accent) !important;
+    color: var(--bg-primary) !important;
+}
+
 /* Admin Page Layout */
 .admin-page {
     padding: 2rem 0;
@@ -1610,15 +1708,32 @@ img {
 }
 
 /* Table Styling */
+/* Override Bootstrap's table CSS variables so all table variants respect the theme */
 .table {
+    --bs-table-bg: var(--bg-tertiary);
+    --bs-table-color: var(--text-primary);
+    --bs-table-border-color: var(--border-color);
+    --bs-table-hover-bg: var(--bg-secondary);
+    --bs-table-hover-color: var(--text-primary);
+    --bs-table-striped-bg: var(--bg-secondary);
+    --bs-table-striped-color: var(--text-primary);
+    --bs-border-color: var(--border-color);
     background-color: var(--bg-tertiary);
     border-collapse: collapse;
+    color: var(--text-primary);
     margin-top: 1rem;
 }
 
 .table thead {
     background-color: var(--bg-secondary);
     border-bottom: 2px solid var(--border-accent);
+}
+
+.admin-thead th {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+    border-bottom: 2px solid var(--border-accent) !important;
+    border-color: var(--border-color) !important;
 }
 
     .table thead th {
@@ -1637,13 +1752,13 @@ img {
 
     .table tbody tr:hover {
         background-color: var(--bg-secondary);
-        box-shadow: inset 0 0 10px rgba(0, 255, 170, 0.05);
+        box-shadow: inset 0 0 10px var(--shadow-color);
     }
 
 .table tbody td {
     color: var(--text-primary);
     padding: 1rem;
-    border: none;
+    border-color: var(--border-color);
     vertical-align: middle;
 }
 
@@ -1695,10 +1810,55 @@ img {
     flex-wrap: wrap;
 }
 
+/* =================================
+   MODALS
+   ================================= */
+
+.modal-content {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    font-family: "Courier New", Courier, monospace;
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-header .modal-title {
+    color: var(--text-secondary);
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+.modal-body {
+    color: var(--text-primary);
+}
+
+/* Invert the Bootstrap default (dark) close button so it is visible on dark backgrounds */
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Restore the default close button appearance in light theme */
+[data-theme="light"] .modal-header .btn-close {
+    filter: none;
+}
+
+/* Keep danger-header close button white in both themes */
+.modal-header.bg-danger .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 /* Statistics Display */
 .admin-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -1738,8 +1898,15 @@ img {
 .group-details-users-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 }
+
+    .group-details-users-header h5 {
+        margin: 0;
+        flex-shrink: 0;
+    }
 
 .theme-colors {
     display: flex;
@@ -1820,7 +1987,7 @@ img {
     }
 
     .admin-stats {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
 
     .admin-stat-value {
@@ -1838,6 +2005,20 @@ img {
         .action-cell .btn {
             width: 100%;
         }
+
+    .admin-title {
+        font-size: 1.5rem;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .group-details-users-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 /* =================================

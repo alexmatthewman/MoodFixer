@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,24 +11,37 @@ using AIRelief.Models;
 
 namespace AIRelief.Controllers
 {
+    [Authorize]
     public class QuestionsController : Controller
     {
         private readonly AIReliefContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public QuestionsController(AIReliefContext context)
+        public QuestionsController(AIReliefContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        private async Task<bool> IsSystemAdminAsync()
+        {
+            var identityUser = await _userManager.GetUserAsync(User);
+            if (identityUser == null) return false;
+            var appUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == identityUser.Email);
+            return appUser?.AuthLevel == AuthLevel.SystemAdmin;
         }
 
         // GET: Questions
         public async Task<IActionResult> Index()
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             return View(await _context.Questions.ToListAsync());
         }
 
         // GET: Questions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             if (id == null)
             {
                 return NotFound();
@@ -43,8 +58,9 @@ namespace AIRelief.Controllers
         }
 
         // GET: Questions/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             return View();
         }
 
@@ -53,8 +69,9 @@ namespace AIRelief.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,QuestionText,MainText,Image,ExplanationText,ExplanationImage,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,AttemptsShown,AttemptsCorrect,BestAnswersRaw,Category")] Question question)
+        public async Task<IActionResult> Create([Bind("ID,QuestionText,MainText,Image,ExplanationText,ExplanationImage,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,Category")] Question question)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             if (ModelState.IsValid)
             {
                 _context.Add(question);
@@ -67,6 +84,7 @@ namespace AIRelief.Controllers
         // GET: Questions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             if (id == null)
             {
                 return NotFound();
@@ -85,8 +103,9 @@ namespace AIRelief.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,QuestionText,MainText,Image,ExplanationText,ExplanationImage,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,AttemptsShown,AttemptsCorrect,BestAnswersRaw,Category")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,QuestionText,MainText,Image,ExplanationText,ExplanationImage,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,Category")] Question question)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             if (id != question.ID)
             {
                 return NotFound();
@@ -118,6 +137,7 @@ namespace AIRelief.Controllers
         // GET: Questions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             if (id == null)
             {
                 return NotFound();
@@ -138,6 +158,7 @@ namespace AIRelief.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!await IsSystemAdminAsync()) return Forbid();
             var question = await _context.Questions.FindAsync(id);
             if (question != null)
             {

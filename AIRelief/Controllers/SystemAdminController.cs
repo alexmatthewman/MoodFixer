@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AIRelief.Models;
 using AIRelief.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -158,6 +159,68 @@ namespace AIRelief.Controllers
                 return NotFound();
 
             return View("~/Views/Admin/SystemAdmin/GroupDetails.cshtml", group);
+        }
+
+        [Route("Groups/Statistics/{id}")]
+        public async Task<IActionResult> GroupStatistics(int? id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            if (id == null)
+                return NotFound();
+
+            var group = await _context.Groups.FindAsync(id);
+            if (group == null)
+                return NotFound();
+
+            var users = await _context.Users
+                .Where(u => u.GroupId == id)
+                .Include(u => u.Statistics)
+                .OrderBy(u => u.Name)
+                .ToListAsync();
+
+            var vm = BuildGroupStatisticsViewModel(group.ID, group.Name, users);
+            return View("~/Views/Admin/GroupAdmin/GroupStatistics.cshtml", vm);
+        }
+
+        private static GroupStatisticsViewModel BuildGroupStatisticsViewModel(int groupId, string groupName, List<User> users)
+        {
+            var members = users.Select(u =>
+            {
+                var s = u.Statistics;
+                if (s == null)
+                    return new GroupMemberStatRow { Name = u.Name, Email = u.Email };
+
+                int totalAttempts =
+                    s.CausalReasoningAttempts + s.CognitiveReflectionAttempts +
+                    s.ConfidenceCalibrationAttempts + s.MetacognitionAttempts +
+                    s.ReadingComprehensionAttempts + s.ShortTermMemoryAttempts;
+
+                return new GroupMemberStatRow
+                {
+                    Name              = u.Name,
+                    Email             = u.Email,
+                    LessonsCompleted  = (int)Math.Round(totalAttempts / 6.0),
+                    OverallPercent    = totalAttempts > 0
+                                            ? (int)Math.Round((double)s.OverallWeightedAverage * 100)
+                                            : null,
+                    CausalReasoning       = s.CausalReasoningAttempts       > 0 ? (int)Math.Round((double)s.CausalReasoningWeightedAverage       * 100) : null,
+                    CognitiveReflection   = s.CognitiveReflectionAttempts   > 0 ? (int)Math.Round((double)s.CognitiveReflectionWeightedAverage   * 100) : null,
+                    ConfidenceCalibration = s.ConfidenceCalibrationAttempts > 0 ? (int)Math.Round((double)s.ConfidenceCalibrationWeightedAverage * 100) : null,
+                    Metacognition         = s.MetacognitionAttempts         > 0 ? (int)Math.Round((double)s.MetacognitionWeightedAverage         * 100) : null,
+                    ReadingComprehension  = s.ReadingComprehensionAttempts  > 0 ? (int)Math.Round((double)s.ReadingComprehensionWeightedAverage  * 100) : null,
+                    ShortTermMemory       = s.ShortTermMemoryAttempts       > 0 ? (int)Math.Round((double)s.ShortTermMemoryWeightedAverage       * 100) : null,
+                };
+            }).ToList();
+
+            return new GroupStatisticsViewModel
+            {
+                GroupId   = groupId,
+                GroupName = groupName,
+                Members   = members
+            };
         }
 
         [Route("Groups/Delete/{id}")]
