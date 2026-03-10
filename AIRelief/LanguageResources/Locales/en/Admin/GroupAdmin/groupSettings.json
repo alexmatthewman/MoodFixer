@@ -1,0 +1,10 @@
+{
+    "PageTitle": "Group Settings",
+    "BackToUsers": "Back to Users",
+    "Appearance": "Appearance",
+    "GroupLogoUrl": "Group / Company Logo URL",
+    "GroupLogoHelp": "Optional - displayed on lesson and summary pages.",
+    "PrimaryThemeColor": "Primary Theme Color",
+    "SecondaryThemeColor": "Secondary Theme Color",
+    "SaveChanges": "Save Changes"
+}

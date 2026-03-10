@@ -1,0 +1,12 @@
+{
+    "PageTitle": "My Question History",
+    "NoAttemptsYet": "You have not attempted any questions yet.",
+    "AttemptedQuestions": "Attempted Questions ({0})",
+    "QuestionText": "Question Text",
+    "MainText": "Main Text",
+    "Category": "Category",
+    "DateAnswered": "Date Answered",
+    "Correct": "Correct",
+    "Yes": "Yes",
+    "No": "No"
+}

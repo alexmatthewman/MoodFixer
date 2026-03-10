@@ -1,9 +1,9 @@
 @using AIRelief.Models
-@using AIRelief.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 @inject AIReliefContext Context
 @inject UserManager<IdentityUser> UserManager
+@inject IStringLocalizer<SharedAdminNavResource> L
 
 @{
     var user = await UserManager.GetUserAsync(User);
@@ -18,22 +18,22 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
            data-bs-toggle="dropdown" aria-expanded="false">
-            Administration
+            @L["Administration"]
         </a>
         <ul class="dropdown-menu" aria-labelledby="adminDropdown">
             @if (isGroupAdmin)
             {
-                <li><a class="dropdown-item" href="/Admin/GroupAdmin/Index">Group Users</a></li>
-                <li><a class="dropdown-item" href="/Admin/GroupAdmin/GroupSettings">Group Settings</a></li>
-                <li><a class="dropdown-item" href="/Admin/GroupAdmin/GroupStatistics">Group Statistics</a></li>
+                <li><a class="dropdown-item" href="/Admin/GroupAdmin/Index">@L["GroupUsers"]</a></li>
+                <li><a class="dropdown-item" href="/Admin/GroupAdmin/GroupSettings">@L["GroupSettings"]</a></li>
+                <li><a class="dropdown-item" href="/Admin/GroupAdmin/GroupStatistics">@L["GroupStatistics"]</a></li>
             }
             @if (isSystemAdmin)
             {
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Groups">Manage Groups</a></li>
-                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Users">Manage Users</a></li>
-                <li><a class="dropdown-item" href="/Admin/SystemAdmin/SystemAdmins">Manage System Admins</a></li>
-                <li><a class="dropdown-item" href="/Admin/SystemAdmin/BulkQuestions">Question Bulk Management</a></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Groups">@L["ManageGroups"]</a></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/Users">@L["ManageUsers"]</a></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/SystemAdmins">@L["ManageSystemAdmins"]</a></li>
+                <li><a class="dropdown-item" href="/Admin/SystemAdmin/BulkQuestions">@L["QuestionBulkManagement"]</a></li>
             }
         </ul>
     </li>

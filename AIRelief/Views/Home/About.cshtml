@@ -1,5 +1,6 @@
+@inject IStringLocalizer<HomeAboutResource> L
 @{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="container py-5">
@@ -9,45 +10,23 @@
             <h1 class="mb-5">@ViewData["Title"]</h1>
 
             <section class="mb-5">
-                <h2 class="h4 mb-3">Who are we?</h2>
-                <p>
-                    We are a multidisciplinary team interested in how people think, learn, and make decisions.
-                    Our team is based in Brisbane, Australia, with strong links to two of the major local universities.
-                    We include a professor of behavioural economics, a RANZCP-certified consultant psychiatrist, and
-                    an AI-focussed computer scientist who has worked for multiple tech companies.
-                </p>
-                <p>
-                    Our combined experience in research, clinical practice, and technology allows us to create
-                    exercises and tools that are carefully targeted to address the types of cognitive atrophy that
-                    AI reliance is likely to bring.
-                </p>
+                <h2 class="h4 mb-3">@L["WhoAreWe"]</h2>
+                <p>@L["WhoAreWeDesc1"]</p>
+                <p>@L["WhoAreWeDesc2"]</p>
             </section>
 
             <section class="mb-5">
-                <h2 class="h4 mb-3">About the Exercises</h2>
-                <p>
-                    We have assembled a suite of problems designed to strengthen various skills likely to atrophy
-                    through ongoing AI exposure. Each takes the form of a short paragraph to be read and a
-                    multiple-choice response. However, unlike academic assessments typically undertaken at schools
-                    or universities, the goal here isn't always to get the "correct" answer. Rather, the most
-                    beneficial approach is to engage, think deeply, and focus on training the underlying ability.
-                    Do the exercises slowly, and don't shy away from exerting mental effort.
-                </p>
-                <p>
-                    Our questions vary in terms of difficulty, and sometimes (deliberately) involve dealing with
-                    ambiguity, which means than several answers might be suitable. In these instances, we have
-                    flagged the answers we regard as most appropriate (complete with an explanation) but note that
-                    other responses may be just as valid, especially when some subjective value judgements are
-                    involved.
-                </p>
-                <p>Our exercises target:</p>
+                <h2 class="h4 mb-3">@L["AboutExercises"]</h2>
+                <p>@L["AboutExercisesDesc1"]</p>
+                <p>@L["AboutExercisesDesc2"]</p>
+                <p>@L["ExercisesTarget"]</p>
                 <ul class="list-unstyled ps-3">
-                    <li class="mb-2"><strong>Cognitive Reflection</strong> &mdash; Scrutinising superficially plausible arguments</li>
-                    <li class="mb-2"><strong>Reading Comprehension</strong> &mdash; Making sense of complicated text and ideas</li>
-                    <li class="mb-2"><strong>Causal Reasoning</strong> &mdash; Distinguishing association from causation</li>
-                    <li class="mb-2"><strong>Metacognition</strong> &mdash; Thinking about thinking</li>
-                    <li class="mb-2"><strong>Short-Term Memory</strong> &mdash; Simultaneously holding/recalling multiple pieces of information</li>
-                    <li class="mb-2"><strong>Confidence Calibration</strong> &mdash; Developing intuition over the limits of knowledge</li>
+                    <li class="mb-2"><strong>@L["CognitiveReflection"]</strong> &mdash; @L["CognitiveReflectionDesc"]</li>
+                    <li class="mb-2"><strong>@L["ReadingComprehension"]</strong> &mdash; @L["ReadingComprehensionDesc"]</li>
+                    <li class="mb-2"><strong>@L["CausalReasoning"]</strong> &mdash; @L["CausalReasoningDesc"]</li>
+                    <li class="mb-2"><strong>@L["Metacognition"]</strong> &mdash; @L["MetacognitionDesc"]</li>
+                    <li class="mb-2"><strong>@L["ShortTermMemory"]</strong> &mdash; @L["ShortTermMemoryDesc"]</li>
+                    <li class="mb-2"><strong>@L["ConfidenceCalibration"]</strong> &mdash; @L["ConfidenceCalibrationDesc"]</li>
                 </ul>
             </section>
 

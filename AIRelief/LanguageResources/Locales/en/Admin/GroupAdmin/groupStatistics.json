@@ -1,0 +1,21 @@
+{
+    "PageTitle": "Group Statistics",
+    "GroupOverview": "Group Overview",
+    "GroupAvgPercent": "Group Avg %",
+    "Members": "Members",
+    "MemberName": "Name",
+    "MemberEmail": "Email",
+    "MemberAuthLevel": "Auth Level",
+    "LastActivity": "Last Activity",
+    "OverallAvg": "Overall Avg",
+    "Actions": "Actions",
+    "ViewQuestions": "View Questions",
+    "Never": "Never",
+    "NoMembers": "No members found in this group.",
+    "CausalReasoning": "Causal Reasoning",
+    "CognitiveReflection": "Cognitive Reflection",
+    "ConfidenceCalibration": "Confidence Calibration",
+    "Metacognition": "Metacognition",
+    "ReadingComprehension": "Reading Comprehension",
+    "ShortTermMemory": "Short-Term Memory"
+}

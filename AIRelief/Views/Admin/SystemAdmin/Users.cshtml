@@ -1,12 +1,13 @@
 @model IList<AIRelief.Models.User>
+@inject IStringLocalizer<AdminSystemAdminUsersResource> L
 @{
-    ViewData["Title"] = "Manage Users";
+    ViewData["Title"] = L["PageTitle"].Value;
     var currentUserId = (int)(ViewBag.CurrentUserId ?? 0);
 }
 
 <div class="admin-page">
 <div class="admin-header">
-    <h1 class="admin-title" style="margin: 0;">User Management</h1>
+    <h1 class="admin-title" style="margin: 0;">@L["UserManagement"]</h1>
 </div>
 
 @if (TempData["SuccessMessage"] != null)
@@ -20,28 +21,28 @@
 @if (Model.Count == 0)
     {
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> No users found.
+            <i class="fas fa-info-circle"></i> @L["NoUsersFound"]
         </div>
     }
     else
     {
         <div class="admin-card">
             <div class="admin-card-header">
-                <h5>All Users (@Model.Count)</h5>
+                <h5>@L["AllUsers", Model.Count]</h5>
             </div>
             <div class="admin-card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Group</th>
-                                <th>Auth Level</th>
+                                <th>@L["Name"]</th>
+                                <th>@L["Email"]</th>
+                                <th>@L["Group"]</th>
+                                <th>@L["AuthLevel"]</th>
                                 <th>Query Frequency</th>
-                                <th>Created</th>
-                                <th>Last Question Attempt</th>
-                                <th>Actions</th>
+                                <th>@L["Created"]</th>
+                                <th>@L["LastQuestionAttempt"]</th>
+                                <th>@L["Actions"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,22 +66,22 @@
                                         }
                                     </td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
-                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>
+                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : L["Never"].Value)</td>
                                     <td class="action-cell">
                                         @if (user.ID == currentUserId)
                                         {
-                                            <span class="badge bg-secondary">Current User</span>
+                                            <span class="badge bg-secondary">@L["CurrentUser"]</span>
                                         }
                                         else
                                         {
                                             <div class="d-flex gap-1 flex-wrap">
                                             <a href="/Admin/SystemAdmin/Users/Edit/@user.ID" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i> @L["Edit"]
                                             </a>
                                             @if (user.AuthLevel != AIRelief.Models.AuthLevel.SystemAdmin)
                                             {
                                                 <a href="/Admin/SystemAdmin/Users/@user.ID/Questions" class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-question-circle"></i> Questions
+                                                    <i class="fas fa-question-circle"></i> @L["Questions"]
                                                 </a>
                                             }
 
@@ -88,8 +89,8 @@
                                             <form method="post" action="/Admin/SystemAdmin/Users/Remove/@user.ID" style="display:inline;">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('Are you sure you want to remove @Html.Raw(user.Name.Replace("'", "\\'"))?');">
-                                                    <i class="fas fa-user-minus"></i> Remove
+                                                        onclick="return confirm('@Html.Raw(L["ConfirmDelete", user.Name.Replace("'", "\\'")].Value)');">
+                                                    <i class="fas fa-user-minus"></i> @L["Delete"]
                                                 </button>
                                             </form>
                                             </div>

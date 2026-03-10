@@ -1,12 +1,13 @@
+@inject IStringLocalizer<HomeConfidenceCalibrationResource> L
 @{
-    ViewData["Title"] = "Confidence Calibration";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
 
-            <h1 class="mb-4">Confidence Calibration</h1>
+            <h1 class="mb-4">@L["PageTitle"]</h1>
 
             <div class="text-center mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"

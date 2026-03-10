@@ -1,7 +1,8 @@
 ﻿@model Question
+@inject IStringLocalizer<TrialIndexResource> L
 
 @{
-    ViewData["Title"] = "AI Relief - Free Trial Assessment";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 @section Scripts {
@@ -18,10 +19,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="trial-header text-center mb-4">
-                    <h1 class="trial-title">Free Trial Assessment</h1>
-                    <p class="trial-subtitle">Test your critical thinking skills with 3 sample questions</p>
+                    <h1 class="trial-title">@L["Title"]</h1>
+                    <p class="trial-subtitle">@L["Subtitle"]</p>
                     <div class="progress-indicator">
-                        <span class="progress-text">Question <span id="current-question">1</span> of 3</span>
+                        <span class="progress-text">@L["QuestionXOfY", "<span id='current-question'>1</span>", 3]</span>
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 33%"></div>
                         </div>

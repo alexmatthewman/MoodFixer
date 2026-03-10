@@ -1,0 +1,13 @@
+{
+    "PageTitle": "Group Details",
+    "BackToGroups": "Back to Groups",
+    "Edit": "Edit",
+    "Name": "Name",
+    "Plan": "Plan",
+    "Licenses": "Licenses",
+    "ExpiryDays": "Expiry (Days)",
+    "QueryFrequency": "Query Frequency",
+    "Created": "Created",
+    "GroupStatistics": "Group Statistics",
+    "ViewStatistics": "View Statistics"
+}

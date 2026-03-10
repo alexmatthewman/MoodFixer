@@ -1,0 +1,9 @@
+{
+    "PageTitle": "Question Bulk Management",
+    "BulkQuestionManagement": "Question Bulk Management",
+    "ImportQuestions": "Import Questions",
+    "ExportQuestions": "Export Questions",
+    "UploadCsv": "Upload CSV",
+    "DownloadTemplate": "Download Template",
+    "DownloadAllQuestions": "Download All Questions"
+}

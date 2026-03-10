@@ -1,4 +1,5 @@
 @model Question
+@inject IStringLocalizer<LessonLessonResource> L
 
 @{
     string category = ViewBag.Category as string ?? Model.Category ?? string.Empty;
@@ -15,14 +16,14 @@
                 data-bs-toggle="modal"
                 data-bs-target="#categoryInfoModal"
                 data-category="@category">
-            <i class="bi bi-info-circle"></i> What is this?
+            <i class="bi bi-info-circle"></i> @L["WhatIsThis"]
         </button>
     </div>
 
     @if (!string.IsNullOrEmpty(Model.MainText))
     {
         <div class="question-situation-box">
-            <span class="question-box-label">Situation</span>
+            <span class="question-box-label">@L["Situation"]</span>
             <p class="question-text mb-0">@Model.MainText</p>
         </div>
     }
@@ -30,7 +31,7 @@
     @if (!string.IsNullOrEmpty(Model.QuestionText))
     {
         <div class="question-question-box">
-            <span class="question-box-label">Question</span>
+            <span class="question-box-label">@L["Question"]</span>
             <p class="question-heading mb-0">@Model.QuestionText</p>
         </div>
     }

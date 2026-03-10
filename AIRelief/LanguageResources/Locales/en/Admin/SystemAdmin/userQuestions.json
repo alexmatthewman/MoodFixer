@@ -1,0 +1,11 @@
+{
+    "PageTitle": "User Questions",
+    "BackToUsers": "Back to Users",
+    "QuestionText": "Question Text",
+    "Category": "Category",
+    "DateAttempted": "Date Attempted",
+    "Correct": "Correct",
+    "Yes": "Yes",
+    "No": "No",
+    "NoAttempts": "This user has not attempted any questions yet."
+}

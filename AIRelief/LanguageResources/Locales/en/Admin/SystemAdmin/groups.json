@@ -1,0 +1,18 @@
+{
+    "PageTitle": "Manage Groups",
+    "GroupManagement": "Group Management",
+    "CreateNewGroup": "Create New Group",
+    "NoGroupsFound": "No groups found.",
+    "CreateFirstGroup": "Create your first group",
+    "AllGroups": "All Groups ({0})",
+    "Name": "Name",
+    "Plan": "Plan",
+    "Licenses": "Licenses",
+    "ExpiryDays": "Expiry (Days)",
+    "QueryFrequency": "Query Frequency",
+    "Actions": "Actions",
+    "Details": "Details",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "ConfirmDelete": "Are you sure you want to delete group '{0}'?"
+}

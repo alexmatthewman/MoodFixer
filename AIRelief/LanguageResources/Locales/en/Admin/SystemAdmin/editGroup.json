@@ -1,0 +1,11 @@
+{
+    "PageTitle": "Edit Group",
+    "EditGroup": "Edit Group",
+    "Name": "Name",
+    "PlanName": "Plan Name",
+    "NumberOfLicenses": "Number of User Licenses",
+    "ExpiryDays": "Expiry (Days)",
+    "QueryFrequency": "Query Frequency (Hours)",
+    "SaveChanges": "Save Changes",
+    "BackToGroups": "Back to Groups"
+}

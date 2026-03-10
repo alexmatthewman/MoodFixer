@@ -1,0 +1,8 @@
+{
+    "PageTitle": "Add System Admin",
+    "AddSystemAdmin": "Add System Admin",
+    "Email": "Email",
+    "EmailHelp": "Enter the email address of an existing user to promote to System Admin.",
+    "Promote": "Promote to System Admin",
+    "BackToSystemAdmins": "Back to System Admins"
+}

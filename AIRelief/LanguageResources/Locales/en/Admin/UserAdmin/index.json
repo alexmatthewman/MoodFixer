@@ -1,0 +1,13 @@
+{
+    "PageTitle": "Manage Users",
+    "UserManagement": "User Management",
+    "NoUsersFound": "No users found.",
+    "AllUsers": "All Users ({0})",
+    "Name": "Name",
+    "Email": "Email",
+    "Group": "Group",
+    "AuthLevel": "Auth Level",
+    "Created": "Created",
+    "LastQuestionAttempt": "Last Question Attempt",
+    "Never": "Never"
+}

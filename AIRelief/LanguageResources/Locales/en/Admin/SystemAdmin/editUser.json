@@ -1,0 +1,10 @@
+{
+    "PageTitle": "Edit User",
+    "EditUser": "Edit User",
+    "Name": "Name",
+    "Email": "Email",
+    "AuthLevel": "Auth Level",
+    "Group": "Group",
+    "SaveChanges": "Save Changes",
+    "BackToUsers": "Back to Users"
+}

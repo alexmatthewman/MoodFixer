@@ -1,0 +1,10 @@
+{
+    "PageTitle": "Add User",
+    "AddUser": "Add User to Group",
+    "Name": "Name",
+    "Email": "Email",
+    "Password": "Password",
+    "AuthLevel": "Auth Level",
+    "Create": "Create",
+    "BackToUsers": "Back to Users"
+}

@@ -1,12 +1,13 @@
+@inject IStringLocalizer<HomeShortTermMemoryResource> L
 @{
-    ViewData["Title"] = "Short-Term Memory";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
 
-            <h1 class="mb-4">Short-Term Memory</h1>
+            <h1 class="mb-4">@L["PageTitle"]</h1>
 
             <div class="text-center mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
@@ -88,7 +89,7 @@
             </section>
 
             <section class="mb-5">
-                <h2 class="h4 mb-3">How practice helps</h2>
+                <h2 class="h4 mb-3">@L["HowPracticeHelps"]</h2>
                 <p>
                     Research suggests that short-term memory is not fixed. Practice that requires briefly holding
                     and using information can improve performance on related tasks (Klingberg, 2010; Shipstead,
@@ -109,7 +110,7 @@
             <hr class="my-5" />
 
             <section class="mb-4">
-                <h2 class="h5 mb-3">References</h2>
+                <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
                     <li class="mb-2">
                         Baddeley, A. (2003). Working memory: Looking back and looking forward.

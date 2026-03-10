@@ -1,7 +1,8 @@
 ﻿@model TrialResultViewModel
+@inject IStringLocalizer<TrialResultsResource> L
 
 @{
-    ViewData["Title"] = "Trial Results - AI Relief";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <section class="results-section">
@@ -21,22 +22,19 @@
                     @if (Model.ShowTrainingSuggestion)
                     {
                         <div class="training-suggestion">
-                            <h3>Strengthen Your Skills</h3>
-                            <p>
-                                Your score suggests you could benefit from our comprehensive training program.
-                                AI Relief offers personalized exercises designed to rebuild critical thinking capabilities.
-                            </p>
+                            <h3>@L["StrengthenYourSkills"]</h3>
+                            <p>@L["StrengthenDesc"]</p>
 
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
                                 <a asp-controller="Questions" asp-action="Index" class="btn btn-primary btn-lg">
-                                    Start Full Assessment
+                                    @L["StartFullAssessment"]
                                 </a>
                             }
                             else
                             {
                                 <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
-                                    Sign Up for Full Access
+                                    @L["SignUpForFullAccess"]
                                 </a>
                             }
                         </div>
@@ -44,30 +42,27 @@
                     else
                     {
                         <div class="success-message">
-                            <h3>Well Done!</h3>
-                            <p>
-                                You demonstrate strong critical thinking skills. Our full program can help you maintain
-                                and further enhance these abilities.
-                            </p>
+                            <h3>@L["WellDone"]</h3>
+                            <p>@L["WellDoneDesc"]</p>
 
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
                                 <a asp-controller="Questions" asp-action="Index" class="btn btn-primary btn-lg">
-                                    Access Full Program
+                                    @L["AccessFullProgram"]
                                 </a>
                             }
                             else
                             {
                                 <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg">
-                                    Join AI Relief
+                                    @L["JoinUs"]
                                 </a>
                             }
                         </div>
                     }
 
                     <div class="trial-actions">
-                        <a asp-action="Index" class="btn btn-outline-primary">Take Trial Again</a>
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-link">Return Home</a>
+                        <a asp-action="Index" class="btn btn-outline-primary">@L["TakeTrialAgain"]</a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-link">@L["ReturnHome"]</a>
                     </div>
                 </div>
             </div>

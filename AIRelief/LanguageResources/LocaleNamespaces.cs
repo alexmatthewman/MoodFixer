@@ -1,0 +1,92 @@
+namespace AIRelief.LanguageResources
+{
+    // ?? Shared ??????????????????????????????????????????????
+    // ? Shared/layout.json
+    public class SharedLayoutResource { }
+    // ? Shared/login.json
+    public class SharedLoginResource { }
+    // ? Shared/adminNav.json
+    public class SharedAdminNavResource { }
+    // ? Shared/error.json
+    public class SharedErrorResource { }
+
+    // ?? Home ????????????????????????????????????????????????
+    // ? Home/index.json
+    public class HomeIndexResource { }
+    // ? Home/about.json
+    public class HomeAboutResource { }
+    // ? Home/causalReasoning.json
+    public class HomeCausalReasoningResource { }
+    // ? Home/cognitiveReflection.json
+    public class HomeCognitiveReflectionResource { }
+    // ? Home/metacognition.json
+    public class HomeMetacognitionResource { }
+    // ? Home/readingComprehension.json
+    public class HomeReadingComprehensionResource { }
+    // ? Home/shortTermMemory.json
+    public class HomeShortTermMemoryResource { }
+    // ? Home/confidenceCalibration.json
+    public class HomeConfidenceCalibrationResource { }
+    // ? Home/myQuestions.json
+    public class HomeMyQuestionsResource { }
+
+    // ?? Lesson ??????????????????????????????????????????????
+    // ? Lesson/lesson.json
+    public class LessonLessonResource { }
+    // ? Lesson/lessonSummary.json
+    public class LessonLessonSummaryResource { }
+    // ? Lesson/userStatistics.json
+    public class LessonUserStatisticsResource { }
+
+    // ?? Trial ???????????????????????????????????????????????
+    // ? Trial/index.json
+    public class TrialIndexResource { }
+    // ? Trial/results.json
+    public class TrialResultsResource { }
+
+    // ?? Questions ???????????????????????????????????????????
+    // ? Questions/questions.json
+    public class QuestionsQuestionsResource { }
+
+    // ?? Admin / GroupAdmin ??????????????????????????????????
+    // ? Admin/GroupAdmin/index.json
+    public class AdminGroupAdminIndexResource { }
+    // ? Admin/GroupAdmin/createUser.json
+    public class AdminGroupAdminCreateUserResource { }
+    // ? Admin/GroupAdmin/details.json
+    public class AdminGroupAdminDetailsResource { }
+    // ? Admin/GroupAdmin/groupSettings.json
+    public class AdminGroupAdminGroupSettingsResource { }
+    // ? Admin/GroupAdmin/groupStatistics.json
+    public class AdminGroupAdminGroupStatisticsResource { }
+    // ? Admin/GroupAdmin/userQuestions.json
+    public class AdminGroupAdminUserQuestionsResource { }
+
+    // ?? Admin / SystemAdmin ????????????????????????????????
+    // ? Admin/SystemAdmin/users.json
+    public class AdminSystemAdminUsersResource { }
+    // ? Admin/SystemAdmin/groups.json
+    public class AdminSystemAdminGroupsResource { }
+    // ? Admin/SystemAdmin/editUser.json
+    public class AdminSystemAdminEditUserResource { }
+    // ? Admin/SystemAdmin/createGroup.json
+    public class AdminSystemAdminCreateGroupResource { }
+    // ? Admin/SystemAdmin/editGroup.json
+    public class AdminSystemAdminEditGroupResource { }
+    // ? Admin/SystemAdmin/groupDetails.json
+    public class AdminSystemAdminGroupDetailsResource { }
+    // ? Admin/SystemAdmin/addUser.json
+    public class AdminSystemAdminAddUserResource { }
+    // ? Admin/SystemAdmin/manageSystemAdmins.json
+    public class AdminSystemAdminManageSystemAdminsResource { }
+    // ? Admin/SystemAdmin/addSystemAdmin.json
+    public class AdminSystemAdminAddSystemAdminResource { }
+    // ? Admin/SystemAdmin/bulkQuestions.json
+    public class AdminSystemAdminBulkQuestionsResource { }
+    // ? Admin/SystemAdmin/userQuestions.json
+    public class AdminSystemAdminUserQuestionsResource { }
+
+    // ?? Admin / UserAdmin ??????????????????????????????????
+    // ? Admin/UserAdmin/index.json
+    public class AdminUserAdminIndexResource { }
+}

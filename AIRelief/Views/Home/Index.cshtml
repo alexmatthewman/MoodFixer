@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "AI Relief - Reclaim Your Critical Thinking Skills";
+﻿@inject IStringLocalizer<HomeIndexResource> L
+@{
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 @section Scripts {
@@ -51,24 +52,24 @@
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-6">
                 <h1 class="hero-title">
-                    Don't Let AI <span class="text-accent">Dull Your Mind</span>
+                    @L["HeroTitle_Prefix"] <span class="text-accent">@L["HeroTitle_Accent"]</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Reclaim your critical thinking skills with AI Relief - the training platform that strengthens what AI dependency weakens.
+                    @L["HeroSubtitle"]
                 </p>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-number">73%</span>
-                        <span class="stat-label">of developers report skill atrophy</span>
+                        <span class="stat-number">@L["Stat_SkillAtrophy_Number"]</span>
+                        <span class="stat-label">@L["Stat_SkillAtrophy_Label"]</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">45%</span>
-                        <span class="stat-label">decline in problem-solving confidence</span>
+                        <span class="stat-number">@L["Stat_Confidence_Number"]</span>
+                        <span class="stat-label">@L["Stat_Confidence_Label"]</span>
                     </div>
                 </div>
                 <div class="hero-buttons">
-                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">Start Free Trial</a>
-                    <a href="#learn-more" class="btn btn-outline-primary btn-lg">Learn More</a>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">@L["StartFreeTrial"]</a>
+                    <a href="#learn-more" class="btn btn-outline-primary btn-lg">@L["LearnMore"]</a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -97,9 +98,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="section-title">The Hidden Cost of AI Dependency</h2>
+                <h2 class="section-title">@L["HiddenCostTitle"]</h2>
                 <p class="section-subtitle">
-                    While AI tools boost productivity, they're quietly eroding the very skills that make great developers.
+                    @L["HiddenCostSubtitle"]
                 </p>
             </div>
         </div>
@@ -115,10 +116,10 @@
                             <i class="fas fa-brain fa-3x"></i>
                         </div>
                     </div>
-                    <h3>Cognitive Offloading</h3>
-                    <p>Research from MIT shows that over-reliance on AI assistance leads to a 40% decrease in deep analytical thinking among software developers.</p>
+                    <h3>@L["CognitiveOffloading"]</h3>
+                    <p>@L["CognitiveOffloadingDesc"]</p>
                     <a href="https://www.nature.com/articles/s41586-023-05886-6" target="_blank" class="problem-link">
-                        Read Research <i class="fas fa-external-link-alt"></i>
+                        @L["ReadResearch"] <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
             </div>
@@ -133,10 +134,10 @@
                             <i class="fas fa-puzzle-piece fa-3x"></i>
                         </div>
                     </div>
-                    <h3>Problem-Solving Atrophy</h3>
-                    <p>Stanford's 2024 study reveals that developers using AI coding assistants show 35% reduced ability to debug complex issues independently.</p>
+                    <h3>@L["ProblemSolvingAtrophy"]</h3>
+                    <p>@L["ProblemSolvingAtrophyDesc"]</p>
                     <a href="https://arxiv.org/abs/2308.07124" target="_blank" class="problem-link">
-                        View Study <i class="fas fa-external-link-alt"></i>
+                        @L["ViewStudy"] <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
             </div>
@@ -151,10 +152,10 @@
                             <i class="fas fa-lightbulb fa-3x"></i>
                         </div>
                     </div>
-                    <h3>Creative Thinking Decline</h3>
-                    <p>Harvard Business Review reports that teams heavily dependent on AI show 50% less innovative solution generation in complex scenarios.</p>
+                    <h3>@L["CreativeThinkingDecline"]</h3>
+                    <p>@L["CreativeThinkingDeclineDesc"]</p>
                     <a href="https://hbr.org/2024/01/how-ai-is-changing-work" target="_blank" class="problem-link">
-                        Read Article <i class="fas fa-external-link-alt"></i>
+                        @L["ReadArticle"] <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
             </div>
@@ -164,10 +165,10 @@
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="problem-cta">
-                    <h3>Test Your Current Skills</h3>
-                    <p>Take our free 3-question assessment to see how AI dependency may have affected your critical thinking abilities.</p>
+                    <h3>@L["TestYourSkills"]</h3>
+                    <p>@L["TestYourSkillsDesc"]</p>
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
-                        Take Free Assessment <i class="fas fa-arrow-right"></i>
+                        @L["TakeFreeAssessment"] <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -192,9 +193,9 @@
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
-                <h2 class="section-title">AI Relief: Your Cognitive Fitness Program</h2>
+                <h2 class="section-title">@L["CognitiveFitnessProgramTitle"]</h2>
                 <p class="section-subtitle">
-                    Structured exercises designed to rebuild and strengthen the critical reasoning skills that AI dependency has weakened.
+                    @L["CognitiveFitnessProgramSubtitle"]
                 </p>
 
                 <div class="feature-list">
@@ -203,8 +204,8 @@
                             <i class="fas fa-target"></i>
                         </div>
                         <div class="feature-content">
-                            <h4>Targeted Skill Assessment</h4>
-                            <p>Identify specific areas where AI dependency has impacted your reasoning abilities.</p>
+                            <h4>@L["TargetedSkillAssessment"]</h4>
+                            <p>@L["TargetedSkillAssessmentDesc"]</p>
                         </div>
                     </div>
 
@@ -213,8 +214,8 @@
                             <i class="fas fa-dumbbell"></i>
                         </div>
                         <div class="feature-content">
-                            <h4>Progressive Training</h4>
-                            <p>Gradual exercises that rebuild cognitive muscles through deliberate practice.</p>
+                            <h4>@L["ProgressiveTraining"]</h4>
+                            <p>@L["ProgressiveTrainingDesc"]</p>
                         </div>
                     </div>
 
@@ -223,8 +224,8 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="feature-content">
-                            <h4>Measurable Progress</h4>
-                            <p>Track improvement in critical thinking metrics over time.</p>
+                            <h4>@L["MeasurableProgress"]</h4>
+                            <p>@L["MeasurableProgressDesc"]</p>
                         </div>
                     </div>
                 </div>
@@ -232,7 +233,7 @@
                 <!-- Trial CTA in solution section -->
                 <div class="solution-cta mt-4">
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary">
-                        Try Sample Questions <i class="fas fa-play"></i>
+                        @L["TrySampleQuestions"] <i class="fas fa-play"></i>
                     </a>
                 </div>
             </div>
@@ -245,9 +246,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="section-title">How AI Relief Works</h2>
+                <h2 class="section-title">@L["HowItWorksTitle"]</h2>
                 <p class="section-subtitle">
-                    A scientifically-backed approach to cognitive skill recovery
+                    @L["HowItWorksSubtitle"]
                 </p>
             </div>
         </div>
@@ -264,8 +265,8 @@
                             <i class="fas fa-clipboard-list fa-3x"></i>
                         </div>
                     </div>
-                    <h4>Initial Assessment</h4>
-                    <p>Complete a comprehensive evaluation of your current critical thinking capabilities.</p>
+                    <h4>@L["Step1_Title"]</h4>
+                    <p>@L["Step1_Desc"]</p>
                 </div>
             </div>
 
@@ -280,8 +281,8 @@
                             <i class="fas fa-graduation-cap fa-3x"></i>
                         </div>
                     </div>
-                    <h4>Personalized Training</h4>
-                    <p>Engage with tailored exercises designed to strengthen your weakest cognitive areas.</p>
+                    <h4>@L["Step2_Title"]</h4>
+                    <p>@L["Step2_Desc"]</p>
                 </div>
             </div>
 
@@ -296,8 +297,8 @@
                             <i class="fas fa-code fa-3x"></i>
                         </div>
                     </div>
-                    <h4>Deliberate Practice</h4>
-                    <p>Apply learned skills to real-world scenarios and complex problem-solving challenges.</p>
+                    <h4>@L["Step3_Title"]</h4>
+                    <p>@L["Step3_Desc"]</p>
                 </div>
             </div>
 
@@ -312,8 +313,8 @@
                             <i class="fas fa-chart-bar fa-3x"></i>
                         </div>
                     </div>
-                    <h4>Track Progress</h4>
-                    <p>Monitor improvement and maintain cognitive fitness with ongoing assessments.</p>
+                    <h4>@L["Step4_Title"]</h4>
+                    <p>@L["Step4_Desc"]</p>
                 </div>
             </div>
         </div>
@@ -322,10 +323,10 @@
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="process-cta">
-                    <h3>Start with Step 1</h3>
-                    <p>Experience our assessment process with 3 sample questions - no signup required.</p>
+                    <h3>@L["StartWithStep1"]</h3>
+                    <p>@L["StartWithStep1Desc"]</p>
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
-                        Begin Assessment <i class="fas fa-chevron-right"></i>
+                        @L["BeginAssessment"] <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
             </div>
@@ -338,32 +339,32 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="cta-title">Ready to Reclaim Your Cognitive Edge?</h2>
+                <h2 class="cta-title">@L["ReadyToReclaim"]</h2>
                 <p class="cta-subtitle">
-                    Join thousands of developers who have strengthened their critical thinking skills with AI Relief.
+                    @L["JoinDevelopers"]
                 </p>
 
                 <div class="cta-buttons">
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
-                        Start Free Trial Assessment
+                        @L["StartFreeTrialAssessment"]
                     </a>
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <a asp-controller="Questions" asp-action="Index" class="btn btn-outline-primary btn-lg">
-                            Access Full Program
+                            @L["AccessFullProgram"]
                         </a>
                     }
                     else
                     {
                         <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
-                            Sign Up for Full Access
+                            @L["SignUpForFullAccess"]
                         </a>
                     }
                 </div>
 
                 <div class="cta-guarantee">
                     <i class="fas fa-shield-alt"></i>
-                    <span>No credit card required for trial • Full program comes with 30-day guarantee</span>
+                    <span>@L["TrialGuarantee"]</span>
                 </div>
             </div>
         </div>
@@ -375,7 +376,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="section-title">What Developers Are Saying</h2>
+                <h2 class="section-title">@L["WhatDevelopersSaying"]</h2>
             </div>
         </div>
 
@@ -460,10 +461,10 @@
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="testimonial-cta">
-                    <h3>See What You Think</h3>
-                    <p>Try our assessment yourself and experience the difference.</p>
+                    <h3>@L["SeeWhatYouThink"]</h3>
+                    <p>@L["SeeWhatYouThinkDesc"]</p>
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary btn-lg">
-                        Take Trial Assessment
+                        @L["TakeTrialAssessment"]
                     </a>
                 </div>
             </div>

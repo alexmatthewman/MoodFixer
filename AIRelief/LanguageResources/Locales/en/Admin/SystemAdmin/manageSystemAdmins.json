@@ -1,0 +1,14 @@
+{
+    "PageTitle": "Manage System Admins",
+    "SystemAdminManagement": "System Admin Management",
+    "AddSystemAdmin": "Add System Admin",
+    "NoSystemAdmins": "No system admins found.",
+    "AllSystemAdmins": "System Admins ({0})",
+    "Name": "Name",
+    "Email": "Email",
+    "Created": "Created",
+    "Actions": "Actions",
+    "CurrentUser": "Current User",
+    "Remove": "Remove",
+    "ConfirmRemove": "Are you sure you want to remove system admin {0}?"
+}

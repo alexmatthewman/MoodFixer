@@ -1,0 +1,19 @@
+{
+    "ToggleNavigation": "Alternar navegación",
+    "About": "Acerca de",
+    "AboutUs": "Sobre nosotros",
+    "CausalReasoning": "Razonamiento causal",
+    "CognitiveReflection": "Reflexión cognitiva",
+    "Metacognition": "Metacognición",
+    "ReadingComprehension": "Comprensión lectora",
+    "ShortTermMemory": "Memoria a corto plazo",
+    "ConfidenceCalibration": "Calibración de confianza",
+    "Questions": "Preguntas",
+    "ListQuestions": "Lista de preguntas",
+    "CreateNew": "Crear nueva",
+    "MyQuestions": "Mis preguntas",
+    "Administration": "Administración",
+    "DarkMode": "Modo oscuro",
+    "ToggleTheme": "Alternar tema",
+    "FooterCopyright": "© {0}"
+}

@@ -1,7 +1,8 @@
 @model LessonSummaryViewModel
+@inject IStringLocalizer<LessonLessonSummaryResource> L
 
 @{
-    ViewData["Title"] = "Lesson Summary";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 @section Scripts {
@@ -93,16 +94,16 @@
     <div class="row justify-content-center">
         <div class="col-lg-9">
 
-            <h1 class="mb-1">Lesson Complete</h1>
-            <p class="text-muted mb-4">Here is how you went in this session, followed by your overall progress.</p>
+            <h1 class="mb-1">@L["LessonComplete"]</h1>
+            <p class="text-muted mb-4">@L["SessionSummaryIntro"]</p>
 
             <!-- ?? This session ??????????????????????????????????????? -->
             <div class="card mb-4">
-                <div class="card-header fw-semibold">This Session</div>
+                <div class="card-header fw-semibold">@L["ThisSession"]</div>
                 <div class="card-body">
                     @if (Model.SessionResults.Count == 0)
                     {
-                        <p class="text-muted">No results recorded for this session.</p>
+                        <p class="text-muted">@L["NoResults"]</p>
                     }
                     else
                     {
@@ -127,16 +128,16 @@
             @if (Model.QuestionSummaryItems.Count > 0)
             {
                 <div class="card mb-4">
-                    <div class="card-header fw-semibold">Question Breakdown</div>
+                    <div class="card-header fw-semibold">@L["QuestionBreakdown"]</div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Question</th>
-                                        <th class="text-center" style="width:120px">Category</th>
-                                        <th class="text-center" style="width:90px">Your Answer</th>
-                                        <th class="text-center" style="width:130px">All Users</th>
+                                        <th>@L["QuestionColumn"]</th>
+                                        <th class="text-center" style="width:120px">@L["CategoryColumn"]</th>
+                                        <th class="text-center" style="width:90px">@L["YourAnswerColumn"]</th>
+                                        <th class="text-center" style="width:130px">@L["AllUsersColumn"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -148,11 +149,11 @@
                                             <td class="text-center">
                                                 @if (item.UserCorrect)
                                                 {
-                                                    <span class="badge bg-success">Correct</span>
+                                                    <span class="badge bg-success">@L["CorrectBadge"]</span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-danger">Incorrect</span>
+                                                    <span class="badge bg-danger">@L["IncorrectBadge"]</span>
                                                 }
                                             </td>
                                             <td class="text-center small">
@@ -178,11 +179,11 @@
             @if (Model.Statistics != null && Model.LessonsCompleted >= 2)
             {
                 <div class="card mb-4">
-                    <div class="card-header fw-semibold">Overall Progress</div>
+                    <div class="card-header fw-semibold">@L["OverallProgress"]</div>
                     <div class="card-body">
                         <div class="text-center mb-3">
                             <span class="display-6 fw-bold">@((Model.Statistics.OverallWeightedAverage * 100).ToString("F0"))%</span>
-                            <div class="text-muted small">Overall Weighted Average</div>
+                            <div class="text-muted small">@L["OverallWeightedAverage"]</div>
                         </div>
 
                         <canvas id="overallRadar" height="250" class="mb-4"></canvas>
@@ -191,45 +192,45 @@
                             <table class="table table-sm table-bordered align-middle">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Category</th>
-                                        <th class="text-center">Attempts</th>
-                                        <th class="text-center">Passed</th>
-                                        <th class="text-center">Weighted Avg</th>
+                                        <th>@L["CategoryHeader"]</th>
+                                        <th class="text-center">@L["AttemptsHeader"]</th>
+                                        <th class="text-center">@L["PassedHeader"]</th>
+                                        <th class="text-center">@L["WeightedAvgHeader"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Causal Reasoning</td>
+                                        <td>@L["CausalReasoning"]</td>
                                         <td class="text-center">@Model.Statistics.CausalReasoningAttempts</td>
                                         <td class="text-center">@Model.Statistics.CausalReasoningPassed</td>
                                         <td class="text-center">@((Model.Statistics.CausalReasoningWeightedAverage * 100).ToString("F0"))%</td>
                                     </tr>
                                     <tr>
-                                        <td>Cognitive Reflection</td>
+                                        <td>@L["CognitiveReflection"]</td>
                                         <td class="text-center">@Model.Statistics.CognitiveReflectionAttempts</td>
                                         <td class="text-center">@Model.Statistics.CognitiveReflectionPassed</td>
                                         <td class="text-center">@((Model.Statistics.CognitiveReflectionWeightedAverage * 100).ToString("F0"))%</td>
                                     </tr>
                                     <tr>
-                                        <td>Confidence Calibration</td>
+                                        <td>@L["ConfidenceCalibration"]</td>
                                         <td class="text-center">@Model.Statistics.ConfidenceCalibrationAttempts</td>
                                         <td class="text-center">@Model.Statistics.ConfidenceCalibrationPassed</td>
                                         <td class="text-center">@((Model.Statistics.ConfidenceCalibrationWeightedAverage * 100).ToString("F0"))%</td>
                                     </tr>
                                     <tr>
-                                        <td>Metacognition</td>
+                                        <td>@L["Metacognition"]</td>
                                         <td class="text-center">@Model.Statistics.MetacognitionAttempts</td>
                                         <td class="text-center">@Model.Statistics.MetacognitionPassed</td>
                                         <td class="text-center">@((Model.Statistics.MetacognitionWeightedAverage * 100).ToString("F0"))%</td>
                                     </tr>
                                     <tr>
-                                        <td>Reading Comprehension</td>
+                                        <td>@L["ReadingComprehension"]</td>
                                         <td class="text-center">@Model.Statistics.ReadingComprehensionAttempts</td>
                                         <td class="text-center">@Model.Statistics.ReadingComprehensionPassed</td>
                                         <td class="text-center">@((Model.Statistics.ReadingComprehensionWeightedAverage * 100).ToString("F0"))%</td>
                                     </tr>
                                     <tr>
-                                        <td>Short-Term Memory</td>
+                                        <td>@L["ShortTermMemory"]</td>
                                         <td class="text-center">@Model.Statistics.ShortTermMemoryAttempts</td>
                                         <td class="text-center">@Model.Statistics.ShortTermMemoryPassed</td>
                                         <td class="text-center">@((Model.Statistics.ShortTermMemoryWeightedAverage * 100).ToString("F0"))%</td>
@@ -242,7 +243,7 @@
             }
 
             <div class="text-center">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">@L["BackToHome"]</a>
             </div>
         </div>
     </div>

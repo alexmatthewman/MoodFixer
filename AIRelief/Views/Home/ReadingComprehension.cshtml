@@ -1,12 +1,13 @@
+@inject IStringLocalizer<HomeReadingComprehensionResource> L
 @{
-    ViewData["Title"] = "Reading Comprehension";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
 
-            <h1 class="mb-4">Reading Comprehension</h1>
+            <h1 class="mb-4">@L["PageTitle"]</h1>
 
             <div class="text-center mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
@@ -107,7 +108,7 @@
             <hr class="my-5" />
 
             <section class="mb-4">
-                <h2 class="h5 mb-3">References</h2>
+                <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
                     <li class="mb-2">
                         Kintsch, W. (1998). <em>Comprehension: A paradigm for cognition.</em>

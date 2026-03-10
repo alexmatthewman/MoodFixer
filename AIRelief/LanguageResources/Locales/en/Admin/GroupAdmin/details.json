@@ -1,0 +1,11 @@
+{
+    "PageTitle": "User Details",
+    "BackToUsers": "Back to Users",
+    "Name": "Name",
+    "Email": "Email",
+    "AuthLevel": "Auth Level",
+    "Group": "Group",
+    "Created": "Created",
+    "LastQuestionAttempt": "Last Question Attempt",
+    "Never": "Never"
+}

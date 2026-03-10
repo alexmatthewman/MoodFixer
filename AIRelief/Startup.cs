@@ -6,8 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AIRelief.Localization;
+using AIRelief.Middleware;
 using AIRelief.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System;
 
 namespace AIRelief
@@ -23,6 +26,9 @@ namespace AIRelief
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var tenantConfig = Configuration.GetSection("Tenant").Get<TenantConfig>() ?? new TenantConfig();
+            services.AddSingleton(tenantConfig);
+
             services.AddDbContext<AIReliefContext>(options => options.UseNpgsql(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options =>
@@ -32,6 +38,9 @@ namespace AIRelief
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AIReliefContext>();
 
+            services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+            services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
+
             services.AddRazorPages();
             // Ensure MVC view locations include /Views and /Pages folders (default), and support conventional lookup
             services.Configure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>(options =>
@@ -40,7 +49,10 @@ namespace AIRelief
             });
             // Enable runtime compilation so views placed under /Views are discovered at runtime (useful during development
             // and when views aren't precompiled into the app).
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization()
+                .AddRazorRuntimeCompilation();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AIRelief.Services.AdminAuthorizationService>();
             services.AddSession(options =>
@@ -82,6 +94,7 @@ namespace AIRelief
 
             app.UseStaticFiles();
             app.UseSession();
+            app.UseMiddleware<TenantMiddleware>();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

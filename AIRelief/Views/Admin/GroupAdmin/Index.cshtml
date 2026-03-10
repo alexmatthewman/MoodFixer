@@ -1,26 +1,27 @@
 @model IList<AIRelief.Models.User>
+@inject IStringLocalizer<AdminGroupAdminIndexResource> L
 @{
-    ViewData["Title"] = "Manage Group Users";
+    ViewData["Title"] = L["PageTitle"].Value;
     var currentUserId = (int)(ViewBag.CurrentUserId ?? 0);
     var groupId = (int)(ViewBag.GroupId ?? 0);
 }
 
 <div class="admin-page">
 <div class="admin-header">
-    <h1 class="admin-title" style="margin: 0;">Group User Management</h1>
+    <h1 class="admin-title" style="margin: 0;">@L["GroupUserManagement"]</h1>
     <div class="d-flex align-items-center gap-2 flex-wrap">
         <a href="/Admin/GroupAdmin/Groups/@groupId/CreateUser" class="btn btn-primary btn-sm">
-            <i class="fas fa-user-plus"></i> Add User
+            <i class="fas fa-user-plus"></i> @L["AddUser"]
         </a>
         <form id="bulkUploadForm" method="post" action="/Admin/GroupAdmin/Groups/@groupId/BulkAddUsers" enctype="multipart/form-data" class="m-0">
             @Html.AntiForgeryToken()
             <input type="file" id="csvFileInput" name="csvFile" accept=".csv" style="display:none;" onchange="this.form.submit();">
             <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('csvFileInput').click();">
-                <i class="fas fa-users"></i> Bulk Add Users
+                <i class="fas fa-users"></i> @L["BulkAddUsers"]
             </button>
         </form>
         <a href="/Admin/GroupAdmin/Groups/@groupId/BulkUsersTemplate" class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-file-csv"></i> Bulk User Template
+            <i class="fas fa-file-csv"></i> @L["BulkUserTemplate"]
         </a>
     </div>
 </div>
@@ -44,7 +45,7 @@
         var bulkAdded = (int)(TempData["BulkAdded"] ?? 0);
         var bulkResults = System.Text.Json.JsonSerializer.Deserialize<List<string>>(TempData["BulkResults"].ToString());
         <div class="alert @(bulkAdded > 0 ? "alert-success" : "alert-warning") alert-dismissible fade show" role="alert">
-            <strong>Bulk Import:</strong> @bulkAdded user(s) added.
+            <strong>@L["BulkImport"]</strong> @L["UsersAdded", bulkAdded]
             <ul class="mb-0 mt-1">
                 @foreach (var msg in bulkResults)
                 {
@@ -58,26 +59,26 @@
     @if (Model.Count == 0)
     {
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> No users in your group.
+            <i class="fas fa-info-circle"></i> @L["NoUsersInGroup"]
         </div>
     }
     else
     {
         <div class="admin-card">
             <div class="admin-card-header">
-                <h5>Users (@Model.Count)</h5>
+                <h5>@L["UsersCount", Model.Count]</h5>
             </div>
             <div class="admin-card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Auth Level</th>
-                                <th>Created</th>
-                                <th>Last Question Attempt</th>
-                                <th>Actions</th>
+                                <th>@L["Name"]</th>
+                                <th>@L["Email"]</th>
+                                <th>@L["AuthLevel"]</th>
+                                <th>@L["Created"]</th>
+                                <th>@L["LastQuestionAttempt"]</th>
+                                <th>@L["Actions"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,28 +91,28 @@
                                         <span class="badge bg-info">@user.AuthLevel</span>
                                     </td>
                                     <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>
-                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</td>
+                                    <td>@(user.DatetimeOfLastQuestionAttempt.HasValue ? user.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : L["Never"].Value)</td>
                                     <td class="action-cell">
                                         <a href="/Admin/GroupAdmin/Details/@user.ID" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i> View
+                                            <i class="fas fa-eye"></i> @L["View"]
                                         </a>
                                         @if (user.AuthLevel != AIRelief.Models.AuthLevel.SystemAdmin)
                                         {
                                             <a href="/Admin/GroupAdmin/Users/@user.ID/Questions" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-question-circle"></i> Questions
+                                                <i class="fas fa-question-circle"></i> @L["Questions"]
                                             </a>
                                         }
                                         @if (user.ID == currentUserId)
                                         {
-                                            <span class="badge bg-secondary">Current User</span>
+                                            <span class="badge bg-secondary">@L["CurrentUser"]</span>
                                         }
                                         else
                                         {
                                             <form method="post" action="/Admin/GroupAdmin/Users/Remove/@user.ID" style="display:inline;">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('Are you sure you want to remove @Html.Raw(user.Name.Replace("'", "\\'"))?');">
-                                                    <i class="fas fa-user-minus"></i> Remove
+                                                        onclick="return confirm('@Html.Raw(L["ConfirmRemove", user.Name.Replace("'", "\\'")].Value)');">
+                                                    <i class="fas fa-user-minus"></i> @L["Remove"]
                                                 </button>
                                             </form>
                                         }

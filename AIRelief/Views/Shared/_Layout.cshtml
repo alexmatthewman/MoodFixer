@@ -4,6 +4,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject AIReliefContext LayoutContext
 @inject UserManager<IdentityUser> LayoutUserManager
+@inject IStringLocalizer<SharedLayoutResource> L
 @{
     var layoutIdentityUser = await LayoutUserManager.GetUserAsync(User);
     var layoutAppUser = layoutIdentityUser == null ? null : await LayoutContext.Users
@@ -64,7 +65,7 @@
                     AI Relief
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="@L["ToggleNavigation"]">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -73,16 +74,16 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
-                                About
+                                @L["About"]
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CausalReasoning">Causal Reasoning</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CognitiveReflection">Cognitive Reflection</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Metacognition">Metacognition</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ReadingComprehension">Reading Comprehension</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ShortTermMemory">Short-Term Memory</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ConfidenceCalibration">Confidence Calibration</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">@L["AboutUs"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CausalReasoning">@L["CausalReasoning"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="CognitiveReflection">@L["CognitiveReflection"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Metacognition">@L["Metacognition"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ReadingComprehension">@L["ReadingComprehension"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ShortTermMemory">@L["ShortTermMemory"]</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ConfidenceCalibration">@L["ConfidenceCalibration"]</a></li>
                             </ul>
                         </li>
 
@@ -93,11 +94,11 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="questionsDropdown" role="button"
                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Questions
+                                        @L["Questions"]
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="questionsDropdown">
-                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Index">List Questions</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Create">Create New</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Index">@L["ListQuestions"]</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Questions" asp-action="Create">@L["CreateNew"]</a></li>
                                     </ul>
                                 </li>
                             }
@@ -109,7 +110,7 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Home" asp-action="MyQuestions">
-                                        <i class="fas fa-history"></i> My Questions
+                                        <i class="fas fa-history"></i> @L["MyQuestions"]
                                     </a>
                                 </li>
                             }
@@ -132,12 +133,12 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
-                    <span class="small">&copy; @DateTime.Now.Year - AI Relief</span>
+                    <span class="small">@L["FooterCopyright", DateTime.Now.Year]</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <button id="footer-theme-toggle" class="footer-theme-toggle" title="Toggle theme">
+                    <button id="footer-theme-toggle" class="footer-theme-toggle" title="@L["ToggleTheme"]">
                         <span class="theme-icon">🌙</span>
-                        <span class="theme-text">Dark Mode</span>
+                        <span class="theme-text">@L["DarkMode"]</span>
                     </button>
                 </div>
             </div>
