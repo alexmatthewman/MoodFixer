@@ -51,22 +51,8 @@
             </div>
 
             <section class="mb-5">
-                <p>
-                    Cognitive reflection, or the ability to pause and think carefully rather than relying on gut
-                    instincts, is a skill that remains important in everyday life. It helps people evaluate
-                    information, weigh alternatives, and make thoughtful decisions rather than jumping to
-                    conclusions (Frederick, 2005; Toplak, West, &amp; Stanovich, 2014). This skill can weaken
-                    over time if we rely too heavily on shortcuts or external aids instead of exercising our own
-                    reasoning.
-                </p>
-                <p>
-                    Fortunately, cognitive reflection can be strengthened through practice. Activities such as
-                    logic puzzles, reasoning exercises, and multiple-choice problems that require careful
-                    consideration encourage people to slow down and analyse situations more deeply. Regular
-                    engagement with these types of exercises can help maintain mental flexibility, improve
-                    judgment, and keep the mind active and alert (Pennycook, Cheyne, Barr, Koehler,
-                    &amp; Fugelsang, 2016).
-                </p>
+                <p>@Html.Raw(L["Intro1"].Value)</p>
+                <p>@Html.Raw(L["Intro2"].Value)</p>
             </section>
 
             <hr class="my-5" />
@@ -74,20 +60,9 @@
             <section class="mb-4">
                 <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
-                    <li class="mb-2">
-                        Frederick, S. (2005). Cognitive reflection and decision making.
-                        <em>Journal of Economic Perspectives, 19</em>(4), 25&ndash;42.
-                    </li>
-                    <li class="mb-2">
-                        Toplak, M. E., West, R. F., &amp; Stanovich, K. E. (2014). Assessing miserly
-                        information processing: An expansion of the cognitive reflection test.
-                        <em>Thinking &amp; Reasoning, 20</em>(2), 147&ndash;168.
-                    </li>
-                    <li class="mb-2">
-                        Pennycook, G., Cheyne, J. A., Barr, N., Koehler, D. J., &amp; Fugelsang, J. A.
-                        (2016). Cognitive style and truth discernment.
-                        <em>Judgment and Decision Making, 11</em>(2), 109&ndash;120.
-                    </li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Frederick"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Toplak"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Pennycook"].Value)</li>
                 </ul>
             </section>
 

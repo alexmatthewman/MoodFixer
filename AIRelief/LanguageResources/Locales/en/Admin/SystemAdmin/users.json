@@ -11,6 +11,8 @@
     "LastQuestionAttempt": "Last Question Attempt",
     "Never": "Never",
     "Actions": "Actions",
+    "QueryFrequency": "Query Frequency",
+    "GroupLabel": "(group)",
     "Edit": "Edit",
     "Questions": "Questions",
     "CurrentUser": "Current User",

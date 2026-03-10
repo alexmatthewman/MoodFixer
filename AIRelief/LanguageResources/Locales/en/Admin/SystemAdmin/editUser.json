@@ -1,10 +1,16 @@
 {
     "PageTitle": "Edit User",
-    "EditUser": "Edit User",
-    "Name": "Name",
+    "EditUserTitle": "Edit User - {0}",
+    "BackToUsers": "Back to Users",
+    "UserSettings": "User Settings",
+    "FullName": "Full Name",
     "Email": "Email",
-    "AuthLevel": "Auth Level",
     "Group": "Group",
+    "NoGroup": "\u2014 No group \u2014",
+    "QueryFrequency": "Query Frequency",
+    "InheritedFromGroup": "Inherited from group: {0}",
+    "SelectFrequency": "\u2014 Select frequency \u2014",
+    "RequiredForNonGroupUsers": "Required for users not in a group.",
     "SaveChanges": "Save Changes",
-    "BackToUsers": "Back to Users"
+    "Cancel": "Cancel"
 }

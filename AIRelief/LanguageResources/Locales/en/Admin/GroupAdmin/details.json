@@ -1,11 +1,16 @@
 {
     "PageTitle": "User Details",
     "BackToUsers": "Back to Users",
-    "Name": "Name",
-    "Email": "Email",
+    "UserInformation": "User Information",
     "AuthLevel": "Auth Level",
-    "Group": "Group",
     "Created": "Created",
     "LastQuestionAttempt": "Last Question Attempt",
-    "Never": "Never"
+    "Never": "Never",
+    "UserStatistics": "User Statistics",
+    "CognitiveReflection": "Cognitive Reflection",
+    "ReadingComprehension": "Reading Comprehension",
+    "CausalReasoning": "Causal Reasoning",
+    "Metacognition": "Metacognition",
+    "ShortTermMemory": "Short-Term Memory",
+    "ConfidenceCalibration": "Confidence Calibration"
 }

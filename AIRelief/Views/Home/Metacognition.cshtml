@@ -55,21 +55,8 @@
             </div>
 
             <section class="mb-5">
-                <p>
-                    Metacognition is self-awareness about thinking. It involves recognising underlying assumptions,
-                    spotting patterns in how conclusions are formed, and understanding the limits of what can be
-                    inferred from available information. Strong metacognitive skills help people interpret arguments
-                    more carefully, avoid common reasoning traps, and better understand both their own judgements
-                    and those of others (Flavell, 1979; Dunlosky &amp; Metcalfe, 2009).
-                </p>
-                <p>
-                    This ability does not develop automatically. When answers and explanations are readily available,
-                    people may spend less time reflecting on how they reached a conclusion or why a line of reasoning
-                    feels convincing. Exercises that ask learners to identify hidden assumptions, evaluate evidence,
-                    or reason about what someone else can know encourage this kind of reflective awareness. Regular
-                    engagement with such tasks can help maintain a more thoughtful, self-aware approach to reasoning
-                    in everyday decisions and discussions (Kuhn, 1999; Nelson &amp; Narens, 1990).
-                </p>
+                <p>@Html.Raw(L["Intro1"].Value)</p>
+                <p>@Html.Raw(L["Intro2"].Value)</p>
             </section>
 
             <hr class="my-5" />
@@ -77,21 +64,10 @@
             <section class="mb-4">
                 <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
-                    <li class="mb-2">
-                        Flavell, J. H. (1979). Metacognition and cognitive monitoring: A new area of
-                        cognitive&ndash;developmental inquiry. <em>American Psychologist, 34</em>(10), 906&ndash;911.
-                    </li>
-                    <li class="mb-2">
-                        Nelson, T. O., &amp; Narens, L. (1990). Metamemory: A theoretical framework and new findings.
-                        <em>The Psychology of Learning and Motivation, 26</em>, 125&ndash;173.
-                    </li>
-                    <li class="mb-2">
-                        Kuhn, D. (1999). A developmental model of critical thinking.
-                        <em>Educational Researcher, 28</em>(2), 16&ndash;25.
-                    </li>
-                    <li class="mb-2">
-                        Dunlosky, J., &amp; Metcalfe, J. (2009). <em>Metacognition.</em> Sage.
-                    </li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Flavell"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Nelson"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Kuhn"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Dunlosky"].Value)</li>
                 </ul>
             </section>
 

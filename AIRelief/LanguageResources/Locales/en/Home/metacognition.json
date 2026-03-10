@@ -1,5 +1,11 @@
 {
     "PageTitle": "Metacognition",
     "HowPracticeHelps": "How practice helps",
-    "References": "References"
+    "References": "References",
+    "Intro1": "Metacognition is self-awareness about thinking. It involves recognising underlying assumptions, spotting patterns in how conclusions are formed, and understanding the limits of what can be inferred from available information. Strong metacognitive skills help people interpret arguments more carefully, avoid common reasoning traps, and better understand both their own judgements and those of others (Flavell, 1979; Dunlosky &amp; Metcalfe, 2009).",
+    "Intro2": "This ability does not develop automatically. When answers and explanations are readily available, people may spend less time reflecting on how they reached a conclusion or why a line of reasoning feels convincing. Exercises that ask learners to identify hidden assumptions, evaluate evidence, or reason about what someone else can know encourage this kind of reflective awareness. Regular engagement with such tasks can help maintain a more thoughtful, self-aware approach to reasoning in everyday decisions and discussions (Kuhn, 1999; Nelson &amp; Narens, 1990).",
+    "Ref_Flavell": "Flavell, J. H. (1979). Metacognition and cognitive monitoring: A new area of cognitive\u2013developmental inquiry. <em>American Psychologist, 34</em>(10), 906\u2013911.",
+    "Ref_Nelson": "Nelson, T. O., &amp; Narens, L. (1990). Metamemory: A theoretical framework and new findings. <em>The Psychology of Learning and Motivation, 26</em>, 125\u2013173.",
+    "Ref_Kuhn": "Kuhn, D. (1999). A developmental model of critical thinking. <em>Educational Researcher, 28</em>(2), 16\u201325.",
+    "Ref_Dunlosky": "Dunlosky, J., &amp; Metcalfe, J. (2009). <em>Metacognition.</em> Sage."
 }

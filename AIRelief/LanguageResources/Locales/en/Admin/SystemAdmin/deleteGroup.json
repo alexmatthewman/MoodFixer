@@ -1,0 +1,15 @@
+{
+    "PageTitle": "Delete Group",
+    "DeleteGroup": "Delete Group",
+    "BackToGroups": "Back to Groups",
+    "DeleteWarning": "This action cannot be undone. Deleting this group will remove all associated user relationships and settings.",
+    "Plan": "Plan",
+    "Licenses": "Licenses",
+    "ExpiryDays": "Expiry (Days)",
+    "None": "None",
+    "QueryFrequency": "Query Frequency",
+    "PassingGrade": "Passing Grade",
+    "CreatedDate": "Created Date",
+    "DeletePermanently": "Delete Permanently",
+    "Cancel": "Cancel"
+}

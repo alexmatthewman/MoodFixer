@@ -1,20 +1,21 @@
-﻿@model AIRelief.Models.User
+@inject IStringLocalizer<AdminGroupAdminCreateUserResource> L
+@model AIRelief.Models.User
 @{
-    ViewData["Title"] = "Add User";
+    ViewData["Title"] = L["PageTitle"].Value;
     var group = ViewBag.Group as AIRelief.Models.Group;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Add User to @group?.Name</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["AddUserToGroup", group?.Name]</h1>
         <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Users
+            <i class="fas fa-arrow-left"></i> @L["BackToUsers"]
         </a>
     </div>
 
     <div class="admin-card">
         <div class="admin-card-header">
-            <h5>User Details</h5>
+            <h5>@L["UserDetails"]</h5>
         </div>
         <div class="admin-card-body">
             <form method="post" action="/Admin/GroupAdmin/Groups/@group?.ID/CreateUser">
@@ -24,22 +25,22 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="admin-form-group">
-                            <label asp-for="Name" class="form-label">Full Name</label>
+                            <label asp-for="Name" class="form-label">@L["FullName"]</label>
                             <input asp-for="Name" class="form-control" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="admin-form-group">
-                            <label asp-for="Email" class="form-label">Email</label>
+                            <label asp-for="Email" class="form-label">@L["Email"]</label>
                             <input asp-for="Email" class="form-control" type="email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="admin-form-group">
-                            <label asp-for="AuthLevel" class="form-label">Authentication Level</label>
+                            <label asp-for="AuthLevel" class="form-label">@L["AuthLevel"]</label>
                             <select asp-for="AuthLevel" class="form-select" asp-items="Html.GetEnumSelectList<AIRelief.Models.AuthLevel>().Where(i => i.Value != ((int)AIRelief.Models.AuthLevel.SystemAdmin).ToString()).ToList()"></select>
                             <span asp-validation-for="AuthLevel" class="text-danger"></span>
                         </div>
                         <div class="admin-form-group">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">@L["Password"]</label>
                             <input type="password" id="password" name="password" class="form-control" required />
                             <span class="text-danger" data-valmsg-for="password" data-valmsg-replace="true"></span>
                         </div>
@@ -50,9 +51,9 @@
 
                 <div class="admin-card-footer">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Add User
+                        <i class="fas fa-user-plus"></i> @L["AddUser"]
                     </button>
-                    <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">Cancel</a>
+                    <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">@L["Cancel"]</a>
                 </div>
             </form>
         </div>

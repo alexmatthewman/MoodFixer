@@ -77,32 +77,9 @@
             </div>
 
             <section class="mb-5">
-                <p>
-                    Even in the age of AI, reading comprehension remains an important human skill. Truly
-                    understanding a text is about more than recognising words or pulling out facts; it requires
-                    making sense of ideas, drawing inferences, following arguments, and noticing when something
-                    does not quite add up (Kintsch, 1998; Perfetti &amp; Stafura, 2014). These abilities support
-                    learning and critical thinking in every domain, and they are especially important when
-                    engaging with AI-generated content, which still requires human judgement to interpret and
-                    evaluate.
-                </p>
-                <p>
-                    At the same time, reading comprehension may be especially vulnerable as AI tools increasingly
-                    summarise, explain, and answer for us. When machines do more of the interpreting, we spend
-                    less time practising the effortful work of deep reading. Over time, this is likely to weaken
-                    our ability to follow complex texts or retain what we have read. The good news is that
-                    comprehension is highly trainable: research shows that active practice &mdash; such as
-                    answering targeted questions and reflecting on meaning &mdash; can significantly improve
-                    understanding (National Reading Panel, 2000; McNamara, 2007). Well-designed multiple-choice
-                    exercises help make this practice easy and effective.
-                </p>
-                <p>
-                    These exercises are not designed to trick you, and they should not feel excessively difficult
-                    for someone who actively engages their mind. The goal is less about finding a single
-                    &ldquo;correct&rdquo; answer and more about encouraging careful reading, reflection, and
-                    mental engagement. By thoughtfully considering the passages and answer choices, you are
-                    exercising your comprehension skills and keeping your cognitive faculties sharp.
-                </p>
+                <p>@Html.Raw(L["Intro1"].Value)</p>
+                <p>@Html.Raw(L["Intro2"].Value)</p>
+                <p>@Html.Raw(L["Intro3"].Value)</p>
             </section>
 
             <hr class="my-5" />
@@ -110,23 +87,10 @@
             <section class="mb-4">
                 <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
-                    <li class="mb-2">
-                        Kintsch, W. (1998). <em>Comprehension: A paradigm for cognition.</em>
-                        Cambridge University Press.
-                    </li>
-                    <li class="mb-2">
-                        McNamara, D. S. (2007). <em>Reading comprehension strategies: Theories, interventions,
-                        and technologies.</em> Lawrence Erlbaum Associates.
-                    </li>
-                    <li class="mb-2">
-                        National Reading Panel. (2000). <em>Teaching children to read: An evidence-based
-                        assessment of the scientific research literature on reading and its implications for
-                        reading instruction.</em> National Institute of Child Health and Human Development.
-                    </li>
-                    <li class="mb-2">
-                        Perfetti, C. A., &amp; Stafura, J. (2014). Word knowledge in a theory of reading
-                        comprehension. <em>Scientific Studies of Reading, 18</em>(1), 22&ndash;37.
-                    </li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Kintsch"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_McNamara"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_NRP"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Perfetti"].Value)</li>
                 </ul>
             </section>
 

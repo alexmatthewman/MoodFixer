@@ -1,39 +1,40 @@
+@inject IStringLocalizer<AdminGroupAdminUserQuestionsResource> L
 @model IList<AIRelief.Models.UserQuestion>
 @{
-    ViewData["Title"] = "Question History";
+    ViewData["Title"] = L["PageTitle"].Value;
     var targetUser = ViewBag.TargetUser as AIRelief.Models.User;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Question History — @targetUser?.Name</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["QuestionHistoryFor", targetUser?.Name]</h1>
         <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Users
+            <i class="fas fa-arrow-left"></i> @L["BackToUsers"]
         </a>
     </div>
 
     @if (Model.Count == 0)
     {
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> @targetUser?.Name has not attempted any questions yet.
+            <i class="fas fa-info-circle"></i> @L["NoAttemptsFor", targetUser?.Name]
         </div>
     }
     else
     {
         <div class="admin-card">
             <div class="admin-card-header">
-                <h5>Attempted Questions (@Model.Count)</h5>
+                <h5>@L["AttemptedQuestions", Model.Count]</h5>
             </div>
             <div class="admin-card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Question Text</th>
-                                <th>Main Text</th>
-                                <th>Category</th>
-                                <th>Date Answered</th>
-                                <th>Correct</th>
+                                <th>@L["QuestionText"]</th>
+                                <th>@L["MainText"]</th>
+                                <th>@L["Category"]</th>
+                                <th>@L["DateAnswered"]</th>
+                                <th>@L["Correct"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,11 +88,11 @@
                                     <td>
                                         @if (attempt.AnsweredCorrectly)
                                         {
-                                            <span class="badge bg-success"><i class="fas fa-check"></i> Yes</span>
+                                            <span class="badge bg-success"><i class="fas fa-check"></i> @L["Yes"]</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-danger"><i class="fas fa-times"></i> No</span>
+                                            <span class="badge bg-danger"><i class="fas fa-times"></i> @L["No"]</span>
                                         }
                                     </td>
                                 </tr>

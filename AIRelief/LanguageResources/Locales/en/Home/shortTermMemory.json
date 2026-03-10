@@ -1,5 +1,14 @@
 {
     "PageTitle": "Short-Term Memory",
     "HowPracticeHelps": "How practice helps",
-    "References": "References"
+    "References": "References",
+    "Intro1": "Short-term memory allows us to hold information in mind long enough to use it. It plays a central role in everyday thinking, such as following instructions or keeping track of a task as it unfolds. Rather than acting as a simple storage space, short-term memory helps maintain and update information as we work with it. Because of this, it supports reasoning, learning, and decision-making across many contexts (Baddeley, 2003; Cowan, 2010).",
+    "Intro2": "Modern work habits place steady demands on short-term memory, but they also reduce how often it is used directly. Frequent interruptions, constant switching between tasks, and reliance on reminders mean that fewer details need to be held in mind at once. Over time, this can make it harder to keep information active without external support, especially during multi-step or mentally demanding tasks.",
+    "Practice1": "Research suggests that short-term memory is not fixed. Practice that requires briefly holding and using information can improve performance on related tasks (Klingberg, 2010; Shipstead, Redick, &amp; Engle, 2012). Well-designed exercises challenge this system in manageable ways. They encourage active maintenance rather than simple repetition.",
+    "Practice2": "These exercises are not about memorising facts or pushing capacity to its limits. The goal is to strengthen the ability to keep information available long enough to work with it. By practising short, focused memory tasks, you are supporting a cognitive function that underlies clear thinking in many areas of life.",
+    "Practice3": "To get the most out of these exercises, read the passage slowly, and only once.",
+    "Ref_Baddeley": "Baddeley, A. (2003). Working memory: Looking back and looking forward. <em>Nature Reviews Neuroscience, 4</em>(10), 829\u2013839.",
+    "Ref_Cowan": "Cowan, N. (2010). The magical mystery four: How is working memory capacity limited, and why? <em>Current Directions in Psychological Science, 19</em>(1), 51\u201357.",
+    "Ref_Klingberg": "Klingberg, T. (2010). Training and plasticity of working memory. <em>Trends in Cognitive Sciences, 14</em>(7), 317\u2013324.",
+    "Ref_Shipstead": "Shipstead, Z., Redick, T. S., &amp; Engle, R. W. (2012). Is working memory training effective? <em>Psychological Bulletin, 138</em>(4), 628\u2013654."
 }

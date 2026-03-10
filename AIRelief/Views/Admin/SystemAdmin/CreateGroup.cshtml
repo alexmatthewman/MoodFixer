@@ -1,19 +1,20 @@
+@inject IStringLocalizer<AdminSystemAdminCreateGroupResource> L
 @model AIRelief.Models.Group
 @{
-    ViewData["Title"] = "Create Group";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Create New Group</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["CreateNewGroup"]</h1>
         <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Groups
+            <i class="fas fa-arrow-left"></i> @L["BackToGroups"]
         </a>
     </div>
 
     <div class="admin-card">
         <div class="admin-card-header">
-            <h5>Group Information</h5>
+            <h5>@L["GroupInformation"]</h5>
         </div>
         <div class="admin-card-body">
             <form method="post" action="/Admin/SystemAdmin/Groups/Create">
@@ -54,51 +55,51 @@
 
                     <div class="col-md-6">
                         <div class="admin-form-group">
-                            <label asp-for="QueryPassingGrade" class="form-label" style="color: var(--text-secondary);">Query Passing Grade (%)</label>
+                            <label asp-for="QueryPassingGrade" class="form-label" style="color: var(--text-secondary);">@L["QueryPassingGrade"]</label>
                             <input asp-for="QueryPassingGrade" class="form-control" type="number" min="0" max="100" />
                             <span asp-validation-for="QueryPassingGrade" class="text-danger"></span>
                         </div>
 
                         <div class="admin-form-group">
-                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">Query Frequency</label>
+                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">@L["QueryFrequency"]</label>
                             <select asp-for="QueryFrequency" class="form-select" asp-items="Html.GetEnumSelectList<AIRelief.Models.QueryFrequency>()">
-                                <option value="">-- Select Frequency --</option>
+                                <option value="">@L["SelectFrequency"]</option>
                             </select>
                             <span asp-validation-for="QueryFrequency" class="text-danger"></span>
                         </div>
 
                         <div class="admin-form-group">
-                            <label asp-for="GroupImageUrl" class="form-label" style="color: var(--text-secondary);">Group/Company Logo URL</label>
+                            <label asp-for="GroupImageUrl" class="form-label" style="color: var(--text-secondary);">@L["GroupLogoUrl"]</label>
                             <input asp-for="GroupImageUrl" class="form-control" type="url" />
                             <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
-                            <small class="form-text text-muted">Optional: URL to group/company logo</small>
+                            <small class="form-text text-muted">@L["GroupLogoHelp"]</small>
                         </div>
 
                         <div class="admin-form-group">
-                            <label asp-for="PrimaryThemeColor" class="form-label" style="color: var(--text-secondary);">Primary Theme Color</label>
+                            <label asp-for="PrimaryThemeColor" class="form-label" style="color: var(--text-secondary);">@L["PrimaryThemeColor"]</label>
                             <div class="input-group">
                                 <input asp-for="PrimaryThemeColor" class="form-control" placeholder="#FF5733" />
                                 <input type="color" class="btn border" id="primaryColorPicker" />
                             </div>
                             <span asp-validation-for="PrimaryThemeColor" class="text-danger"></span>
-                            <small class="form-text text-muted">Hex color code (e.g., #FF5733)</small>
+                            <small class="form-text text-muted">@L["HexCodeHelp", "#FF5733"]</small>
                         </div>
 
                         <div class="admin-form-group">
-                            <label asp-for="SecondaryThemeColor" class="form-label" style="color: var(--text-secondary);">Secondary Theme Color</label>
+                            <label asp-for="SecondaryThemeColor" class="form-label" style="color: var(--text-secondary);">@L["SecondaryThemeColor"]</label>
                             <div class="input-group">
                                 <input asp-for="SecondaryThemeColor" class="form-control" placeholder="#FF5733" />
                                 <input type="color" class="btn border" id="secondaryColorPicker" />
                             </div>
                             <span asp-validation-for="SecondaryThemeColor" class="text-danger"></span>
-                            <small class="form-text text-muted">Hex color code (e.g., #FF5733)</small>
+                            <small class="form-text text-muted">@L["HexCodeHelp", "#FF5733"]</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <div class="col-12">
-                        <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">Question Settings</h6>
+                        <h6 style="color: var(--text-secondary); margin-bottom: 1rem;">@L["QuestionSettings"]</h6>
                     </div>
                 </div>
 
@@ -108,13 +109,13 @@
                             <div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="QuestionMode" id="modeFocussed" value="Focussed" checked="checked" />
-                                    <label class="form-check-label" for="modeFocussed">Use Focussed Questions</label>
+                                    <label class="form-check-label" for="modeFocussed">@L["UseFocussedQuestions"]</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="QuestionMode" id="modeRandom" value="Random" />
-                                    <label class="form-check-label" for="modeRandom">Use Random Questions</label>
+                                    <label class="form-check-label" for="modeRandom">@L["UseRandomQuestions"]</label>
                                 </div>
-                                <small class="form-text text-muted d-block">Choose query selection mode. Only one may be selected.</small>
+                                <small class="form-text text-muted d-block">@L["QuestionModeHelp"]</small>
                             </div>
                         </div>
                     </div>
@@ -124,9 +125,9 @@
                     <div class="col-12">
                         <div class="admin-card-footer" style="margin: 0; padding: 0; border: none;">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Create Group
+                                <i class="fas fa-save"></i> @L["CreateGroup"]
                             </button>
-                            <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">Cancel</a>
+                            <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">@L["Cancel"]</a>
                         </div>
                     </div>
                 </div>

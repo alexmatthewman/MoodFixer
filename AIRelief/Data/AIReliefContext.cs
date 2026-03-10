@@ -51,6 +51,13 @@ namespace AIRelief.Models
                 .WithOne(u => u.ActiveLesson)
                 .HasForeignKey<ActiveLesson>(al => al.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Unique index on Translation (Key + Language + Market)
+            modelBuilder.Entity<Translation>(e =>
+            {
+                e.HasIndex(t => new { t.Key, t.Language, t.Market })
+                 .IsUnique();
+            });
         }
 
         // Note: SaveChanges overrides below ensure Group defaults are applied before persisting.
@@ -62,6 +69,7 @@ namespace AIRelief.Models
         public DbSet<UserStatistics> UserStatistics { get; set; }
         public DbSet<UserQuestion> UserQuestions { get; set; }
         public DbSet<ActiveLesson> ActiveLessons { get; set; }
+        public DbSet<Translation> Translations { get; set; }
 
         // No SaveChanges overrides here — PlanName is optional and should not be forced.
     }

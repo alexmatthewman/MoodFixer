@@ -1,9 +1,22 @@
 {
-    "PageTitle": "Question Bulk Management",
-    "BulkQuestionManagement": "Question Bulk Management",
-    "ImportQuestions": "Import Questions",
-    "ExportQuestions": "Export Questions",
-    "UploadCsv": "Upload CSV",
+    "PageTitle": "Bulk Question Management",
+    "BulkQuestionManagement": "Bulk Question Management",
+    "DownloadAllQuestions": "Download All Questions",
+    "DownloadAllDesc": "Export every question currently in the database as a CSV file.",
+    "BulkQuestionDownload": "Bulk Question Download",
+    "UploadQuestions": "Upload Questions",
+    "UploadDesc": "Upload a CSV file to import questions. Rows where <strong>MainText</strong> or <strong>QuestionText</strong> already exists in the database will be skipped.",
+    "BulkQuestionUpload": "Bulk Question Upload",
     "DownloadTemplate": "Download Template",
-    "DownloadAllQuestions": "Download All Questions"
+    "DownloadTemplateDesc": "Download a CSV template with two example questions showing the correct column format for upload.",
+    "BulkQuestionTemplate": "Bulk Question Template",
+    "RemoveAllQuestions": "Remove All Questions",
+    "RemoveAllDesc": "Permanently delete every question from the database. A full CSV backup will be downloaded automatically before deletion.",
+    "AreYouSure": "Are you sure?",
+    "RemoveAllWarning1": "This will <strong>permanently delete all questions</strong> from the database.",
+    "RemoveAllWarning2": "A CSV backup of all questions will be downloaded to your computer before deletion.",
+    "CannotBeUndone": "This action cannot be undone.",
+    "Cancel": "Cancel",
+    "YesDeleteAll": "Yes, delete all and download backup",
+    "Close": "Close"
 }

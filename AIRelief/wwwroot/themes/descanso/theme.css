@@ -1,0 +1,14 @@
+/*
+ * descanso theme
+ *
+ * Theme-specific overrides for the "descanso" market.
+ * This file is loaded after site.css so selectors here take precedence.
+ *
+ * Available assets in /themes/descanso/:
+ *   logo.png, hero.jpg, favicon.ico, og-image.jpg
+ */
+
+:root {
+    --theme-primary: #8e44ad;
+    --theme-secondary: #f39c12;
+}

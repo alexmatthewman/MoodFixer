@@ -1,14 +1,15 @@
 {
     "PageTitle": "Manage System Admins",
-    "SystemAdminManagement": "System Admin Management",
+    "SystemAdministrators": "System Administrators",
     "AddSystemAdmin": "Add System Admin",
+    "AllSystemAdmins": "All System Admins ({0})",
     "NoSystemAdmins": "No system admins found.",
-    "AllSystemAdmins": "System Admins ({0})",
     "Name": "Name",
     "Email": "Email",
     "Created": "Created",
     "Actions": "Actions",
     "CurrentUser": "Current User",
     "Remove": "Remove",
-    "ConfirmRemove": "Are you sure you want to remove system admin {0}?"
+    "ConfirmRemove": "Are you sure you want to remove {0} as a System Admin? This will change their auth level to User.",
+    "Close": "Close"
 }

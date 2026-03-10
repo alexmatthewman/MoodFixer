@@ -1,6 +1,7 @@
+@inject IStringLocalizer<AdminGroupAdminDetailsResource> L
 @model AIRelief.Models.User
 @{
-    ViewData["Title"] = "User Details";
+    ViewData["Title"] = L["PageTitle"].Value;
     var statistics = ViewBag.Statistics as IList<AIRelief.Models.UserStatistics>;
 }
 
@@ -8,13 +9,13 @@
     <div class="admin-header">
         <h1 class="admin-title" style="margin: 0;">@Model.Name</h1>
         <a href="/Admin/GroupAdmin/Index" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Users
+            <i class="fas fa-arrow-left"></i> @L["BackToUsers"]
         </a>
     </div>
 
     <div class="admin-card">
         <div class="admin-card-header">
-            <h5>User Information</h5>
+            <h5>@L["UserInformation"]</h5>
         </div>
         <div class="admin-card-body">
             <div class="user-summary">
@@ -25,9 +26,9 @@
                     @Model.Email
                 </div>
                 <div class="user-stats">
-                    <span class="stat-badge">Auth Level: @Model.AuthLevel</span>
-                    <span class="stat-badge">Created: @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
-                    <span class="stat-badge">Last Question Attempt: @(Model.DatetimeOfLastQuestionAttempt.HasValue ? Model.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : "Never")</span>
+                    <span class="stat-badge">@L["AuthLevel"]: @Model.AuthLevel</span>
+                    <span class="stat-badge">@L["Created"]: @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
+                    <span class="stat-badge">@L["LastQuestionAttempt"]: @(Model.DatetimeOfLastQuestionAttempt.HasValue ? Model.DatetimeOfLastQuestionAttempt.Value.ToString("dd MMM yyyy HH:mm") : L["Never"].Value)</span>
                 </div>
             </div>
         </div>
@@ -37,34 +38,34 @@
     {
         <div class="admin-card">
             <div class="admin-card-header">
-                <h5>User Statistics</h5>
+                <h5>@L["UserStatistics"]</h5>
             </div>
             <div class="admin-card-body">
                 @foreach (var stat in statistics)
                 {
                     <div class="domain-stats">
                         <div class="stat-box">
-                            <div class="stat-label">Cognitive Reflection</div>
+                            <div class="stat-label">@L["CognitiveReflection"]</div>
                             <div class="stat-value">@stat.CognitiveReflectionWeightedAverage%</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Reading Comprehension</div>
+                            <div class="stat-label">@L["ReadingComprehension"]</div>
                             <div class="stat-value">@stat.ReadingComprehensionWeightedAverage%</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Causal Reasoning</div>
+                            <div class="stat-label">@L["CausalReasoning"]</div>
                             <div class="stat-value">@stat.CausalReasoningWeightedAverage%</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Metacognition</div>
+                            <div class="stat-label">@L["Metacognition"]</div>
                             <div class="stat-value">@stat.MetacognitionWeightedAverage%</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Short-Term Memory</div>
+                            <div class="stat-label">@L["ShortTermMemory"]</div>
                             <div class="stat-value">@stat.ShortTermMemoryWeightedAverage%</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-label">Confidence Calibration</div>
+                            <div class="stat-label">@L["ConfidenceCalibration"]</div>
                             <div class="stat-value">@stat.ConfidenceCalibrationWeightedAverage%</div>
                         </div>
                     </div>

@@ -1,18 +1,19 @@
+@inject IStringLocalizer<AdminSystemAdminAddSystemAdminResource> L
 @{
-    ViewData["Title"] = "Add System Admin";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Add System Admin</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["AddSystemAdmin"]</h1>
         <a href="/Admin/SystemAdmin/SystemAdmins" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to System Admins
+            <i class="fas fa-arrow-left"></i> @L["BackToSystemAdmins"]
         </a>
     </div>
 
     <div class="admin-card">
         <div class="admin-card-header">
-            <h5>New System Admin Details</h5>
+            <h5>@L["NewSystemAdminDetails"]</h5>
         </div>
         <div class="admin-card-body">
             <form method="post" action="/Admin/SystemAdmin/SystemAdmins/Add">
@@ -21,15 +22,15 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="admin-form-group">
-                            <label class="form-label">Full Name</label>
+                            <label class="form-label">@L["FullName"]</label>
                             <input name="name" class="form-control" required maxlength="400" />
                         </div>
                         <div class="admin-form-group">
-                            <label class="form-label">Email</label>
+                            <label class="form-label">@L["Email"]</label>
                             <input name="email" type="email" class="form-control" required maxlength="256" />
                         </div>
                         <div class="admin-form-group">
-                            <label class="form-label">Password</label>
+                            <label class="form-label">@L["Password"]</label>
                             <input name="password" type="password" class="form-control" required />
                         </div>
                     </div>
@@ -42,9 +43,9 @@
 
                 <div class="admin-form-actions">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Add System Admin
+                        <i class="fas fa-user-plus"></i> @L["AddSystemAdminButton"]
                     </button>
-                    <a href="/Admin/SystemAdmin/SystemAdmins" class="btn btn-secondary">Cancel</a>
+                    <a href="/Admin/SystemAdmin/SystemAdmins" class="btn btn-secondary">@L["Cancel"]</a>
                 </div>
             </form>
         </div>

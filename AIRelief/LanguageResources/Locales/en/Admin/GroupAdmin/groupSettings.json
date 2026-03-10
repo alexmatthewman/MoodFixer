@@ -1,10 +1,23 @@
 {
     "PageTitle": "Group Settings",
+    "GroupSettingsSubtitle": "Group Settings",
     "BackToUsers": "Back to Users",
     "Appearance": "Appearance",
     "GroupLogoUrl": "Group / Company Logo URL",
     "GroupLogoHelp": "Optional - displayed on lesson and summary pages.",
     "PrimaryThemeColor": "Primary Theme Color",
     "SecondaryThemeColor": "Secondary Theme Color",
-    "SaveChanges": "Save Changes"
+    "HexCodeHelp": "Hex code, e.g. {0}",
+    "PickAColour": "Pick a colour",
+    "LessonSettings": "Lesson Settings",
+    "TimeToCompleteDays": "Time to Complete (Days)",
+    "TimeToCompleteHelp": "How many days users have to complete each lesson set.",
+    "PassingGrade": "Passing Grade (%)",
+    "PassingGradeHelp": "Minimum percentage to be considered passing.",
+    "QuestionSelectionMode": "Question Selection Mode",
+    "FocussedQuestions": "Focussed Questions",
+    "RandomQuestions": "Random Questions",
+    "OnlyOneModeHelp": "Only one mode may be active at a time.",
+    "SaveSettings": "Save Settings",
+    "Cancel": "Cancel"
 }

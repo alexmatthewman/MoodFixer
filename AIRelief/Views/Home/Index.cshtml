@@ -1,6 +1,8 @@
 ﻿@inject IStringLocalizer<HomeIndexResource> L
+@inject AIRelief.Services.CompositeTranslationService T
 @{
     ViewData["Title"] = L["PageTitle"].Value;
+
 }
 
 @section Scripts {
@@ -52,10 +54,10 @@
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-6">
                 <h1 class="hero-title">
-                    @L["HeroTitle_Prefix"] <span class="text-accent">@L["HeroTitle_Accent"]</span>
+                    @T.Get("HeroTitle_Prefix") <span class="text-accent">@T.Get("HeroTitle_Accent")</span>
                 </h1>
                 <p class="hero-subtitle">
-                    @L["HeroSubtitle"]
+                    @T.Get("HeroSubtitle")
                 </p>
                 <div class="hero-stats">
                     <div class="stat-item">
@@ -68,7 +70,7 @@
                     </div>
                 </div>
                 <div class="hero-buttons">
-                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">@L["StartFreeTrial"]</a>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">@T.Get("StartFreeTrial")</a>
                     <a href="#learn-more" class="btn btn-outline-primary btn-lg">@L["LearnMore"]</a>
                 </div>
             </div>
@@ -80,7 +82,7 @@
                          onerror="handleImageError(this)" />
                     <div class="image-fallback">
                         <i class="fas fa-brain fa-8x"></i>
-                        <p>AI + Human Intelligence</p>
+                        <p>@L["ImageFallback_Brain"]</p>
                     </div>
                 </div>
             </div>
@@ -188,14 +190,14 @@
                          onerror="handleImageError(this)" />
                     <div class="image-fallback">
                         <i class="fas fa-project-diagram fa-6x"></i>
-                        <p>Critical Thinking Process</p>
+                        <p>@L["ImageFallback_CriticalThinking"]</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
-                <h2 class="section-title">@L["CognitiveFitnessProgramTitle"]</h2>
+                <h2 class="section-title">@T.Get("CognitiveFitnessProgramTitle")</h2>
                 <p class="section-subtitle">
-                    @L["CognitiveFitnessProgramSubtitle"]
+                    @T.Get("CognitiveFitnessProgramSubtitle")
                 </p>
 
                 <div class="feature-list">
@@ -339,9 +341,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="cta-title">@L["ReadyToReclaim"]</h2>
+                <h2 class="cta-title">@T.Get("ReadyToReclaim")</h2>
                 <p class="cta-subtitle">
-                    @L["JoinDevelopers"]
+                    @T.Get("JoinDevelopers")
                 </p>
 
                 <div class="cta-buttons">
@@ -398,10 +400,10 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p>"After 6 months with AI Relief, I can debug complex issues 40% faster and feel confident tackling problems without AI assistance."</p>
+                    <p>"@T.Get("Testimonial1_Quote")"</p>
                     <div class="testimonial-author">
-                        <strong>Sarah Chen</strong>
-                        <span>Senior Developer, TechCorp</span>
+                        <strong>@T.Get("Testimonial1_Name")</strong>
+                        <span>@T.Get("Testimonial1_Role")</span>
                     </div>
                 </div>
             </div>
@@ -423,10 +425,10 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p>"The critical thinking exercises helped me realize how much I'd been relying on AI. Now I'm a better problem solver than ever."</p>
+                    <p>"@T.Get("Testimonial2_Quote")"</p>
                     <div class="testimonial-author">
-                        <strong>Marcus Rodriguez</strong>
-                        <span>Lead Engineer, StartupXYZ</span>
+                        <strong>@T.Get("Testimonial2_Name")</strong>
+                        <span>@T.Get("Testimonial2_Role")</span>
                     </div>
                 </div>
             </div>
@@ -448,10 +450,10 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p>"AI Relief should be mandatory for any team using AI tools. It's like going to the gym for your brain."</p>
+                    <p>"@T.Get("Testimonial3_Quote")"</p>
                     <div class="testimonial-author">
-                        <strong>David Kim</strong>
-                        <span>Engineering Manager, BigTech Inc</span>
+                        <strong>@T.Get("Testimonial3_Name")</strong>
+                        <span>@T.Get("Testimonial3_Role")</span>
                     </div>
                 </div>
             </div>

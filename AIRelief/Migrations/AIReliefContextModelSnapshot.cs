@@ -199,6 +199,37 @@ namespace AIRelief.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("AIRelief.Models.Translation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Language")
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("Market")
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key", "Language", "Market")
+                        .IsUnique();
+
+                    b.ToTable("Translations");
+                });
+
             modelBuilder.Entity("AIRelief.Models.User", b =>
                 {
                     b.Property<int>("ID")

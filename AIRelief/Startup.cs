@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AIRelief.Localization;
+using AIRelief.Data;
 using AIRelief.Middleware;
 using AIRelief.Models;
+using AIRelief.Theming;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using System;
@@ -42,10 +45,10 @@ namespace AIRelief
             services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 
             services.AddRazorPages();
-            // Ensure MVC view locations include /Views and /Pages folders (default), and support conventional lookup
-            services.Configure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>(options =>
+            // Register the theme-aware view location expander so themed views override defaults
+            services.Configure<RazorViewEngineOptions>(options =>
             {
-                // No changes needed by default, but keep hook here if custom locations are required later.
+                options.ViewLocationExpanders.Add(new MarketViewLocationExpander());
             });
             // Enable runtime compilation so views placed under /Views are discovered at runtime (useful during development
             // and when views aren't precompiled into the app).
@@ -54,7 +57,9 @@ namespace AIRelief
                 .AddDataAnnotationsLocalization()
                 .AddRazorRuntimeCompilation();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddMemoryCache();
             services.AddScoped<AIRelief.Services.AdminAuthorizationService>();
+            services.AddScoped<AIRelief.Services.CompositeTranslationService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -84,6 +89,7 @@ namespace AIRelief
                 {
                     var context = services.GetRequiredService<AIReliefContext>();
                     context.Database.Migrate();
+                    SeedTranslations.Run(context).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {

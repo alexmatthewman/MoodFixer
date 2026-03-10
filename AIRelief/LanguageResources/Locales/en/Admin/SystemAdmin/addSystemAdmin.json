@@ -1,8 +1,11 @@
 {
     "PageTitle": "Add System Admin",
     "AddSystemAdmin": "Add System Admin",
+    "BackToSystemAdmins": "Back to System Admins",
+    "NewSystemAdminDetails": "New System Admin Details",
+    "FullName": "Full Name",
     "Email": "Email",
-    "EmailHelp": "Enter the email address of an existing user to promote to System Admin.",
-    "Promote": "Promote to System Admin",
-    "BackToSystemAdmins": "Back to System Admins"
+    "Password": "Password",
+    "AddSystemAdminButton": "Add System Admin",
+    "Cancel": "Cancel"
 }

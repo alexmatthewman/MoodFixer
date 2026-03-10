@@ -1,0 +1,14 @@
+/*
+ * relief theme
+ *
+ * Theme-specific overrides for the "relief" market.
+ * This file is loaded after site.css so selectors here take precedence.
+ *
+ * Available assets in /themes/relief/:
+ *   logo.png, hero.jpg, favicon.ico, og-image.jpg
+ */
+
+:root {
+    --theme-primary: #4a90d9;
+    --theme-secondary: #6ec6a0;
+}

@@ -1,11 +1,14 @@
 {
-    "PageTitle": "User Questions",
+    "PageTitle": "Question History",
+    "QuestionHistoryFor": "Question History \u2014 {0}",
     "BackToUsers": "Back to Users",
+    "NoAttemptsFor": "{0} has not attempted any questions yet.",
+    "AttemptedQuestions": "Attempted Questions ({0})",
     "QuestionText": "Question Text",
+    "MainText": "Main Text",
     "Category": "Category",
-    "DateAttempted": "Date Attempted",
+    "DateAnswered": "Date Answered",
     "Correct": "Correct",
     "Yes": "Yes",
-    "No": "No",
-    "NoAttempts": "This user has not attempted any questions yet."
+    "No": "No"
 }

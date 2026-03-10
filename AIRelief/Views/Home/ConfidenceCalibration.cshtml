@@ -63,62 +63,25 @@
             </div>
 
             <section class="mb-5">
-                <p>
-                    Most people are overconfident in their judgements about the world, which can lead to reckless
-                    or unwise decision-making. This problem may worsen with AI use due to its ability to write
-                    authoritative and superficially compelling text that sweeps nuance and uncertainty under the
-                    rug. When answers are frequently provided by external systems, opportunities to practise
-                    evaluating one&rsquo;s own uncertainty may diminish, increasing the risk of poor
-                    decision-making.
-                </p>
-                <p>
-                    Being well calibrated means expressing high confidence when one is likely to be correct and
-                    appropriate uncertainty when one is not. This skill plays a central role in learning,
-                    reasoning, and decision-making, helping people avoid both systematic overconfidence as well
-                    as unwarranted doubt (Lichtenstein, Fischhoff, &amp; Phillips, 1982; Griffin &amp;
-                    Tversky, 1992).
-                </p>
+                <p>@Html.Raw(L["Intro1"].Value)</p>
+                <p>@Html.Raw(L["Intro2"].Value)</p>
             </section>
 
             <section class="mb-5">
-                <h2 class="h4 mb-3">How practice helps</h2>
-                <p>
-                    These exercises make uncertainty explicit, and force the user to think methodically about
-                    the limits of their knowledge. Typical problems involve estimating how many statements are
-                    true or judging the likelihood that an answer is correct, which encourages people to grapple
-                    with uncertainty. Even brief exposure to this kind of feedback can improve awareness of
-                    confidence errors and promote more accurate self-assessment over time (Koriat, Lichtenstein,
-                    &amp; Fischhoff, 1980; Moore &amp; Healy, 2008).
-                </p>
-                <p>
-                    Note that the exercises on confidence calibration usually don&rsquo;t have correct answers,
-                    although we do suggest the answers we believe reflect appropriate levels of uncertainty.
-                </p>
+                <h2 class="h4 mb-3">@L["HowPracticeHelps"]</h2>
+                <p>@Html.Raw(L["Practice1"].Value)</p>
+                <p>@Html.Raw(L["Practice2"].Value)</p>
             </section>
 
             <hr class="my-5" />
 
             <section class="mb-4">
-                <h2 class="h5 mb-3">References</h2>
+                <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
-                    <li class="mb-2">
-                        Lichtenstein, S., Fischhoff, B., &amp; Phillips, L. D. (1982). Calibration of
-                        probabilities: The state of the art to 1980. In <em>Judgment under uncertainty:
-                        Heuristics and biases</em> (pp. 306&ndash;334). Cambridge University Press.
-                    </li>
-                    <li class="mb-2">
-                        Griffin, D., &amp; Tversky, A. (1992). The weighing of evidence and the determinants
-                        of confidence. <em>Cognitive Psychology, 24</em>(3), 411&ndash;435.
-                    </li>
-                    <li class="mb-2">
-                        Koriat, A., Lichtenstein, S., &amp; Fischhoff, B. (1980). Reasons for confidence.
-                        <em>Journal of Experimental Psychology: Human Learning and Memory, 6</em>(2),
-                        107&ndash;118.
-                    </li>
-                    <li class="mb-2">
-                        Moore, D. A., &amp; Healy, P. J. (2008). The trouble with overconfidence.
-                        <em>Psychological Review, 115</em>(2), 502&ndash;517.
-                    </li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Lichtenstein"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Griffin"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Koriat"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Moore"].Value)</li>
                 </ul>
             </section>
 

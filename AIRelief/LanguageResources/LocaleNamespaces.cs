@@ -73,6 +73,8 @@ namespace AIRelief.LanguageResources
     public class AdminSystemAdminCreateGroupResource { }
     // ? Admin/SystemAdmin/editGroup.json
     public class AdminSystemAdminEditGroupResource { }
+    // ? Admin/SystemAdmin/deleteGroup.json
+    public class AdminSystemAdminDeleteGroupResource { }
     // ? Admin/SystemAdmin/groupDetails.json
     public class AdminSystemAdminGroupDetailsResource { }
     // ? Admin/SystemAdmin/addUser.json

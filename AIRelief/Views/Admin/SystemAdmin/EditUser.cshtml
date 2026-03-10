@@ -1,20 +1,21 @@
+@inject IStringLocalizer<AdminSystemAdminEditUserResource> L
 @model AIRelief.Models.User
 @{
-    ViewData["Title"] = "Edit User";
+    ViewData["Title"] = L["PageTitle"].Value;
     bool isGroupMember = Model.GroupId != null;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Edit User - @Model.Name</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["EditUserTitle", Model.Name]</h1>
         <a href="/Admin/SystemAdmin/Users" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Users
+            <i class="fas fa-arrow-left"></i> @L["BackToUsers"]
         </a>
     </div>
 
     <div class="admin-card">
         <div class="admin-card-header">
-            <h5>User Settings</h5>
+            <h5>@L["UserSettings"]</h5>
         </div>
         <div class="admin-card-body">
             <form method="post" action="/Admin/SystemAdmin/Users/Edit/@Model.ID">
@@ -23,36 +24,36 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="admin-form-group">
-                            <label class="form-label" style="color: var(--text-secondary);">Full Name</label>
+                            <label class="form-label" style="color: var(--text-secondary);">@L["FullName"]</label>
                             <p class="form-control-plaintext">@Model.Name</p>
                         </div>
                         <div class="admin-form-group">
-                            <label class="form-label" style="color: var(--text-secondary);">Email</label>
+                            <label class="form-label" style="color: var(--text-secondary);">@L["Email"]</label>
                             <p class="form-control-plaintext">@Model.Email</p>
                         </div>
                         <div class="admin-form-group">
-                            <label class="form-label" style="color: var(--text-secondary);">Group</label>
-                            <p class="form-control-plaintext">@(Model.Group?.Name ?? "— No group —")</p>
+                            <label class="form-label" style="color: var(--text-secondary);">@L["Group"]</label>
+                            <p class="form-control-plaintext">@(Model.Group?.Name ?? L["NoGroup"].Value)</p>
                         </div>
                         <div class="admin-form-group">
-                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">Query Frequency</label>
+                            <label asp-for="QueryFrequency" class="form-label" style="color: var(--text-secondary);">@L["QueryFrequency"]</label>
                             @if (isGroupMember)
                             {
                                 <p class="form-control-plaintext text-muted">
-                                    Inherited from group: <strong>@Model.Group!.QueryFrequency</strong>
+                                    @L["InheritedFromGroup", Model.Group!.QueryFrequency]
                                 </p>
                             }
                             else
                             {
                                 <select name="queryFrequency" class="form-select" required>
-                                    <option value="">— Select frequency —</option>
+                                    <option value="">@L["SelectFrequency"]</option>
                                     @foreach (AIRelief.Models.QueryFrequency freq in Enum.GetValues(typeof(AIRelief.Models.QueryFrequency)))
                                     {
                                         <option value="@freq" selected="@(Model.QueryFrequency == freq ? "selected" : null)">@freq</option>
                                     }
                                 </select>
                                 <span class="text-danger" data-valmsg-for="QueryFrequency" data-valmsg-replace="true"></span>
-                                <small class="text-muted">Required for users not in a group.</small>
+                                <small class="text-muted">@L["RequiredForNonGroupUsers"]</small>
                             }
                         </div>
                     </div>
@@ -62,9 +63,9 @@
 
                 <div class="admin-card-footer">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Changes
+                        <i class="fas fa-save"></i> @L["SaveChanges"]
                     </button>
-                    <a href="/Admin/SystemAdmin/Users" class="btn btn-secondary">Cancel</a>
+                    <a href="/Admin/SystemAdmin/Users" class="btn btn-secondary">@L["Cancel"]</a>
                 </div>
             </form>
         </div>

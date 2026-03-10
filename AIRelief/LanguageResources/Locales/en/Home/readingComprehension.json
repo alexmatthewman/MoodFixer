@@ -1,5 +1,12 @@
 {
     "PageTitle": "Reading Comprehension",
     "HowPracticeHelps": "How practice helps",
-    "References": "References"
+    "References": "References",
+    "Intro1": "Even in the age of AI, reading comprehension remains an important human skill. Truly understanding a text is about more than recognising words or pulling out facts; it requires making sense of ideas, drawing inferences, following arguments, and noticing when something does not quite add up (Kintsch, 1998; Perfetti &amp; Stafura, 2014). These abilities support learning and critical thinking in every domain, and they are especially important when engaging with AI-generated content, which still requires human judgement to interpret and evaluate.",
+    "Intro2": "At the same time, reading comprehension may be especially vulnerable as AI tools increasingly summarise, explain, and answer for us. When machines do more of the interpreting, we spend less time practising the effortful work of deep reading. Over time, this is likely to weaken our ability to follow complex texts or retain what we have read. The good news is that comprehension is highly trainable: research shows that active practice \u2014 such as answering targeted questions and reflecting on meaning \u2014 can significantly improve understanding (National Reading Panel, 2000; McNamara, 2007). Well-designed multiple-choice exercises help make this practice easy and effective.",
+    "Intro3": "These exercises are not designed to trick you, and they should not feel excessively difficult for someone who actively engages their mind. The goal is less about finding a single \u201ccorrect\u201d answer and more about encouraging careful reading, reflection, and mental engagement. By thoughtfully considering the passages and answer choices, you are exercising your comprehension skills and keeping your cognitive faculties sharp.",
+    "Ref_Kintsch": "Kintsch, W. (1998). <em>Comprehension: A paradigm for cognition.</em> Cambridge University Press.",
+    "Ref_McNamara": "McNamara, D. S. (2007). <em>Reading comprehension strategies: Theories, interventions, and technologies.</em> Lawrence Erlbaum Associates.",
+    "Ref_NRP": "National Reading Panel. (2000). <em>Teaching children to read: An evidence-based assessment of the scientific research literature on reading and its implications for reading instruction.</em> National Institute of Child Health and Human Development.",
+    "Ref_Perfetti": "Perfetti, C. A., &amp; Stafura, J. (2014). Word knowledge in a theory of reading comprehension. <em>Scientific Studies of Reading, 18</em>(1), 22\u201337."
 }

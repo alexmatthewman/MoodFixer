@@ -1,5 +1,13 @@
 {
     "PageTitle": "Confidence Calibration",
     "HowPracticeHelps": "How practice helps",
-    "References": "References"
+    "References": "References",
+    "Intro1": "Most people are overconfident in their judgements about the world, which can lead to reckless or unwise decision-making. This problem may worsen with AI use due to its ability to write authoritative and superficially compelling text that sweeps nuance and uncertainty under the rug. When answers are frequently provided by external systems, opportunities to practise evaluating one\u2019s own uncertainty may diminish, increasing the risk of poor decision-making.",
+    "Intro2": "Being well calibrated means expressing high confidence when one is likely to be correct and appropriate uncertainty when one is not. This skill plays a central role in learning, reasoning, and decision-making, helping people avoid both systematic overconfidence as well as unwarranted doubt (Lichtenstein, Fischhoff, &amp; Phillips, 1982; Griffin &amp; Tversky, 1992).",
+    "Practice1": "These exercises make uncertainty explicit, and force the user to think methodically about the limits of their knowledge. Typical problems involve estimating how many statements are true or judging the likelihood that an answer is correct, which encourages people to grapple with uncertainty. Even brief exposure to this kind of feedback can improve awareness of confidence errors and promote more accurate self-assessment over time (Koriat, Lichtenstein, &amp; Fischhoff, 1980; Moore &amp; Healy, 2008).",
+    "Practice2": "Note that the exercises on confidence calibration usually don\u2019t have correct answers, although we do suggest the answers we believe reflect appropriate levels of uncertainty.",
+    "Ref_Lichtenstein": "Lichtenstein, S., Fischhoff, B., &amp; Phillips, L. D. (1982). Calibration of probabilities: The state of the art to 1980. In <em>Judgment under uncertainty: Heuristics and biases</em> (pp. 306\u2013334). Cambridge University Press.",
+    "Ref_Griffin": "Griffin, D., &amp; Tversky, A. (1992). The weighing of evidence and the determinants of confidence. <em>Cognitive Psychology, 24</em>(3), 411\u2013435.",
+    "Ref_Koriat": "Koriat, A., Lichtenstein, S., &amp; Fischhoff, B. (1980). Reasons for confidence. <em>Journal of Experimental Psychology: Human Learning and Memory, 6</em>(2), 107\u2013118.",
+    "Ref_Moore": "Moore, D. A., &amp; Healy, P. J. (2008). The trouble with overconfidence. <em>Psychological Review, 115</em>(2), 502\u2013517."
 }

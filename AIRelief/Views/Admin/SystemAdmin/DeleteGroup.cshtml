@@ -1,19 +1,20 @@
+@inject IStringLocalizer<AdminSystemAdminDeleteGroupResource> L
 @model AIRelief.Models.Group
 @{
-    ViewData["Title"] = "Delete Group";
+    ViewData["Title"] = L["PageTitle"].Value;
 }
 
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title" style="margin: 0;">Delete Group</h1>
+        <h1 class="admin-title" style="margin: 0;">@L["DeleteGroup"]</h1>
         <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Groups
+            <i class="fas fa-arrow-left"></i> @L["BackToGroups"]
         </a>
     </div>
 
     <div class="alert alert-danger">
         <i class="fas fa-exclamation-triangle"></i>
-        <strong>Warning:</strong> This action cannot be undone. Deleting this group will remove all associated user relationships and settings.
+        <strong>Warning:</strong> @L["DeleteWarning"]
     </div>
 
     <div class="admin-card">
@@ -22,22 +23,22 @@
         </div>
         <div class="admin-card-body">
             <dl class="row">
-                <dt class="col-sm-3">Plan</dt>
+                <dt class="col-sm-3">@L["Plan"]</dt>
                 <dd class="col-sm-9">@Model.PlanName</dd>
 
-                <dt class="col-sm-3">Licenses</dt>
+                <dt class="col-sm-3">@L["Licenses"]</dt>
                 <dd class="col-sm-9">@Model.NumberOfUserLicenses</dd>
 
-                <dt class="col-sm-3">Expiry (Days)</dt>
-                <dd class="col-sm-9">@(Model.ExpiryDays.HasValue ? Model.ExpiryDays.ToString() : "None")</dd>
+                <dt class="col-sm-3">@L["ExpiryDays"]</dt>
+                <dd class="col-sm-9">@(Model.ExpiryDays.HasValue ? Model.ExpiryDays.ToString() : L["None"].Value)</dd>
 
-                <dt class="col-sm-3">Query Frequency</dt>
+                <dt class="col-sm-3">@L["QueryFrequency"]</dt>
                 <dd class="col-sm-9">@Model.QueryFrequency</dd>
 
-                <dt class="col-sm-3">Passing Grade</dt>
+                <dt class="col-sm-3">@L["PassingGrade"]</dt>
                 <dd class="col-sm-9">@Model.QueryPassingGrade%</dd>
 
-                <dt class="col-sm-3">Created Date</dt>
+                <dt class="col-sm-3">@L["CreatedDate"]</dt>
                 <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
             </dl>
 
@@ -47,9 +48,9 @@
                 @Html.AntiForgeryToken()
                 <div class="admin-card-footer">
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash"></i> Delete Permanently
+                        <i class="fas fa-trash"></i> @L["DeletePermanently"]
                     </button>
-                    <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">Cancel</a>
+                    <a href="/Admin/SystemAdmin/Groups" class="btn btn-secondary">@L["Cancel"]</a>
                 </div>
             </form>
         </div>

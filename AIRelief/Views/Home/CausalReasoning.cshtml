@@ -47,36 +47,13 @@
             </div>
 
             <section class="mb-5">
-                <p>
-                    Causal reasoning is the ability to understand how and why things happen, not just whether they
-                    occur together. It helps us tell real causes from coincidences, recognize when outcomes have
-                    multiple contributing factors, and evaluate what might happen if we intervene or make a change
-                    (Pearl, 2009). These skills are important in everyday life. They help us interpret health advice,
-                    assess policy claims, and judge whether a product, habit, or decision is actually responsible
-                    for an observed result.
-                </p>
-                <p>
-                    In the age of AI, causal reasoning faces a particular risk. Many AI systems excel at finding
-                    patterns and associations, but they do not explain causal structures. When people rely on
-                    AI-generated summaries or predictions without questioning the underlying causal logic, they
-                    may become more vulnerable to misleading before-and-after comparisons, spurious correlations,
-                    and overconfident policy claims (Hernán &amp; Robins, 2020). Maintaining causal reasoning
-                    skills helps users question conclusions, ask the right follow-up questions, and avoid accepting
-                    polished explanations that rest on weak causal foundations.
-                </p>
+                <p>@Html.Raw(L["Intro1"].Value)</p>
+                <p>@Html.Raw(L["Intro2"].Value)</p>
             </section>
 
             <section class="mb-5">
                 <h2 class="h4 mb-3">@L["HowPracticeHelps"]</h2>
-                <p>
-                    Causal reasoning improves with deliberate practice that focuses on thinking about structure
-                    rather than doing calculations. Exercises that ask people to identify confounders, consider
-                    alternative explanations, separate causes from mechanisms, or reason about counterfactuals
-                    build the mental habits needed to evaluate causal claims (Sloman &amp; Lagnado, 2015).
-                    Practicing these scenarios helps people recognize common pitfalls and become more skilled at
-                    spotting weak arguments. The goal is not to turn users into statisticians. It is to help them
-                    think more carefully about &ldquo;what caused what&rdquo; in a world full of complex information.
-                </p>
+                <p>@Html.Raw(L["Practice1"].Value)</p>
             </section>
 
             <hr class="my-5" />
@@ -84,18 +61,9 @@
             <section class="mb-4">
                 <h2 class="h5 mb-3">@L["References"]</h2>
                 <ul class="list-unstyled ps-2" style="font-size:0.9rem; color:var(--text-muted);">
-                    <li class="mb-2">
-                        Hernán, M. A., &amp; Robins, J. M. (2020). <em>Causal inference: What if.</em>
-                        Boca Raton, FL: Chapman &amp; Hall/CRC.
-                    </li>
-                    <li class="mb-2">
-                        Pearl, J. (2009). <em>Causality: Models, reasoning, and inference</em> (2nd ed.).
-                        Cambridge: Cambridge University Press.
-                    </li>
-                    <li class="mb-2">
-                        Sloman, S. A., &amp; Lagnado, D. A. (2015). Causal inference in thinking and decision
-                        making. <em>Annual Review of Psychology, 66</em>, 245–267.
-                    </li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Hernan"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Pearl"].Value)</li>
+                    <li class="mb-2">@Html.Raw(L["Ref_Sloman"].Value)</li>
                 </ul>
             </section>
 

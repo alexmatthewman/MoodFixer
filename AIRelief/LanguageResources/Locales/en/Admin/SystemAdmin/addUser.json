@@ -1,10 +1,12 @@
 {
     "PageTitle": "Add User",
-    "AddUser": "Add User to Group",
-    "Name": "Name",
+    "AddUserToGroup": "Add User to {0}",
+    "BackToGroup": "Back to Group",
+    "UserDetails": "User Details",
+    "FullName": "Full Name",
     "Email": "Email",
+    "AuthLevel": "Authentication Level",
     "Password": "Password",
-    "AuthLevel": "Auth Level",
-    "Create": "Create",
-    "BackToUsers": "Back to Users"
+    "AddUser": "Add User",
+    "Cancel": "Cancel"
 }
