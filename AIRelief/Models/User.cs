@@ -29,7 +29,7 @@ namespace AIRelief.Models
         public int? GroupId { get; set; }
 
         [ForeignKey("GroupId")]
-        public Group Group { get; set; }
+        public Group? Group { get; set; }
 
         [Display(Name = "Account Expiry Date")]
         public DateTime? ExpiryDate { get; set; }
@@ -48,8 +48,8 @@ namespace AIRelief.Models
         public QueryFrequency? QueryFrequency { get; set; }
 
         // Navigation properties
-        public UserStatistics Statistics { get; set; }
-        public ICollection<UserQuestion> UserQuestions { get; set; }
-        public ActiveLesson ActiveLesson { get; set; }
+        public UserStatistics? Statistics { get; set; }
+        public ICollection<UserQuestion> UserQuestions { get; set; } = new List<UserQuestion>();
+        public ActiveLesson? ActiveLesson { get; set; }
     }
 }
