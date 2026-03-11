@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using AIRelief.Models;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AIRelief.Theming
 {
@@ -9,9 +8,8 @@ namespace AIRelief.Theming
     {
         public void PopulateValues(ViewLocationExpanderContext context)
         {
-            var tenant = context.ActionContext.HttpContext
-                .RequestServices.GetRequiredService<TenantConfig>();
-            context.Values["theme"] = tenant.ThemeFolder;
+            var tenant = context.ActionContext.HttpContext.Items["Tenant"] as TenantConfig;
+            context.Values["theme"] = tenant?.ThemeFolder ?? "relief";
         }
 
         public IEnumerable<string> ExpandViewLocations(

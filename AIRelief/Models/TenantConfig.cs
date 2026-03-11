@@ -7,6 +7,6 @@ namespace AIRelief.Models
         public string[] SupportedLanguages { get; set; } = ["en"];
         public string SiteName { get; set; } = "AI Relief";
         public string ThemeFolder { get; set; } = "relief";
-        public string HostName { get; set; } = "localhost";
+        public string[] HostNames { get; set; } = [];
     }
 }

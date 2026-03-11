@@ -15,6 +15,7 @@ using AIRelief.Theming;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 
 namespace AIRelief
 {
@@ -29,8 +30,18 @@ namespace AIRelief
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var tenantConfig = Configuration.GetSection("Tenant").Get<TenantConfig>() ?? new TenantConfig();
-            services.AddSingleton(tenantConfig);
+            var tenantsSection = Configuration.GetSection("Tenants");
+            var tenantDict = new Dictionary<string, TenantConfig>();
+
+            foreach (var child in tenantsSection.GetChildren())
+            {
+                var tenant = child.Get<TenantConfig>();
+                if (tenant is not null)
+                    tenantDict[child.Key] = tenant;
+            }
+
+            var registry = new TenantRegistry(tenantDict);
+            services.AddSingleton(registry);
 
             services.AddDbContext<AIReliefContext>(options => options.UseNpgsql(Configuration.GetConnectionString("IdentityConnection")));
 
