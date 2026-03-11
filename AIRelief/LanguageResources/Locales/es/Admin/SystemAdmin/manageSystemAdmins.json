@@ -1,0 +1,15 @@
+{
+    "PageTitle": "Gestionar administradores del sistema",
+    "SystemAdministrators": "Administradores del sistema",
+    "AddSystemAdmin": "Agregar administrador del sistema",
+    "AllSystemAdmins": "Todos los administradores del sistema ({0})",
+    "NoSystemAdmins": "No se encontraron administradores del sistema.",
+    "Name": "Nombre",
+    "Email": "Correo electr\u00f3nico",
+    "Created": "Creado",
+    "Actions": "Acciones",
+    "CurrentUser": "Usuario actual",
+    "Remove": "Eliminar",
+    "ConfirmRemove": "\u00bfEst\u00e1s seguro de que deseas eliminar a {0} como administrador del sistema? Esto cambiar\u00e1 su nivel de autorizaci\u00f3n a Usuario.",
+    "Close": "Cerrar"
+}

@@ -1,0 +1,16 @@
+{
+    "PageTitle": "Editar usuario",
+    "EditUserTitle": "Editar usuario - {0}",
+    "BackToUsers": "Volver a usuarios",
+    "UserSettings": "Configuraci\u00f3n del usuario",
+    "FullName": "Nombre completo",
+    "Email": "Correo electr\u00f3nico",
+    "Group": "Grupo",
+    "NoGroup": "\u2014 Sin grupo \u2014",
+    "QueryFrequency": "Frecuencia de consulta",
+    "InheritedFromGroup": "Heredado del grupo: {0}",
+    "SelectFrequency": "\u2014 Seleccionar frecuencia \u2014",
+    "RequiredForNonGroupUsers": "Requerido para usuarios que no est\u00e1n en un grupo.",
+    "SaveChanges": "Guardar cambios",
+    "Cancel": "Cancelar"
+}

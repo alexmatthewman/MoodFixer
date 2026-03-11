@@ -1,0 +1,22 @@
+{
+    "PageTitle": "Gesti\u00f3n masiva de preguntas",
+    "BulkQuestionManagement": "Gesti\u00f3n masiva de preguntas",
+    "DownloadAllQuestions": "Descargar todas las preguntas",
+    "DownloadAllDesc": "Exportar todas las preguntas actualmente en la base de datos como un archivo CSV.",
+    "BulkQuestionDownload": "Descarga masiva de preguntas",
+    "UploadQuestions": "Subir preguntas",
+    "UploadDesc": "Sube un archivo CSV para importar preguntas. Las filas donde <strong>MainText</strong> o <strong>QuestionText</strong> ya existen en la base de datos ser\u00e1n omitidas.",
+    "BulkQuestionUpload": "Subida masiva de preguntas",
+    "DownloadTemplate": "Descargar plantilla",
+    "DownloadTemplateDesc": "Descarga una plantilla CSV con dos preguntas de ejemplo mostrando el formato de columnas correcto para la subida.",
+    "BulkQuestionTemplate": "Plantilla masiva de preguntas",
+    "RemoveAllQuestions": "Eliminar todas las preguntas",
+    "RemoveAllDesc": "Eliminar permanentemente todas las preguntas de la base de datos. Se descargar\u00e1 autom\u00e1ticamente una copia de seguridad CSV completa antes de la eliminaci\u00f3n.",
+    "AreYouSure": "\u00bfEst\u00e1s seguro?",
+    "RemoveAllWarning1": "Esto <strong>eliminar\u00e1 permanentemente todas las preguntas</strong> de la base de datos.",
+    "RemoveAllWarning2": "Se descargar\u00e1 una copia de seguridad CSV de todas las preguntas a tu computadora antes de la eliminaci\u00f3n.",
+    "CannotBeUndone": "Esta acci\u00f3n no se puede deshacer.",
+    "Cancel": "Cancelar",
+    "YesDeleteAll": "S\u00ed, eliminar todo y descargar copia de seguridad",
+    "Close": "Cerrar"
+}

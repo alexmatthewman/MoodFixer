@@ -1,0 +1,19 @@
+{
+    "PageTitle": "Gestionar grupos",
+    "GroupManagement": "Gesti\u00f3n de grupos",
+    "CreateNewGroup": "Crear nuevo grupo",
+    "NoGroupsFound": "No se encontraron grupos.",
+    "CreateFirstGroup": "Crea tu primer grupo",
+    "AllGroups": "Todos los grupos ({0})",
+    "Name": "Nombre",
+    "Plan": "Plan",
+    "Licenses": "Licencias",
+    "ExpiryDays": "Vencimiento (d\u00edas)",
+    "QueryFrequency": "Frecuencia de consulta",
+    "Actions": "Acciones",
+    "View": "Ver",
+    "Details": "Detalles",
+    "Edit": "Editar",
+    "Delete": "Eliminar",
+    "ConfirmDelete": "\u00bfEst\u00e1s seguro de que deseas eliminar el grupo '{0}'?"
+}

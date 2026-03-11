@@ -1,0 +1,12 @@
+{
+    "PageTitle": "Mi historial de preguntas",
+    "NoAttemptsYet": "A\u00fan no has intentado ninguna pregunta.",
+    "AttemptedQuestions": "Preguntas intentadas ({0})",
+    "QuestionText": "Texto de la pregunta",
+    "MainText": "Texto principal",
+    "Category": "Categor\u00eda",
+    "DateAnswered": "Fecha de respuesta",
+    "Correct": "Correcto",
+    "Yes": "S\u00ed",
+    "No": "No"
+}

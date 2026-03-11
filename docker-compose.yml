@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: aireliefdb
+      POSTGRES_USER: airelief
+      POSTGRES_PASSWORD: localdev123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airelief -d aireliefdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  airelief:
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Tenant__MarketCode=relief
+      - Tenant__DefaultLanguage=en
+      - Tenant__SupportedLanguages__0=en
+      - Tenant__ThemeFolder=relief
+      - Tenant__SiteName=AI Relief
+      - Tenant__HostName=localhost
+      - ConnectionStrings__IdentityConnection=Host=db;Database=aireliefdb;Username=airelief;Password=localdev123
+    depends_on:
+      db:
+        condition: service_healthy
+
+  aicag:
+    build: .
+    ports:
+      - "8082:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Tenant__MarketCode=aicag
+      - Tenant__DefaultLanguage=en
+      - Tenant__SupportedLanguages__0=en
+      - Tenant__ThemeFolder=aicag
+      - Tenant__SiteName=AICAG
+      - Tenant__HostName=localhost
+      - ConnectionStrings__IdentityConnection=Host=db;Database=aireliefdb;Username=airelief;Password=localdev123
+    depends_on:
+      db:
+        condition: service_healthy
+
+  aidescanso:
+    build: .
+    ports:
+      - "8083:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Tenant__MarketCode=descanso
+      - Tenant__DefaultLanguage=es
+      - Tenant__SupportedLanguages__0=es
+      - Tenant__ThemeFolder=descanso
+      - Tenant__SiteName=AI Descanso
+      - Tenant__HostName=localhost
+      - ConnectionStrings__IdentityConnection=Host=db;Database=aireliefdb;Username=airelief;Password=localdev123
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

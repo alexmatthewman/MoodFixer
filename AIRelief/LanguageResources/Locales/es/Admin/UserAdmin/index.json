@@ -1,0 +1,13 @@
+{
+    "PageTitle": "Gestionar usuarios",
+    "UserManagement": "Gesti\u00f3n de usuarios",
+    "NoUsersFound": "No se encontraron usuarios.",
+    "AllUsers": "Todos los usuarios ({0})",
+    "Name": "Nombre",
+    "Email": "Correo electr\u00f3nico",
+    "Group": "Grupo",
+    "AuthLevel": "Nivel de autorizaci\u00f3n",
+    "Created": "Creado",
+    "LastQuestionAttempt": "\u00daltimo intento de pregunta",
+    "Never": "Nunca"
+}

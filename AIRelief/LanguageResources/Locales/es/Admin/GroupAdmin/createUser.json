@@ -1,0 +1,12 @@
+{
+    "PageTitle": "Agregar usuario",
+    "AddUserToGroup": "Agregar usuario a {0}",
+    "BackToUsers": "Volver a usuarios",
+    "UserDetails": "Detalles del usuario",
+    "FullName": "Nombre completo",
+    "Email": "Correo electr\u00f3nico",
+    "AuthLevel": "Nivel de autenticaci\u00f3n",
+    "Password": "Contrase\u00f1a",
+    "AddUser": "Agregar usuario",
+    "Cancel": "Cancelar"
+}

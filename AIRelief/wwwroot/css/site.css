@@ -493,7 +493,7 @@ footer {
 
 /* Hero Section */
 .hero-section {
-    padding: 2rem 0;
+    padding: 3rem 0 4rem;
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     position: relative;
     overflow: hidden;
@@ -636,20 +636,19 @@ footer {
         height: 100%;
         object-fit: cover;
         transition: all 0.3s ease;
-        opacity: 0.7;
-        filter: contrast(1.1) saturate(0.8);
-        mix-blend-mode: overlay;
+        opacity: 0.85;
+        filter: contrast(1.1) saturate(0.9);
     }
 
 [data-theme="light"] .problem-image img {
-    mix-blend-mode: multiply;
-    opacity: 0.6;
+    opacity: 0.8;
+    filter: contrast(1.05) saturate(0.85);
 }
 
 .problem-card:hover .problem-image img {
     transform: scale(1.05);
-    opacity: 0.9;
-    filter: contrast(1.2) saturate(1);
+    opacity: 1;
+    filter: contrast(1.15) saturate(1);
 }
 
 .problem-link {
@@ -709,14 +708,12 @@ footer {
         border-radius: 20px;
         box-shadow: 0 15px 35px var(--shadow-color);
         transition: transform 0.3s ease;
-        opacity: 0.8;
-        filter: contrast(1.1) brightness(1.1);
-        mix-blend-mode: screen;
+        opacity: 0.9;
+        filter: contrast(1.05) brightness(1.05);
     }
 
 [data-theme="light"] .solution-image img {
-    mix-blend-mode: multiply;
-    filter: contrast(0.9) brightness(0.9);
+    filter: contrast(1) brightness(1);
 }
 
 .solution-image:hover img {
@@ -786,20 +783,24 @@ footer {
 /* CTA Section */
 .cta-section {
     padding: 5rem 0;
-    background: linear-gradient(135deg, var(--text-accent) 0%, var(--text-secondary) 100%);
-    color: var(--btn-text);
+    background: linear-gradient(135deg, #1a3a5c 0%, #0f2b44 100%);
+    color: #ffffff;
+}
+
+[data-theme="light"] .cta-section {
+    background: linear-gradient(135deg, #1a3a5c 0%, #0f4c3a 100%);
 }
 
 .cta-title {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: var(--btn-text);
+    color: #ffffff;
 }
 
 .cta-subtitle {
     font-size: 1.1rem;
     margin-bottom: 3rem;
-    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .cta-buttons {
@@ -810,8 +811,7 @@ footer {
 }
 
 .cta-guarantee {
-    color: var(--btn-text);
-    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.85);
 }
 
     .cta-guarantee i {
@@ -820,24 +820,24 @@ footer {
 
 /* CTA Button Overrides */
 .cta-section .btn-primary {
-    background-color: var(--bg-primary);
-    color: var(--text-accent);
-    border-color: var(--bg-primary);
+    background-color: #ffffff;
+    color: #1a3a5c;
+    border-color: #ffffff;
 }
 
     .cta-section .btn-primary:hover {
-        background-color: var(--bg-secondary);
-        color: var(--text-secondary);
+        background-color: #e8e8e8;
+        color: #0f2b44;
     }
 
 .cta-section .btn-outline-primary {
-    border-color: var(--btn-text);
-    color: var(--btn-text);
+    border-color: #ffffff;
+    color: #ffffff;
 }
 
     .cta-section .btn-outline-primary:hover {
-        background-color: var(--btn-text);
-        color: var(--text-accent);
+        background-color: #ffffff;
+        color: #1a3a5c;
     }
 
 /* Testimonials Section */

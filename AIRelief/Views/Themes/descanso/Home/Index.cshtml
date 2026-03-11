@@ -1,13 +1,11 @@
-﻿@inject IStringLocalizer<HomeIndexResource> L
 @inject AIRelief.Services.CompositeTranslationService T
+@inject IStringLocalizer<HomeIndexResource> L
 @{
     ViewData["Title"] = L["PageTitle"].Value;
-
 }
 
 @section Scripts {
     <script type="text/javascript">
-        // Image fallback handling
         function handleImageError(img) {
             img.style.display = 'none';
             const fallback = img.nextElementSibling;
@@ -16,7 +14,6 @@
             }
         }
 
-        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -26,24 +23,15 @@
             });
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('animate-in'); }
             });
         }, observerOptions);
 
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.fade-in-section').forEach(el => {
-                observer.observe(el);
-            });
+            document.querySelectorAll('.fade-in-section').forEach(el => { observer.observe(el); });
         });
     </script>
 }
@@ -56,9 +44,7 @@
             <h1 class="hero-title">
                 @T.Get("HeroTitle_Prefix") <span class="text-accent">@T.Get("HeroTitle_Accent")</span>
             </h1>
-            <p class="hero-subtitle">
-                @T.Get("HeroSubtitle")
-            </p>
+            <p class="hero-subtitle">@T.Get("HeroSubtitle")</p>
                 <div class="hero-stats">
                     <div class="stat-item">
                         <span class="stat-number">@L["Stat_SkillAtrophy_Number"]</span>
@@ -76,12 +62,12 @@
             </div>
             <div class="col-lg-6">
                 <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop&q=80"
-                         alt="AI and Human Brain Balance"
+                    <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=400&fit=crop&q=80"
+                         alt="Majestic tree in golden light"
                          class="img-fluid hero-main-image"
                          onerror="handleImageError(this)" />
                     <div class="image-fallback">
-                        <i class="fas fa-brain fa-8x"></i>
+                        <i class="fas fa-tree fa-8x"></i>
                         <p>@L["ImageFallback_Brain"]</p>
                     </div>
                 </div>
@@ -89,9 +75,7 @@
         </div>
     </div>
     <div class="scroll-indicator">
-        <a href="#problem" class="scroll-arrow">
-            <i class="fas fa-chevron-down"></i>
-        </a>
+        <a href="#problem" class="scroll-arrow"><i class="fas fa-chevron-down"></i></a>
     </div>
 </section>
 
@@ -101,9 +85,7 @@
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h2 class="section-title">@L["HiddenCostTitle"]</h2>
-                <p class="section-subtitle">
-                    @L["HiddenCostSubtitle"]
-                </p>
+                <p class="section-subtitle">@L["HiddenCostSubtitle"]</p>
             </div>
         </div>
 
@@ -111,12 +93,10 @@
             <div class="col-md-4 mb-4">
                 <div class="problem-card">
                     <div class="problem-image">
-                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&q=80"
-                             alt="Brain with gears"
+                        <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=300&h=200&fit=crop&q=80"
+                             alt="Tree canopy looking up"
                              onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-brain fa-3x"></i>
-                        </div>
+                        <div class="image-fallback"><i class="fas fa-tree fa-3x"></i></div>
                     </div>
                     <h3>@L["CognitiveOffloading"]</h3>
                     <p>@L["CognitiveOffloadingDesc"]</p>
@@ -129,12 +109,10 @@
             <div class="col-md-4 mb-4">
                 <div class="problem-card">
                     <div class="problem-image">
-                        <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=300&h=200&fit=crop&q=80"
-                             alt="Puzzle pieces"
+                        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=300&h=200&fit=crop&q=80"
+                             alt="Sunlight through olive trees"
                              onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-puzzle-piece fa-3x"></i>
-                        </div>
+                        <div class="image-fallback"><i class="fas fa-leaf fa-3x"></i></div>
                     </div>
                     <h3>@L["ProblemSolvingAtrophy"]</h3>
                     <p>@L["ProblemSolvingAtrophyDesc"]</p>
@@ -147,12 +125,10 @@
             <div class="col-md-4 mb-4">
                 <div class="problem-card">
                     <div class="problem-image">
-                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=300&h=200&fit=crop&q=80"
-                             alt="Lightbulb and innovation"
+                        <img src="https://images.unsplash.com/photo-1510218830377-2e994ea9087d?w=300&h=200&fit=crop&q=80"
+                             alt="Ancient tree roots"
                              onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-lightbulb fa-3x"></i>
-                        </div>
+                        <div class="image-fallback"><i class="fas fa-seedling fa-3x"></i></div>
                     </div>
                     <h3>@L["CreativeThinkingDecline"]</h3>
                     <p>@L["CreativeThinkingDeclineDesc"]</p>
@@ -163,7 +139,6 @@
             </div>
         </div>
 
-        <!-- Call to action after problem presentation -->
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="problem-cta">
@@ -184,47 +159,37 @@
         <div class="row align-items-center">
             <div class="col-lg-6 order-lg-2">
                 <div class="solution-image">
-                    <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&h=400&fit=crop&q=80"
-                         alt="Critical thinking process flowchart"
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=400&fit=crop&q=80"
+                         alt="Forest path through trees"
                          class="img-fluid"
                          onerror="handleImageError(this)" />
                     <div class="image-fallback">
-                        <i class="fas fa-project-diagram fa-6x"></i>
+                        <i class="fas fa-tree fa-6x"></i>
                         <p>@L["ImageFallback_CriticalThinking"]</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
                 <h2 class="section-title">@T.Get("CognitiveFitnessProgramTitle")</h2>
-                <p class="section-subtitle">
-                    @T.Get("CognitiveFitnessProgramSubtitle")
-                </p>
+                <p class="section-subtitle">@T.Get("CognitiveFitnessProgramSubtitle")</p>
 
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-target"></i>
-                        </div>
+                        <div class="feature-icon"><i class="fas fa-target"></i></div>
                         <div class="feature-content">
                             <h4>@L["TargetedSkillAssessment"]</h4>
                             <p>@L["TargetedSkillAssessmentDesc"]</p>
                         </div>
                     </div>
-
                     <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
+                        <div class="feature-icon"><i class="fas fa-dumbbell"></i></div>
                         <div class="feature-content">
                             <h4>@L["ProgressiveTraining"]</h4>
                             <p>@L["ProgressiveTrainingDesc"]</p>
                         </div>
                     </div>
-
                     <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
                         <div class="feature-content">
                             <h4>@L["MeasurableProgress"]</h4>
                             <p>@L["MeasurableProgressDesc"]</p>
@@ -232,7 +197,6 @@
                     </div>
                 </div>
 
-                <!-- Trial CTA in solution section -->
                 <div class="solution-cta mt-4">
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary">
                         @L["TrySampleQuestions"] <i class="fas fa-play"></i>
@@ -249,9 +213,7 @@
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h2 class="section-title">@L["HowItWorksTitle"]</h2>
-                <p class="section-subtitle">
-                    @L["HowItWorksSubtitle"]
-                </p>
+                <p class="section-subtitle">@L["HowItWorksSubtitle"]</p>
             </div>
         </div>
 
@@ -260,60 +222,45 @@
                 <div class="process-step">
                     <div class="step-number">1</div>
                     <div class="step-icon">
-                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=150&h=150&fit=crop&q=80"
-                             alt="Assessment clipboard"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-clipboard-list fa-3x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=150&h=150&fit=crop&q=80"
+                             alt="Seedling growth" onerror="handleImageError(this)" />
+                        <div class="image-fallback"><i class="fas fa-seedling fa-3x"></i></div>
                     </div>
                     <h4>@L["Step1_Title"]</h4>
                     <p>@L["Step1_Desc"]</p>
                 </div>
             </div>
-
             <div class="col-md-3 mb-4">
                 <div class="process-step">
                     <div class="step-number">2</div>
                     <div class="step-icon">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=150&h=150&fit=crop&q=80"
-                             alt="Training and education"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-graduation-cap fa-3x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=150&h=150&fit=crop&q=80"
+                             alt="Growing tree" onerror="handleImageError(this)" />
+                        <div class="image-fallback"><i class="fas fa-tree fa-3x"></i></div>
                     </div>
                     <h4>@L["Step2_Title"]</h4>
                     <p>@L["Step2_Desc"]</p>
                 </div>
             </div>
-
             <div class="col-md-3 mb-4">
                 <div class="process-step">
                     <div class="step-number">3</div>
                     <div class="step-icon">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=150&h=150&fit=crop&q=80"
-                             alt="Practice and application"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-code fa-3x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=150&h=150&fit=crop&q=80"
+                             alt="Forest canopy" onerror="handleImageError(this)" />
+                        <div class="image-fallback"><i class="fas fa-leaf fa-3x"></i></div>
                     </div>
                     <h4>@L["Step3_Title"]</h4>
                     <p>@L["Step3_Desc"]</p>
                 </div>
             </div>
-
             <div class="col-md-3 mb-4">
                 <div class="process-step">
                     <div class="step-number">4</div>
                     <div class="step-icon">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=150&h=150&fit=crop&q=80"
-                             alt="Progress tracking charts"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback">
-                            <i class="fas fa-chart-bar fa-3x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=150&h=150&fit=crop&q=80"
+                             alt="Mature forest" onerror="handleImageError(this)" />
+                        <div class="image-fallback"><i class="fas fa-chart-bar fa-3x"></i></div>
                     </div>
                     <h4>@L["Step4_Title"]</h4>
                     <p>@L["Step4_Desc"]</p>
@@ -321,7 +268,6 @@
             </div>
         </div>
 
-        <!-- Process CTA -->
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="process-cta">
@@ -342,28 +288,18 @@
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h2 class="cta-title">@T.Get("ReadyToReclaim")</h2>
-                <p class="cta-subtitle">
-                    @T.Get("JoinDevelopers")
-                </p>
-
+                <p class="cta-subtitle">@T.Get("JoinDevelopers")</p>
                 <div class="cta-buttons">
-                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
-                        @L["StartFreeTrialAssessment"]
-                    </a>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">@L["StartFreeTrialAssessment"]</a>
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
-                        <a asp-controller="Questions" asp-action="Index" class="btn btn-outline-primary btn-lg">
-                            @L["AccessFullProgram"]
-                        </a>
+                        <a asp-controller="Questions" asp-action="Index" class="btn btn-outline-primary btn-lg">@L["AccessFullProgram"]</a>
                     }
                     else
                     {
-                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
-                            @L["SignUpForFullAccess"]
-                        </a>
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">@L["SignUpForFullAccess"]</a>
                     }
                 </div>
-
                 <div class="cta-guarantee">
                     <i class="fas fa-shield-alt"></i>
                     <span>@L["TrialGuarantee"]</span>
@@ -386,19 +322,12 @@
             <div class="col-md-4 mb-4">
                 <div class="testimonial-card">
                     <div class="testimonial-avatar">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&q=80&crop=face"
-                             alt="Sarah Chen"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback small">
-                            <i class="fas fa-user-circle fa-2x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="@T.Get("Testimonial1_Name")" onerror="handleImageError(this)" />
+                        <div class="image-fallback small"><i class="fas fa-user-circle fa-2x"></i></div>
                     </div>
                     <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
                     <p>"@T.Get("Testimonial1_Quote")"</p>
                     <div class="testimonial-author">
@@ -407,23 +336,15 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4 mb-4">
                 <div class="testimonial-card">
                     <div class="testimonial-avatar">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&q=80&crop=face"
-                             alt="Marcus Rodriguez"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback small">
-                            <i class="fas fa-user-circle fa-2x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="@T.Get("Testimonial2_Name")" onerror="handleImageError(this)" />
+                        <div class="image-fallback small"><i class="fas fa-user-circle fa-2x"></i></div>
                     </div>
                     <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
                     <p>"@T.Get("Testimonial2_Quote")"</p>
                     <div class="testimonial-author">
@@ -432,23 +353,15 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4 mb-4">
                 <div class="testimonial-card">
                     <div class="testimonial-avatar">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80&crop=face"
-                             alt="David Kim"
-                             onerror="handleImageError(this)" />
-                        <div class="image-fallback small">
-                            <i class="fas fa-user-circle fa-2x"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=80&h=80&fit=crop&q=80&crop=face"
+                             alt="@T.Get("Testimonial3_Name")" onerror="handleImageError(this)" />
+                        <div class="image-fallback small"><i class="fas fa-user-circle fa-2x"></i></div>
                     </div>
                     <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
                     <p>"@T.Get("Testimonial3_Quote")"</p>
                     <div class="testimonial-author">
@@ -459,15 +372,12 @@
             </div>
         </div>
 
-        <!-- Final testimonial CTA -->
         <div class="row mt-5">
             <div class="col-lg-8 mx-auto text-center">
                 <div class="testimonial-cta">
                     <h3>@L["SeeWhatYouThink"]</h3>
                     <p>@L["SeeWhatYouThinkDesc"]</p>
-                    <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary btn-lg">
-                        @L["TakeTrialAssessment"]
-                    </a>
+                    <a asp-controller="Trial" asp-action="Index" class="btn btn-outline-primary btn-lg">@L["TakeTrialAssessment"]</a>
                 </div>
             </div>
         </div>

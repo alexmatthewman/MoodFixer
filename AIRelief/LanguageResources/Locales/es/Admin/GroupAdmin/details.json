@@ -1,0 +1,16 @@
+{
+    "PageTitle": "Detalles del usuario",
+    "BackToUsers": "Volver a usuarios",
+    "UserInformation": "Informaci\u00f3n del usuario",
+    "AuthLevel": "Nivel de autorizaci\u00f3n",
+    "Created": "Creado",
+    "LastQuestionAttempt": "\u00daltimo intento de pregunta",
+    "Never": "Nunca",
+    "UserStatistics": "Estad\u00edsticas del usuario",
+    "CognitiveReflection": "Reflexi\u00f3n cognitiva",
+    "ReadingComprehension": "Comprensi\u00f3n lectora",
+    "CausalReasoning": "Razonamiento causal",
+    "Metacognition": "Metacognici\u00f3n",
+    "ShortTermMemory": "Memoria a corto plazo",
+    "ConfidenceCalibration": "Calibraci\u00f3n de confianza"
+}

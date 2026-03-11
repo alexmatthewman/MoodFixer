@@ -1,14 +1,221 @@
 /*
- * aicag theme
+/*
+ * aicag theme — Modern Clinical
  *
- * Theme-specific overrides for the "aicag" market.
- * This file is loaded after site.css so selectors here take precedence.
+ * Sharp, screen-wide transitions. No rounding, no borders on cards.
+ * Clean sans-serif typography. Brain-related imagery (unique from relief).
  *
  * Available assets in /themes/aicag/:
  *   logo.png, hero.jpg, favicon.ico, og-image.jpg
  */
 
+/* ?? colour tokens ??????????????????????????????????????? */
 :root {
-    --theme-primary: #2c3e50;
-    --theme-secondary: #e74c3c;
+    --theme-primary:   #0a2540;
+    --theme-secondary: #00c2b2;
+
+    /* override site.css base palette for dark mode */
+    --bg-primary:      #0b0f14;
+    --bg-secondary:    #111820;
+    --bg-tertiary:     #1a222d;
+    --text-primary:    #e2e8f0;
+    --text-secondary:  #00c2b2;
+    --text-accent:     #38bdf8;
+    --text-muted:      #94a3b8;
+    --border-color:    #1e293b;
+    --border-accent:   #00c2b2;
+    --btn-text:        #0b0f14;
+    --error-color:     #f87171;
+    --success-color:   #00c2b2;
+    --shadow-color:    rgba(0, 194, 178, 0.08);
+    --glow-color:      rgba(0, 194, 178, 0.15);
 }
+
+[data-theme="light"] {
+    --bg-primary:      #f8fafc;
+    --bg-secondary:    #f1f5f9;
+    --bg-tertiary:     #ffffff;
+    --text-primary:    #0f172a;
+    --text-secondary:  #0a2540;
+    --text-accent:     #0284c7;
+    --text-muted:      #64748b;
+    --border-color:    #e2e8f0;
+    --border-accent:   #0284c7;
+    --btn-text:        #ffffff;
+    --error-color:     #dc2626;
+    --success-color:   #0284c7;
+    --shadow-color:    rgba(2, 132, 199, 0.08);
+    --glow-color:      rgba(2, 132, 199, 0.12);
+}
+
+/* ?? typography ?????????????????????????????????????????? */
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* ?? remove ALL rounding (clinical / sharp) ?????????????? */
+.container,
+.admin-card,
+.question-card,
+.problem-card,
+.testimonial-card,
+.problem-cta,
+.process-cta,
+.testimonial-cta,
+.results-card,
+.feedback-content,
+.answer-option,
+.btn,
+.btn-primary,
+.form-control,
+.form-select,
+.modal-content,
+.admin-stat-item,
+.stat-box,
+.domain-stat,
+.admin-filter,
+.table-responsive,
+.stat-badge,
+.step-icon img,
+.hero-main-image,
+.solution-image img,
+.question-image img,
+.footer-theme-toggle,
+.progress,
+.progress-bar,
+.question-situation-box,
+.question-question-box {
+    border-radius: 0 !important;
+}
+
+.testimonial-avatar img {
+    border-radius: 0 !important;
+}
+
+.feature-icon {
+    border-radius: 0 !important;
+}
+
+/* ?? headings: no underline border ??????????????????????? */
+h1, h2, h3, h4, h5, h6 {
+    border-bottom: none !important;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* ?? full-width sections ????????????????????????????????? */
+.hero-section,
+.problem-section,
+.solution-section,
+.how-it-works-section,
+.cta-section,
+.testimonials-section {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ?? sharp dividers between sections ????????????????????? */
+.problem-section,
+.how-it-works-section {
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* ?? cards: minimal border, no shadow until hover ???????? */
+.problem-card,
+.testimonial-card {
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.problem-card:hover,
+.testimonial-card:hover {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 0 1px var(--border-accent);
+    transform: none;
+}
+
+/* ?? navigation: sharp bottom edge ??????????????????????? */
+.navbar {
+    border-bottom: 2px solid var(--border-accent) !important;
+    border-radius: 0 !important;
+}
+
+/* ?? CTA section: flat colour band ??????????????????????? */
+.cta-section {
+    background: var(--theme-primary) !important;
+    color: #ffffff !important;
+}
+
+.cta-section .cta-title {
+    color: #ffffff !important;
+}
+
+.cta-section .cta-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.cta-section .cta-guarantee {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.cta-section .btn-primary {
+    background-color: var(--theme-secondary) !important;
+    color: var(--theme-primary) !important;
+    border-color: var(--theme-secondary) !important;
+}
+
+.cta-section .btn-primary:hover {
+    filter: brightness(1.15);
+}
+
+.cta-section .btn-outline-primary {
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.cta-section .btn-outline-primary:hover {
+    background-color: #ffffff !important;
+    color: var(--theme-primary) !important;
+}
+
+/* ?? buttons: sharp, no glow sweep ??????????????????????? */
+.btn-primary::before {
+    display: none;
+}
+
+.btn-primary:hover {
+    transform: none;
+    box-shadow: none;
+    filter: brightness(1.15);
+}
+
+/* ?? container: remove animated border glow ?????????????? */
+.container:hover {
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+/* ?? answer options: flat interaction ???????????????????? */
+.answer-option::before {
+    display: none;
+}
+
+.answer-option:hover {
+    transform: none;
+    box-shadow: inset 0 0 0 2px var(--border-accent);
+}
+
+/* ?? footer: sharp divider ??????????????????????????????? */
+footer {
+    border-top: 2px solid var(--border-accent) !important;
+}
+
+/* ?? problem-image: square crop ?????????????????????????? */
+.problem-image {
+    border-radius: 0;
+}
+
+/* ?? link font import (Inter) ???????????????????????????? */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');

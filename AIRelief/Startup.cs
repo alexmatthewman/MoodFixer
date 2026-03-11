@@ -58,6 +58,7 @@ namespace AIRelief
                 .AddRazorRuntimeCompilation();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();
+            services.AddHealthChecks();
             services.AddScoped<AIRelief.Services.AdminAuthorizationService>();
             services.AddScoped<AIRelief.Services.CompositeTranslationService>();
             services.AddSession(options =>
@@ -107,6 +108,7 @@ namespace AIRelief
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapRazorPages();
 
                 endpoints.MapControllerRoute(

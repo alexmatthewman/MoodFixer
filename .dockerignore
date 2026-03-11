@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/.git
+**/.vs
+**/Dockerfile*
+**/.dockerignore
+*.md
+*.suo
+*.user
+**/Properties/PublishProfiles/
+appsettings.Development.json
+AIRelief.Tests/
+SqliteMigrator/

@@ -1,0 +1,11 @@
+{
+    "PageTitle": "Agregar administrador del sistema",
+    "AddSystemAdmin": "Agregar administrador del sistema",
+    "BackToSystemAdmins": "Volver a administradores del sistema",
+    "NewSystemAdminDetails": "Detalles del nuevo administrador del sistema",
+    "FullName": "Nombre completo",
+    "Email": "Correo electr\u00f3nico",
+    "Password": "Contrase\u00f1a",
+    "AddSystemAdminButton": "Agregar administrador del sistema",
+    "Cancel": "Cancelar"
+}

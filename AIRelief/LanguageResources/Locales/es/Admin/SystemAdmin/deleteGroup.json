@@ -1,0 +1,15 @@
+{
+    "PageTitle": "Eliminar grupo",
+    "DeleteGroup": "Eliminar grupo",
+    "BackToGroups": "Volver a grupos",
+    "DeleteWarning": "Esta acci\u00f3n no se puede deshacer. Eliminar este grupo eliminar\u00e1 todas las relaciones de usuario y configuraciones asociadas.",
+    "Plan": "Plan",
+    "Licenses": "Licencias",
+    "ExpiryDays": "Vencimiento (d\u00edas)",
+    "None": "Ninguno",
+    "QueryFrequency": "Frecuencia de consulta",
+    "PassingGrade": "Nota de aprobaci\u00f3n",
+    "CreatedDate": "Fecha de creaci\u00f3n",
+    "DeletePermanently": "Eliminar permanentemente",
+    "Cancel": "Cancelar"
+}

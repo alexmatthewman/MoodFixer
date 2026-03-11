@@ -1,0 +1,23 @@
+{
+    "PageTitle": "Configuraci\u00f3n del grupo",
+    "GroupSettingsSubtitle": "Configuraci\u00f3n del grupo",
+    "BackToUsers": "Volver a usuarios",
+    "Appearance": "Apariencia",
+    "GroupLogoUrl": "URL del logotipo del grupo/empresa",
+    "GroupLogoHelp": "Opcional - se muestra en las p\u00e1ginas de lecci\u00f3n y resumen.",
+    "PrimaryThemeColor": "Color primario del tema",
+    "SecondaryThemeColor": "Color secundario del tema",
+    "HexCodeHelp": "C\u00f3digo hexadecimal, ej. {0}",
+    "PickAColour": "Elegir un color",
+    "LessonSettings": "Configuraci\u00f3n de lecciones",
+    "TimeToCompleteDays": "Tiempo para completar (d\u00edas)",
+    "TimeToCompleteHelp": "Cu\u00e1ntos d\u00edas tienen los usuarios para completar cada conjunto de lecciones.",
+    "PassingGrade": "Nota de aprobaci\u00f3n (%)",
+    "PassingGradeHelp": "Porcentaje m\u00ednimo para considerar aprobado.",
+    "QuestionSelectionMode": "Modo de selecci\u00f3n de preguntas",
+    "FocussedQuestions": "Preguntas enfocadas",
+    "RandomQuestions": "Preguntas aleatorias",
+    "OnlyOneModeHelp": "Solo un modo puede estar activo a la vez.",
+    "SaveSettings": "Guardar configuraci\u00f3n",
+    "Cancel": "Cancelar"
+}

@@ -15,5 +15,5 @@
     "Administration": "Administration",
     "DarkMode": "Dark Mode",
     "ToggleTheme": "Toggle theme",
-    "FooterCopyright": "© {0}"
+    "FooterCopyright": "\u00a9 {0}"
 }

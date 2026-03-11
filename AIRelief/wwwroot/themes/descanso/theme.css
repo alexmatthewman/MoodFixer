@@ -1,14 +1,335 @@
 /*
- * descanso theme
+/*
+ * descanso theme — Tuscan Warmth
  *
- * Theme-specific overrides for the "descanso" market.
- * This file is loaded after site.css so selectors here take precedence.
+ * Terracotta, olive, ochre, warm cream. Organic shapes.
+ * Flat coloured panels, no boxing, page-width section transitions.
+ * Tree iconography throughout. All imagery unique from relief & aicag.
  *
  * Available assets in /themes/descanso/:
  *   logo.png, hero.jpg, favicon.ico, og-image.jpg
  */
 
+/* ?? colour tokens ??????????????????????????????????????? */
 :root {
-    --theme-primary: #8e44ad;
-    --theme-secondary: #f39c12;
+    --theme-primary:   #a0522d;   /* Sienna / terracotta */
+    --theme-secondary: #6b8e23;   /* Olive drab         */
+
+    /* dark-mode palette */
+    --bg-primary:      #1a1410;
+    --bg-secondary:    #221c14;
+    --bg-tertiary:     #2d241a;
+    --text-primary:    #f5e6d3;
+    --text-secondary:  #d4a574;
+    --text-accent:     #8fbc5e;
+    --text-muted:      #a08c76;
+    --border-color:    #3d3228;
+    --border-accent:   #a0522d;
+    --btn-text:        #1a1410;
+    --error-color:     #e07a5f;
+    --success-color:   #8fbc5e;
+    --shadow-color:    rgba(160, 82, 45, 0.10);
+    --glow-color:      rgba(160, 82, 45, 0.18);
+}
+
+[data-theme="light"] {
+    --bg-primary:      #faf6f1;
+    --bg-secondary:    #f3ece3;
+    --bg-tertiary:     #ffffff;
+    --text-primary:    #3b2f20;
+    --text-secondary:  #6b4226;
+    --text-accent:     #4a7c2e;
+    --text-muted:      #8c7a66;
+    --border-color:    #ddd0c0;
+    --border-accent:   #a0522d;
+    --btn-text:        #ffffff;
+    --error-color:     #c0392b;
+    --success-color:   #4a7c2e;
+    --shadow-color:    rgba(160, 82, 45, 0.08);
+    --glow-color:      rgba(160, 82, 45, 0.12);
+}
+
+/* ?? typography ?????????????????????????????????????????? */
+body {
+    font-family: "Georgia", "Palatino Linotype", "Book Antiqua", Palatino, serif !important;
+}
+
+/* ?? remove boxing: no borders / shadows on containers ?? */
+.container {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.container:hover {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ?? page-wide flat sections ????????????????????????????? */
+.hero-section,
+.problem-section,
+.solution-section,
+.how-it-works-section,
+.cta-section,
+.testimonials-section {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50%);
+    padding-right: calc(50vw - 50%);
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* ?? alternating flat colour bands ??????????????????????? */
+.hero-section {
+    background: linear-gradient(170deg, var(--bg-primary) 0%, var(--bg-secondary) 100%) !important;
+}
+
+.problem-section {
+    background-color: var(--bg-secondary) !important;
+    border: none !important;
+}
+
+.solution-section {
+    background-color: var(--bg-primary) !important;
+}
+
+.how-it-works-section {
+    background-color: var(--bg-secondary) !important;
+}
+
+.testimonials-section {
+    background-color: var(--bg-primary) !important;
+}
+
+/* ?? CTA section: warm tuscan gradient, full width ??????? */
+.cta-section {
+    background: linear-gradient(135deg, #6b4226 0%, #4a7c2e 100%) !important;
+    color: #ffffff !important;
+}
+
+.cta-section .cta-title {
+    color: #ffffff !important;
+}
+
+.cta-section .cta-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.cta-section .cta-guarantee {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.cta-section .btn-primary {
+    background-color: #ffffff !important;
+    color: #6b4226 !important;
+    border-color: #ffffff !important;
+}
+
+.cta-section .btn-primary:hover {
+    background-color: #f3ece3 !important;
+    color: #4a7c2e !important;
+}
+
+.cta-section .btn-outline-primary {
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.cta-section .btn-outline-primary:hover {
+    background-color: #ffffff !important;
+    color: #6b4226 !important;
+}
+
+/* ?? cards: borderless, flat background panels ??????????? */
+.problem-card {
+    background-color: var(--bg-tertiary) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    padding: 2rem;
+}
+
+.problem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px var(--shadow-color) !important;
+}
+
+.testimonial-card {
+    background-color: var(--bg-tertiary) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+}
+
+.testimonial-card:hover {
+    box-shadow: 0 8px 20px var(--shadow-color) !important;
+}
+
+/* ?? CTA panels: flat, no border ????????????????????????? */
+.problem-cta,
+.process-cta,
+.testimonial-cta {
+    background-color: var(--bg-tertiary) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+}
+
+.problem-cta:hover,
+.process-cta:hover,
+.testimonial-cta:hover {
+    box-shadow: 0 6px 18px var(--shadow-color) !important;
+}
+
+/* ?? headings: warm underline, not full border ??????????? */
+h1, h2, h3, h4, h5, h6 {
+    border-bottom: none !important;
+}
+
+.section-title {
+    border-bottom: 3px solid var(--theme-primary) !important;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+/* ?? buttons: warm rounded, organic feel ????????????????? */
+.btn {
+    border-radius: 8px !important;
+}
+
+.btn-primary {
+    background-color: var(--theme-primary) !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--theme-secondary) !important;
+    border-color: var(--theme-secondary) !important;
+}
+
+.btn-primary::before {
+    display: none;
+}
+
+.btn-primary:hover {
+    transform: none;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* ?? navigation: simple warm accent ?????????????????????? */
+.navbar {
+    border-bottom: 3px solid var(--theme-primary) !important;
+}
+
+/* ?? footer: warm earthy divider ????????????????????????? */
+footer {
+    border-top: 3px solid var(--theme-primary) !important;
+}
+
+/* ?? problem-image: warm organic rounding ???????????????? */
+.problem-image {
+    border-radius: 12px !important;
+}
+
+.problem-image img {
+    filter: contrast(1.05) saturate(1.1) sepia(10%) !important;
+}
+
+/* ?? hero image: organic warm feel ??????????????????????? */
+.hero-main-image {
+    border-radius: 16px !important;
+    filter: sepia(8%) saturate(1.15) !important;
+}
+
+/* ?? step icons: earthy ?????????????????????????????????? */
+.step-icon img {
+    filter: sepia(20%) hue-rotate(-10deg) saturate(1.1) !important;
+    border-color: var(--theme-primary) !important;
+    border-radius: 12px !important;
+}
+
+.step-number {
+    background-color: var(--theme-primary) !important;
+    border-radius: 8px !important;
+}
+
+/* ?? feature icons: olive background ????????????????????? */
+.feature-icon {
+    background-color: var(--theme-secondary) !important;
+    border-radius: 12px !important;
+}
+
+/* ?? solution image: organic rounding ???????????????????? */
+.solution-image img {
+    border-radius: 16px !important;
+}
+
+/* ?? testimonial avatars: organic ???????????????????????? */
+.testimonial-avatar img {
+    border-color: var(--theme-primary) !important;
+}
+
+/* ?? score and stat elements: earthy accent ?????????????? */
+.score-circle {
+    border-color: var(--theme-primary) !important;
+}
+
+/* ?? admin cards: flat, borderless ??????????????????????? */
+.admin-card {
+    border: none !important;
+    background-color: var(--bg-secondary) !important;
+    box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
+.admin-card:hover {
+    box-shadow: 0 6px 18px var(--shadow-color) !important;
+}
+
+/* ?? admin stat items: flat panels ??????????????????????? */
+.admin-stat-item {
+    border: none !important;
+    background-color: var(--bg-tertiary) !important;
+}
+
+/* ?? question cards: flat, no border ????????????????????? */
+.question-card {
+    border: none !important;
+    background-color: var(--bg-secondary) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+.question-card:hover {
+    box-shadow: 0 4px 16px var(--shadow-color) !important;
+}
+
+/* ?? answer options: soft warmth ????????????????????????? */
+.answer-option {
+    border-radius: 10px !important;
+    border: 2px solid var(--border-color) !important;
+}
+
+.answer-option:hover {
+    border-color: var(--theme-primary) !important;
+    box-shadow: 0 4px 12px var(--shadow-color) !important;
+}
+
+.answer-option::before {
+    display: none;
+}
+
+/* ?? feedback content: organic rounding ?????????????????? */
+.feedback-content {
+    border-radius: 16px !important;
+}
+
+/* ?? results card: flat ?????????????????????????????????? */
+.results-card {
+    border: none !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
 }

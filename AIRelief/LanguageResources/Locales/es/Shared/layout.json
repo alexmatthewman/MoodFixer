@@ -1,19 +1,19 @@
 {
-    "ToggleNavigation": "Alternar navegación",
+    "ToggleNavigation": "Alternar navegaci\u00f3n",
     "About": "Acerca de",
     "AboutUs": "Sobre nosotros",
     "CausalReasoning": "Razonamiento causal",
-    "CognitiveReflection": "Reflexión cognitiva",
-    "Metacognition": "Metacognición",
-    "ReadingComprehension": "Comprensión lectora",
+    "CognitiveReflection": "Reflexi\u00f3n cognitiva",
+    "Metacognition": "Metacognici\u00f3n",
+    "ReadingComprehension": "Comprensi\u00f3n lectora",
     "ShortTermMemory": "Memoria a corto plazo",
-    "ConfidenceCalibration": "Calibración de confianza",
+    "ConfidenceCalibration": "Calibraci\u00f3n de confianza",
     "Questions": "Preguntas",
     "ListQuestions": "Lista de preguntas",
     "CreateNew": "Crear nueva",
     "MyQuestions": "Mis preguntas",
-    "Administration": "Administración",
+    "Administration": "Administraci\u00f3n",
     "DarkMode": "Modo oscuro",
     "ToggleTheme": "Alternar tema",
-    "FooterCopyright": "© {0}"
+    "FooterCopyright": "\u00a9 {0}"
 }

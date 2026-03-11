@@ -1,0 +1,22 @@
+{
+    "PageTitle": "Gestionar usuarios",
+    "UserManagement": "Gesti\u00f3n de usuarios",
+    "NoUsersFound": "No se encontraron usuarios.",
+    "AllUsers": "Todos los usuarios ({0})",
+    "Name": "Nombre",
+    "Email": "Correo electr\u00f3nico",
+    "Group": "Grupo",
+    "AuthLevel": "Nivel de autorizaci\u00f3n",
+    "Created": "Creado",
+    "LastQuestionAttempt": "\u00daltimo intento de pregunta",
+    "Never": "Nunca",
+    "Actions": "Acciones",
+    "QueryFrequency": "Frecuencia de consulta",
+    "GroupLabel": "(grupo)",
+    "Edit": "Editar",
+    "Questions": "Preguntas",
+    "CurrentUser": "Usuario actual",
+    "Delete": "Eliminar",
+    "ConfirmDelete": "\u00bfEst\u00e1s seguro de que deseas eliminar a {0}?",
+    "Close": "Cerrar"
+}

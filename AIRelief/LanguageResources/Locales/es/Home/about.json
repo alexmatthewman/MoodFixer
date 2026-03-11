@@ -1,0 +1,22 @@
+{
+    "PageTitle": "Acerca de",
+    "WhoAreWe": "\u00bfQui\u00e9nes somos?",
+    "WhoAreWeDesc1": "Somos un equipo multidisciplinario interesado en c\u00f3mo las personas piensan, aprenden y toman decisiones. Nuestro equipo tiene sede en Brisbane, Australia, con fuertes v\u00ednculos con dos de las principales universidades locales. Incluimos un profesor de econom\u00eda del comportamiento, un psiquiatra consultor certificado por RANZCP y un cient\u00edfico inform\u00e1tico enfocado en IA que ha trabajado para m\u00faltiples empresas tecnol\u00f3gicas.",
+    "WhoAreWeDesc2": "Nuestra experiencia combinada en investigaci\u00f3n, pr\u00e1ctica cl\u00ednica y tecnolog\u00eda nos permite crear ejercicios y herramientas cuidadosamente dirigidos a abordar los tipos de atrofia cognitiva que es probable que traiga la dependencia de la IA.",
+    "AboutExercises": "Sobre los ejercicios",
+    "AboutExercisesDesc1": "Hemos reunido una serie de problemas dise\u00f1ados para fortalecer diversas habilidades susceptibles de atrofiarse por la exposici\u00f3n continua a la IA. Cada uno toma la forma de un p\u00e1rrafo corto para leer y una respuesta de opci\u00f3n m\u00faltiple. Sin embargo, a diferencia de las evaluaciones acad\u00e9micas t\u00edpicas realizadas en escuelas o universidades, el objetivo aqu\u00ed no siempre es obtener la respuesta \"correcta\". M\u00e1s bien, el enfoque m\u00e1s beneficioso es participar, pensar profundamente y concentrarse en entrenar la habilidad subyacente. Haz los ejercicios lentamente y no evites el esfuerzo mental.",
+    "AboutExercisesDesc2": "Nuestras preguntas var\u00edan en t\u00e9rminos de dificultad, y a veces (deliberadamente) implican lidiar con ambig\u00fcedad, lo que significa que varias respuestas podr\u00edan ser adecuadas. En estos casos, hemos marcado las respuestas que consideramos m\u00e1s apropiadas (con una explicaci\u00f3n) pero ten en cuenta que otras respuestas pueden ser igual de v\u00e1lidas, especialmente cuando hay juicios de valor subjetivos involucrados.",
+    "ExercisesTarget": "Nuestros ejercicios se enfocan en:",
+    "CognitiveReflection": "Reflexi\u00f3n cognitiva",
+    "CognitiveReflectionDesc": "Examinar argumentos superficialmente plausibles",
+    "ReadingComprehension": "Comprensi\u00f3n lectora",
+    "ReadingComprehensionDesc": "Dar sentido a textos e ideas complicados",
+    "CausalReasoning": "Razonamiento causal",
+    "CausalReasoningDesc": "Distinguir la asociaci\u00f3n de la causalidad",
+    "Metacognition": "Metacognici\u00f3n",
+    "MetacognitionDesc": "Pensar sobre el pensamiento",
+    "ShortTermMemory": "Memoria a corto plazo",
+    "ShortTermMemoryDesc": "Mantener/recordar simult\u00e1neamente m\u00faltiples piezas de informaci\u00f3n",
+    "ConfidenceCalibration": "Calibraci\u00f3n de confianza",
+    "ConfidenceCalibrationDesc": "Desarrollar la intuici\u00f3n sobre los l\u00edmites del conocimiento"
+}

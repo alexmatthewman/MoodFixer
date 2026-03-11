@@ -1,12 +1,46 @@
 {
   "profiles": {
-    "AIRelief": {
+    "AI Relief": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Tenant__MarketCode": "relief",
+        "Tenant__DefaultLanguage": "en",
+        "Tenant__SupportedLanguages__0": "en",
+        "Tenant__ThemeFolder": "relief",
+        "Tenant__SiteName": "AI Relief",
+        "Tenant__HostName": "localhost"
       },
       "applicationUrl": "https://localhost:61375;http://localhost:61376"
+    },
+    "AICAG": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Tenant__MarketCode": "aicag",
+        "Tenant__DefaultLanguage": "en",
+        "Tenant__SupportedLanguages__0": "en",
+        "Tenant__ThemeFolder": "aicag",
+        "Tenant__SiteName": "AICAG",
+        "Tenant__HostName": "localhost"
+      },
+      "applicationUrl": "https://localhost:61377;http://localhost:61378"
+    },
+    "AI Descanso": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Tenant__MarketCode": "descanso",
+        "Tenant__DefaultLanguage": "es",
+        "Tenant__SupportedLanguages__0": "es",
+        "Tenant__ThemeFolder": "descanso",
+        "Tenant__SiteName": "AI Descanso",
+        "Tenant__HostName": "localhost"
+      },
+      "applicationUrl": "https://localhost:61379;http://localhost:61380"
     }
   }
 }
