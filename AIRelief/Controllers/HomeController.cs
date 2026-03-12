@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using AIRelief.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,13 +15,22 @@ namespace AIRelief.Controllers
     {
         private readonly AIReliefContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(AIReliefContext context, UserManager<IdentityUser> userManager)
+        public HomeController(AIReliefContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
+        private string GetCurrentTenantCode()
+        {
+            var tenant = HttpContext.Items["Tenant"] as TenantConfig;
+            return tenant?.MarketCode ?? "relief";
+        }
+
+        [OutputCache(PolicyName = "AnonymousOnly")]
         public async Task<IActionResult> Index()
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -31,6 +40,16 @@ namespace AIRelief.Controllers
                 {
                     var appUser = await _context.Users
                         .FirstOrDefaultAsync(u => u.Email == identityUser.Email);
+
+                    // Deny access if user's tenant doesn't match the current site (SystemAdmins are exempt)
+                    if (appUser != null && appUser.AuthLevel != AuthLevel.SystemAdmin
+                        && !string.Equals(appUser.TenantCode, GetCurrentTenantCode(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        await _signInManager.SignOutAsync();
+                        TempData["ErrorMessage"] = "Your account is not associated with this site.";
+                        return View();
+                    }
+
                     if (appUser?.AuthLevel == AuthLevel.User || appUser?.AuthLevel == AuthLevel.GroupAdmin)
                         return RedirectToAction("Index", "Lesson");
                 }
@@ -38,36 +57,43 @@ namespace AIRelief.Controllers
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult About()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult CausalReasoning()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult CognitiveReflection()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult Metacognition()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult ReadingComprehension()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult ShortTermMemory()
         {
             return View();
         }
 
+        [OutputCache(PolicyName = "PublicAlways")]
         public IActionResult ConfidenceCalibration()
         {
             return View();
@@ -100,7 +126,7 @@ namespace AIRelief.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
 
         

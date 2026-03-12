@@ -16,7 +16,7 @@ public class UserAccessControllerTests
         var user = await fixture.CreateAppUserAsync("TestUser1", "testuser1@testgroup.local", AuthLevel.User, group.ID);
         fixture.SetCurrentUser(user);
 
-        var controller = fixture.InitializeController(new HomeController(fixture.Context, fixture.UserManager));
+        var controller = fixture.InitializeController(new HomeController(fixture.Context, fixture.UserManager, fixture.SignInManager));
 
         var result = await controller.Index();
 
@@ -55,7 +55,7 @@ public class UserAccessControllerTests
         await fixture.Context.SaveChangesAsync();
 
         fixture.SetCurrentUser(user1);
-        var controller = fixture.InitializeController(new HomeController(fixture.Context, fixture.UserManager));
+        var controller = fixture.InitializeController(new HomeController(fixture.Context, fixture.UserManager, fixture.SignInManager));
 
         var result = await controller.MyQuestions();
 

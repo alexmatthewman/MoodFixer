@@ -1,0 +1,129 @@
+@inject IStringLocalizer<ContactIndexResource> L
+
+@inject IStringLocalizer<ContactIndexResource> L
+
+@{
+    ViewData["Title"] = L["PageTitle"].Value;
+}
+
+<section class="contact-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-4">
+                    <h1 class="admin-title">@L["Title"]</h1>
+                    <p class="text-muted">@L["Subtitle"]</p>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <div class="admin-card">
+                    <div class="admin-card-body">
+                        <form asp-controller="Contact" asp-action="Submit" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">@L["NameLabel"]</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" class="form-control" id="name" name="name" required maxlength="400"
+                                           placeholder="@L["NamePlaceholder"]" />
+                                    <span class="text-danger text-nowrap">* Required</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">@L["EmailLabel"]</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="email" class="form-control" id="email" name="email" required maxlength="256"
+                                           placeholder="@L["EmailPlaceholder"]" />
+                                    <span class="text-danger text-nowrap">* Required</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="type" class="form-label">@L["TypeLabel"]</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <select class="form-select" id="type" name="type" required>
+                                        <option value="Inquiry">@L["TypeInquiry"]</option>
+                                        <option value="Complaint">@L["TypeComplaint"]</option>
+                                        <option value="Bug">@L["TypeBug"]</option>
+                                        <option value="Feedback">@L["TypeFeedback"]</option>
+                                    </select>
+                                    <span class="text-danger text-nowrap">* Required</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">@L["MessageLabel"]</label>
+                                <div class="d-flex align-items-start gap-2">
+                                    <textarea class="form-control" id="message" name="message" rows="6" required maxlength="5000"
+                                              placeholder="@L["MessagePlaceholder"]"></textarea>
+                                    <span class="text-danger text-nowrap mt-1">* Required</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="image-upload-group">
+                                <label for="image" class="form-label">@L["ImageLabel"]</label>
+                                <input type="file" class="form-control" id="image" name="image" accept=".jpg,.jpeg,.png" />
+                                <div class="form-text">@L["ImageHelp"]</div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">@L["SubmitButton"]</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        (function () {
+            var typeSelect = document.getElementById('type');
+            var messageField = document.getElementById('message');
+            var imageGroup = document.getElementById('image-upload-group');
+
+            var bugPrompt = '@Html.Raw(L["BugSummaryPrompt"].Value)\n\n'
+                + '@Html.Raw(L["BugPagePrompt"].Value)\n\n'
+                + '@Html.Raw(L["BugErrorPrompt"].Value)\n';
+
+            function onTypeChange() {
+                var val = typeSelect.value;
+                if (val === 'Bug') {
+                    if (!messageField.value.trim()) {
+                        messageField.value = bugPrompt;
+                    }
+                    imageGroup.style.display = '';
+                } else {
+                    if (messageField.value === bugPrompt) {
+                        messageField.value = '';
+                    }
+                    if (val === 'Bug') {
+                        imageGroup.style.display = '';
+                    } else {
+                        imageGroup.style.display = '';
+                    }
+                }
+            }
+
+            typeSelect.addEventListener('change', onTypeChange);
+        })();
+    </script>
+}

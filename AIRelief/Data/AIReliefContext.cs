@@ -52,10 +52,25 @@ namespace AIRelief.Models
                 .HasForeignKey<ActiveLesson>(al => al.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Index on User.TenantCode for tenant-scoped queries
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.TenantCode);
+
+            // Index on Group.TenantCode for tenant-scoped queries
+            modelBuilder.Entity<Group>()
+                .HasIndex(g => g.TenantCode);
+
             // Unique index on Translation (Key + Language + Market)
             modelBuilder.Entity<Translation>(e =>
             {
                 e.HasIndex(t => new { t.Key, t.Language, t.Market })
+                 .IsUnique();
+            });
+
+            // Unique index on EmailTemplate (TemplateKey + Language + Market)
+            modelBuilder.Entity<EmailTemplate>(e =>
+            {
+                e.HasIndex(t => new { t.TemplateKey, t.Language, t.Market })
                  .IsUnique();
             });
         }
@@ -70,6 +85,8 @@ namespace AIRelief.Models
         public DbSet<UserQuestion> UserQuestions { get; set; }
         public DbSet<ActiveLesson> ActiveLessons { get; set; }
         public DbSet<Translation> Translations { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         // No SaveChanges overrides here — PlanName is optional and should not be forced.
     }

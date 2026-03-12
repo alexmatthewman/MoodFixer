@@ -165,7 +165,7 @@
                         <h1 class="trial-title mb-0">@L["YourLesson"]</h1>
                         <div class="progress-indicator flex-grow-1">
                             <span class="progress-text">
-                                @L["QuestionXOfY", "<span id='current-question-num'>" + (startIndex + 1) + "</span>", totalQ]
+                                @Html.Raw(L["QuestionXOfY", "<span id='current-question-num'>" + (startIndex + 1) + "</span>", totalQ])
                             </span>
                             @{
                                 int initialPct = totalQ > 0 ? (int)((double)startIndex / totalQ * 100) : 0;

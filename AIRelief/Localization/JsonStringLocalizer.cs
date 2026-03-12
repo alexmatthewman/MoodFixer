@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 namespace AIRelief.Localization
 {
@@ -14,11 +15,13 @@ namespace AIRelief.Localization
         private readonly ConcurrentDictionary<string, Dictionary<string, string>> _cache = new();
         private readonly string _localesPath;
         private readonly string _namespace;
+        private readonly ILogger _logger;
 
-        public JsonStringLocalizer(string localesPath, string ns = null)
+        public JsonStringLocalizer(string localesPath, string ns = null, ILogger logger = null)
         {
             _localesPath = localesPath;
             _namespace = ns;
+            _logger = logger;
         }
 
         public LocalizedString this[string name]
@@ -103,14 +106,22 @@ namespace AIRelief.Localization
             });
         }
 
-        private static Dictionary<string, string> LoadJsonFile(string path)
+        private Dictionary<string, string> LoadJsonFile(string path)
         {
             if (!File.Exists(path))
                 return new Dictionary<string, string>();
 
-            var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<Dictionary<string, string>>(json)
-                   ?? new Dictionary<string, string>();
+            try
+            {
+                var json = File.ReadAllText(path);
+                return JsonSerializer.Deserialize<Dictionary<string, string>>(json)
+                       ?? new Dictionary<string, string>();
+            }
+            catch (JsonException ex)
+            {
+                _logger?.LogError(ex, "Failed to parse locale file '{Path}'. Skipping.", path);
+                return new Dictionary<string, string>();
+            }
         }
     }
 }

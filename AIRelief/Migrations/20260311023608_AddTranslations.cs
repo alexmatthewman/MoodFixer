@@ -11,6 +11,22 @@ namespace AIRelief.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "TenantCode",
+                table: "Users",
+                type: "character varying(50)",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "relief");
+
+            migrationBuilder.AddColumn<string>(
+                name: "TenantCode",
+                table: "Groups",
+                type: "character varying(50)",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "relief");
+
             migrationBuilder.CreateTable(
                 name: "Translations",
                 columns: table => new
@@ -28,6 +44,16 @@ namespace AIRelief.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_TenantCode",
+                table: "Users",
+                column: "TenantCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_TenantCode",
+                table: "Groups",
+                column: "TenantCode");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Translations_Key_Language_Market",
                 table: "Translations",
                 columns: new[] { "Key", "Language", "Market" },
@@ -39,6 +65,22 @@ namespace AIRelief.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Translations");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Users_TenantCode",
+                table: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Groups_TenantCode",
+                table: "Groups");
+
+            migrationBuilder.DropColumn(
+                name: "TenantCode",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "TenantCode",
+                table: "Groups");
         }
     }
 }

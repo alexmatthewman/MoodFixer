@@ -34,6 +34,12 @@ namespace AIRelief.Controllers
             return await _authService.GetAppUserAsync(identityUser);
         }
 
+        private string GetCurrentTenantCode()
+        {
+            var tenant = HttpContext.Items["Tenant"] as TenantConfig;
+            return tenant?.MarketCode ?? "relief";
+        }
+
         // ========== GROUP MANAGEMENT ==========
 
         [Route("Index")]
@@ -180,6 +186,7 @@ namespace AIRelief.Controllers
             }
 
             user.GroupId = groupId;
+            user.TenantCode = GetCurrentTenantCode();
             user.CreatedDate = System.DateTime.UtcNow;
             if (group.ExpiryDateTime.HasValue)
                 user.ExpiryDate = group.ExpiryDateTime;
@@ -297,6 +304,7 @@ namespace AIRelief.Controllers
                     Email = email,
                     AuthLevel = authLevel,
                     GroupId = groupId,
+                    TenantCode = GetCurrentTenantCode(),
                     CreatedDate = System.DateTime.UtcNow,
                     ExpiryDate = group.ExpiryDateTime
                 };

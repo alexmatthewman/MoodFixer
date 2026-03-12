@@ -30,6 +30,7 @@
                         <thead>
                             <tr>
                                 <th>@L["Name"]</th>
+                                <th>Tenant</th>
                                 <th>@L["Plan"]</th>
                                 <th>@L["Licenses"]</th>
                                 <th>@L["ExpiryDays"]</th>
@@ -42,6 +43,7 @@
                             {
                                 <tr>
                                     <td><strong>@group.Name</strong></td>
+                                    <td><span class="badge bg-secondary">@group.TenantCode</span></td>
                                     <td>@group.PlanName</td>
                                     <td>
                                         <span class="badge bg-info">@group.NumberOfUserLicenses</span>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,19 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
         Context = new AIReliefContext(Options);
         _serviceProvider = BuildServiceProvider();
         UserManager = CreateUserManagerMock(_identityStore, () => _currentIdentityUser).Object;
+        SignInManager = CreateSignInManagerMock(UserManager).Object;
         AuthorizationService = new AdminAuthorizationService(Context, UserManager);
+        TenantRegistry = new TenantRegistry(new Dictionary<string, TenantConfig>
+        {
+            ["relief"] = new TenantConfig
+            {
+                MarketCode = "relief",
+                DefaultLanguage = "en",
+                SupportedLanguages = ["en"],
+                SiteName = "AI Relief",
+                ThemeFolder = "relief"
+            }
+        });
     }
 
     public AIReliefContext Context { get; }
@@ -39,7 +52,15 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
 
     public UserManager<IdentityUser> UserManager { get; }
 
+    public SignInManager<IdentityUser> SignInManager { get; }
+
     public AdminAuthorizationService AuthorizationService { get; }
+
+    public TenantRegistry TenantRegistry { get; }
+
+    public IEmailService EmailService { get; } = Mock.Of<IEmailService>();
+
+    public IOutputCacheStore OutputCacheStore { get; } = Mock.Of<IOutputCacheStore>();
 
     public Group? TestGroup { get; private set; }
 
@@ -59,7 +80,8 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
             QueryPassingGrade = 50,
             GroupImageUrl = "https://example.com/logo.png",
             QueryQuestionsFocussed = true,
-            QueryQuestionsRandom = false
+            QueryQuestionsRandom = false,
+            TenantCode = "relief"
         };
 
         Context.Groups.Add(group);
@@ -83,6 +105,7 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
             AuthLevel = authLevel,
             GroupId = groupId,
             QueryFrequency = queryFrequency,
+            TenantCode = "relief",
             CreatedDate = DateTime.UtcNow
         };
 
@@ -118,6 +141,15 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
         {
             RequestServices = _serviceProvider,
             Session = new TestSession()
+        };
+
+        httpContext.Items["Tenant"] = new TenantConfig
+        {
+            MarketCode = "relief",
+            DefaultLanguage = "en",
+            SupportedLanguages = ["en"],
+            SiteName = "AI Relief",
+            ThemeFolder = "relief"
         };
 
         var claims = new List<Claim>();
@@ -228,5 +260,26 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
             });
 
         return userManager;
+    }
+
+    private static Mock<SignInManager<IdentityUser>> CreateSignInManagerMock(
+        UserManager<IdentityUser> userManager)
+    {
+        var contextAccessor = new Mock<IHttpContextAccessor>();
+        var claimsFactory = new Mock<IUserClaimsPrincipalFactory<IdentityUser>>();
+        var signInManager = new Mock<SignInManager<IdentityUser>>(
+            userManager,
+            contextAccessor.Object,
+            claimsFactory.Object,
+            null!,
+            null!,
+            null!,
+            null!);
+
+        signInManager
+            .Setup(m => m.SignOutAsync())
+            .Returns(Task.CompletedTask);
+
+        return signInManager;
     }
 }

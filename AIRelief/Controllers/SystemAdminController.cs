@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using AIRelief.Models;
 using AIRelief.Services;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AIRelief.Controllers
@@ -19,12 +21,18 @@ namespace AIRelief.Controllers
         private readonly AIReliefContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AdminAuthorizationService _authService;
+        private readonly TenantRegistry _tenantRegistry;
+        private readonly IEmailService _emailService;
+        private readonly IOutputCacheStore _outputCacheStore;
 
-        public SystemAdminController(AIReliefContext context, UserManager<IdentityUser> userManager, AdminAuthorizationService authService)
+        public SystemAdminController(AIReliefContext context, UserManager<IdentityUser> userManager, AdminAuthorizationService authService, TenantRegistry tenantRegistry, IEmailService emailService, IOutputCacheStore outputCacheStore)
         {
             _context = context;
             _userManager = userManager;
             _authService = authService;
+            _tenantRegistry = tenantRegistry;
+            _emailService = emailService;
+            _outputCacheStore = outputCacheStore;
         }
 
         private async Task<User> GetCurrentUserAsync()
@@ -54,6 +62,7 @@ namespace AIRelief.Controllers
             if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
                 return Forbid();
 
+            ViewBag.Tenants = _tenantRegistry.All.ToList();
             return View("~/Views/Admin/SystemAdmin/CreateGroup.cshtml", new Group());
         }
 
@@ -67,7 +76,10 @@ namespace AIRelief.Controllers
                 return Forbid();
 
             if (!ModelState.IsValid)
+            {
+                ViewBag.Tenants = _tenantRegistry.All.ToList();
                 return View("~/Views/Admin/SystemAdmin/CreateGroup.cshtml", group);
+            }
 
             // Ensure only one of the question options is selected: focussed is default
             // The UI will submit QueryQuestionsFocussed as true/false; set Random to the inverse
@@ -98,6 +110,7 @@ namespace AIRelief.Controllers
             if (group == null)
                 return NotFound();
 
+            ViewBag.Tenants = _tenantRegistry.All.ToList();
             return View("~/Views/Admin/SystemAdmin/EditGroup.cshtml", group);
         }
 
@@ -114,7 +127,10 @@ namespace AIRelief.Controllers
                 return NotFound();
 
             if (!ModelState.IsValid)
+            {
+                ViewBag.Tenants = _tenantRegistry.All.ToList();
                 return View("~/Views/Admin/SystemAdmin/EditGroup.cshtml", group);
+            }
 
             group.LastModifiedDate = System.DateTime.UtcNow;
 
@@ -339,6 +355,7 @@ namespace AIRelief.Controllers
             }
 
             user.GroupId = groupId;
+            user.TenantCode = group.TenantCode;
             user.CreatedDate = System.DateTime.UtcNow;
             if (group.ExpiryDateTime.HasValue)
                 user.ExpiryDate = group.ExpiryDateTime;
@@ -453,6 +470,7 @@ namespace AIRelief.Controllers
                     Email = email,
                     AuthLevel = authLevel,
                     GroupId = groupId,
+                    TenantCode = group.TenantCode,
                     CreatedDate = System.DateTime.UtcNow,
                     ExpiryDate = group.ExpiryDateTime
                 };
@@ -962,6 +980,180 @@ namespace AIRelief.Controllers
 
             fields.Add(current.ToString());
             return fields.ToArray();
+        }
+
+        // ========== FEEDBACK ==========
+
+        [Route("Feedback")]
+        public async Task<IActionResult> Feedback()
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var feedbacks = await _context.Feedbacks
+                .OrderByDescending(f => f.CreatedAt)
+                .ToListAsync();
+
+            ViewBag.SystemAdmins = await _context.Users
+                .Where(u => u.AuthLevel == AuthLevel.SystemAdmin)
+                .OrderBy(u => u.Name)
+                .Select(u => u.Name)
+                .ToListAsync();
+            ViewBag.CurrentAdminName = appUser.Name;
+
+            return View("~/Views/Admin/SystemAdmin/Feedback.cshtml", feedbacks);
+        }
+
+        [Route("Feedback/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> FeedbackDetail(int id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var feedback = await _context.Feedbacks.FindAsync(id);
+            if (feedback == null)
+                return NotFound();
+
+            var systemAdmins = await _context.Users
+                .Where(u => u.AuthLevel == AuthLevel.SystemAdmin)
+                .OrderBy(u => u.Name)
+                .Select(u => u.Name)
+                .ToListAsync();
+
+            var currentAdmin = await GetCurrentUserAsync();
+
+            return Json(new
+            {
+                feedback.ID,
+                feedback.Name,
+                feedback.Email,
+                Type = feedback.Type.ToString(),
+                feedback.Message,
+                feedback.ImageFileName,
+                CreatedAt = feedback.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
+                feedback.AssignedTo,
+                feedback.AdminReply,
+                RepliedAt = feedback.RepliedAt?.ToString("yyyy-MM-dd HH:mm"),
+                feedback.TenantCode,
+                SystemAdmins = systemAdmins,
+                CurrentAdminName = currentAdmin?.Name
+            });
+        }
+
+        [Route("Feedback/{id}/Assign")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignFeedback(int id, string assignedTo)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var feedback = await _context.Feedbacks.FindAsync(id);
+            if (feedback == null)
+                return NotFound();
+
+            feedback.AssignedTo = assignedTo?.Trim();
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Feedback #{id} assigned to {feedback.AssignedTo}.";
+            return RedirectToAction(nameof(Feedback));
+        }
+
+        [Route("Feedback/{id}/Remove")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFeedback(int id)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var feedback = await _context.Feedbacks.FindAsync(id);
+            if (feedback == null)
+                return NotFound();
+
+            // Delete attached image if present
+            if (!string.IsNullOrEmpty(feedback.ImageFileName))
+            {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "feedback", feedback.ImageFileName);
+                if (System.IO.File.Exists(imagePath))
+                    System.IO.File.Delete(imagePath);
+            }
+
+            _context.Feedbacks.Remove(feedback);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Feedback #{id} has been removed.";
+            return RedirectToAction(nameof(Feedback));
+        }
+
+        [Route("Feedback/{id}/Reply")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReplyFeedback(int id, string replyMessage)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            var feedback = await _context.Feedbacks.FindAsync(id);
+            if (feedback == null)
+                return NotFound();
+
+            if (string.IsNullOrWhiteSpace(replyMessage))
+            {
+                TempData["ErrorMessage"] = "Reply message cannot be empty.";
+                return RedirectToAction(nameof(Feedback));
+            }
+
+            feedback.AdminReply = replyMessage.Trim();
+            feedback.RepliedAt = System.DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            // Send reply email
+            try
+            {
+                var tenant = HttpContext.Items["Tenant"] as TenantConfig;
+                var siteName = tenant?.SiteName ?? "AI Relief";
+                var subject = $"Response to your {feedback.Type.ToString().ToLowerInvariant()} — {siteName}";
+                var body = $"Dear {feedback.Name},\n\n"
+                    + $"Thank you for your recent {feedback.Type.ToString().ToLowerInvariant()}. A member of our team has reviewed it and would like to share the following response:\n\n"
+                    + $"{feedback.AdminReply}\n\n"
+                    + "If you have any further questions or concerns, please do not hesitate to get in touch.\n\n"
+                    + "Kind regards,\n"
+                    + $"The {siteName} Team";
+
+                await _emailService.SendAsync(feedback.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to send reply email: {ex.Message}");
+            }
+
+            TempData["SuccessMessage"] = $"Reply sent to {feedback.Email}.";
+            return RedirectToAction(nameof(Feedback));
+        }
+
+        // ========== CACHE INVALIDATION ==========
+
+        [Route("EvictCache")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EvictCache(CancellationToken cancellationToken)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            await _outputCacheStore.EvictByTagAsync("market-pages", cancellationToken);
+            await _outputCacheStore.EvictByTagAsync("static-pages", cancellationToken);
+
+            TempData["SuccessMessage"] = "Output cache has been cleared.";
+            return RedirectToAction(nameof(Groups));
         }
     }
 }

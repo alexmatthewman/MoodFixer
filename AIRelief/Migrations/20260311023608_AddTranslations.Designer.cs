@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AIRelief.Migrations
 {
     [DbContext(typeof(AIReliefContext))]
-    [Migration("20260310222028_AddTranslations")]
+    [Migration("20260311023608_AddTranslations")]
     partial class AddTranslations
     {
         /// <inheritdoc />
@@ -123,7 +123,14 @@ namespace AIRelief.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("character varying(7)");
 
+                    b.Property<string>("TenantCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TenantCode");
 
                     b.ToTable("Groups");
                 });
@@ -272,9 +279,16 @@ namespace AIRelief.Migrations
                     b.Property<int?>("QueryFrequency")
                         .HasColumnType("integer");
 
+                    b.Property<string>("TenantCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.HasKey("ID");
 
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("TenantCode");
 
                     b.ToTable("Users");
                 });

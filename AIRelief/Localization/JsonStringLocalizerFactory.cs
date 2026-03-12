@@ -3,16 +3,19 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 namespace AIRelief.Localization
 {
     public class JsonStringLocalizerFactory : IStringLocalizerFactory
     {
         private readonly string _localesPath;
+        private readonly ILogger<JsonStringLocalizer> _logger;
 
-        public JsonStringLocalizerFactory(IWebHostEnvironment env)
+        public JsonStringLocalizerFactory(IWebHostEnvironment env, ILogger<JsonStringLocalizer> logger)
         {
             _localesPath = Path.Combine(env.ContentRootPath, "LanguageResources", "Locales");
+            _logger = logger;
         }
 
         public IStringLocalizer Create(Type resourceSource)
@@ -22,14 +25,14 @@ namespace AIRelief.Localization
             //      HomeIndexResource       ? Home/index
             //      AdminGroupAdminIndexResource ? Admin/GroupAdmin/index
             var ns = MapTypeToNamespace(resourceSource.Name);
-            return new JsonStringLocalizer(_localesPath, ns);
+            return new JsonStringLocalizer(_localesPath, ns, _logger);
         }
 
         public IStringLocalizer Create(string baseName, string location)
         {
             var ns = baseName.Split('.').Last();
             ns = MapTypeToNamespace(ns);
-            return new JsonStringLocalizer(_localesPath, ns);
+            return new JsonStringLocalizer(_localesPath, ns, _logger);
         }
 
         private static string MapTypeToNamespace(string typeName)

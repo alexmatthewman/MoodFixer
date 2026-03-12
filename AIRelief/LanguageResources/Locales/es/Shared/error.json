@@ -1,4 +1,6 @@
 {
     "ErrorTitle": "Error",
-    "ErrorOccurred": "Se produjo un error al procesar su solicitud."
+    "ErrorOccurred": "Se produjo un error al procesar su solicitud.",
+    "ErrorAdminNotified": "Los administradores del sitio han sido notificados e investigarán el problema.",
+    "ErrorBackToHome": "Volver al inicio"
 }

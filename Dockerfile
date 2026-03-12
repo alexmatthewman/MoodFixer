@@ -17,6 +17,12 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# Create directory for Data Protection keys (mount EFS volume here in ECS)
+RUN mkdir -p /app/keys
+
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 

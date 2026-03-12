@@ -75,6 +75,11 @@ namespace AIRelief.Models
         public bool QueryQuestionsFocussed { get; set; } = true;
 
         [Required]
+        [StringLength(50)]
+        [Display(Name = "Tenant")]
+        public string TenantCode { get; set; } = "relief";
+
+        [Required]
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 

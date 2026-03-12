@@ -22,7 +22,7 @@
                     <h1 class="trial-title">@L["Title"]</h1>
                     <p class="trial-subtitle">@L["Subtitle"]</p>
                     <div class="progress-indicator">
-                        <span class="progress-text">@L["QuestionXOfY", "<span id='current-question'>1</span>", 3]</span>
+                        <span class="progress-text">@Html.Raw(L["QuestionXOfY", "<span id='current-question'>1</span>", 3])</span>
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 33%"></div>
                         </div>

@@ -47,6 +47,11 @@ namespace AIRelief.Models
         [Display(Name = "Query Frequency")]
         public QueryFrequency? QueryFrequency { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Tenant")]
+        public string TenantCode { get; set; } = "relief";
+
         // Navigation properties
         public UserStatistics? Statistics { get; set; }
         public ICollection<UserQuestion> UserQuestions { get; set; } = new List<UserQuestion>();

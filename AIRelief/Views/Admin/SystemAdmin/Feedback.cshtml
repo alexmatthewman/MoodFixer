@@ -1,0 +1,198 @@
+@model List<AIRelief.Models.Feedback>
+@inject IStringLocalizer<AdminSystemAdminFeedbackResource> L
+
+@{
+    ViewData["Title"] = L["PageTitle"].Value;
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1 class="admin-title" style="margin: 0;">@L["FeedbackManagement"]</h1>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            @L["NoFeedback"]
+        </div>
+    }
+    else
+    {
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5>@L["AllFeedback", Model.Count]</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>@L["Name"]</th>
+                                <th>@L["Email"]</th>
+                                <th>@L["Type"]</th>
+                                <th>@L["Tenant"]</th>
+                                <th>@L["Date"]</th>
+                                <th>@L["AssignedTo"]</th>
+                                <th>@L["Status"]</th>
+                                <th>@L["Actions"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var fb in Model)
+                            {
+                                <tr>
+                                    <td>@fb.ID</td>
+                                    <td><strong>@fb.Name</strong></td>
+                                    <td>@fb.Email</td>
+                                    <td><span class="badge bg-info">@fb.Type</span></td>
+                                    <td><span class="badge bg-secondary">@fb.TenantCode</span></td>
+                                    <td>@fb.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@(fb.AssignedTo ?? L["Unassigned"].Value)</td>
+                                    <td>
+                                        @if (fb.RepliedAt.HasValue)
+                                        {
+                                            <span class="badge bg-success">@L["Replied"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">@L["Pending"]</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                    onclick="loadFeedback(@fb.ID)">
+                                                @L["View"]
+                                            </button>
+                                            <form method="post" action="/Admin/SystemAdmin/Feedback/@fb.ID/Remove"
+                                                  onsubmit="return confirm('@Html.Raw(L["RemoveConfirm"].Value)')">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">@L["Remove"]</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Feedback Detail Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">@L["FeedbackDetail"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Close"]"></button>
+            </div>
+            <div class="modal-body" id="feedbackModalBody">
+                <div class="text-center"><div class="spinner-border" role="status"></div></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function loadFeedback(id) {
+            var body = document.getElementById('feedbackModalBody');
+            body.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"></div></div>';
+
+            fetch('/Admin/SystemAdmin/Feedback/' + id)
+                .then(function (r) { return r.json(); })
+                .then(function (fb) {
+                    var html = '';
+                    html += '<div class="mb-3"><strong>@Html.Raw(L["From"].Value):</strong> ' + escapeHtml(fb.name) + ' &lt;' + escapeHtml(fb.email) + '&gt;</div>';
+                    html += '<div class="mb-3"><strong>@Html.Raw(L["Type"].Value):</strong> <span class="badge bg-info">' + escapeHtml(fb.type) + '</span>';
+                    html += ' <span class="badge bg-secondary">' + escapeHtml(fb.tenantCode) + '</span></div>';
+                    html += '<div class="mb-3"><strong>@Html.Raw(L["Date"].Value):</strong> ' + escapeHtml(fb.createdAt) + '</div>';
+                    html += '<div class="mb-3"><strong>@Html.Raw(L["Message"].Value):</strong></div>';
+                    html += '<div class="feedback-message-box mb-3">' + escapeHtml(fb.message) + '</div>';
+
+                    if (fb.imageFileName) {
+                        html += '<div class="mb-3"><strong>@Html.Raw(L["AttachedImage"].Value):</strong></div>';
+                        html += '<div class="mb-3"><img src="/uploads/feedback/' + encodeURIComponent(fb.imageFileName) + '" class="img-fluid rounded border" alt="Feedback image" style="max-height:400px;" /></div>';
+                    }
+
+                    if (fb.adminReply) {
+                        html += '<div class="mb-3"><strong>@Html.Raw(L["PreviousReply"].Value):</strong></div>';
+                        html += '<div class="feedback-message-box mb-2">' + escapeHtml(fb.adminReply) + '</div>';
+                        if (fb.repliedAt) {
+                            html += '<div class="text-muted small mb-3">@Html.Raw(L["RepliedOn", "{0}"].Value)'.replace('{0}', escapeHtml(fb.repliedAt)) + '</div>';
+                        }
+                    }
+
+                    // Assign form – dropdown of SystemAdmins
+                    html += '<hr />';
+                    html += '<form method="post" action="/Admin/SystemAdmin/Feedback/' + fb.id + '/Assign" class="mb-3">';
+                    html += '<input type="hidden" name="__RequestVerificationToken" value="' + getAntiForgeryToken() + '" />';
+                    html += '<div class="input-group">';
+                    html += '<select class="form-select" name="assignedTo">';
+                    var admins = fb.systemAdmins || [];
+                    var currentAdmin = fb.currentAdminName || '';
+                    var selectedValue = fb.assignedTo || currentAdmin;
+                    for (var i = 0; i < admins.length; i++) {
+                        var selected = admins[i] === selectedValue ? ' selected' : '';
+                        html += '<option value="' + escapeAttr(admins[i]) + '"' + selected + '>' + escapeHtml(admins[i]) + '</option>';
+                    }
+                    html += '</select>';
+                    html += '<button type="submit" class="btn btn-outline-secondary">@Html.Raw(L["AssignButton"].Value)</button>';
+                    html += '</div></form>';
+
+                    // Reply form
+                    html += '<form method="post" action="/Admin/SystemAdmin/Feedback/' + fb.id + '/Reply">';
+                    html += '<input type="hidden" name="__RequestVerificationToken" value="' + getAntiForgeryToken() + '" />';
+                    html += '<div class="mb-2"><label class="form-label"><strong>@Html.Raw(L["ReplyLabel"].Value)</strong></label>';
+                    html += '<textarea class="form-control" name="replyMessage" rows="4" required placeholder="@Html.Raw(L["ReplyPlaceholder"].Value)"></textarea></div>';
+                    html += '<button type="submit" class="btn btn-primary">@Html.Raw(L["SendReply"].Value)</button>';
+                    html += '</form>';
+
+                    body.innerHTML = html;
+                })
+                .catch(function () {
+                    body.innerHTML = '<div class="alert alert-danger">Failed to load feedback details.</div>';
+                });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(text));
+            return div.innerHTML;
+        }
+
+        function escapeAttr(text) {
+            return escapeHtml(text).replace(/"/g, '&quot;');
+        }
+
+        function getAntiForgeryToken() {
+            var input = document.querySelector('input[name="__RequestVerificationToken"]');
+            return input ? input.value : '';
+        }
+    </script>
+}

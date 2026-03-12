@@ -38,6 +38,17 @@
                         </div>
 
                         <div class="admin-form-group">
+                            <label asp-for="TenantCode" class="form-label" style="color: var(--text-secondary);">Tenant / Site</label>
+                            <select asp-for="TenantCode" class="form-select">
+                                @foreach (var tenant in (IEnumerable<AIRelief.Models.TenantConfig>)ViewBag.Tenants)
+                                {
+                                    <option value="@tenant.MarketCode">@tenant.SiteName (@tenant.MarketCode)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="TenantCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="admin-form-group">
                             <label asp-for="NumberOfUserLicenses" class="form-label" style="color: var(--text-secondary);">Number of User Licenses</label>
                             <input asp-for="NumberOfUserLicenses" class="form-control" type="number" min="1" />
                             <span asp-validation-for="NumberOfUserLicenses" class="text-danger"></span>
