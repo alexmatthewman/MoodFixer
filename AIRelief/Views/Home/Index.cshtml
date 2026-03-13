@@ -71,7 +71,8 @@
                 </div>
                 <div class="hero-buttons">
                     <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">@T.Get("StartFreeTrial")</a>
-                    <a href="#learn-more" class="btn btn-outline-primary btn-lg">@L["LearnMore"]</a>
+                    <a asp-controller="Signup" asp-action="Index" class="btn btn-outline-primary btn-lg">@L["ViewPlansAndPricing"]</a>
+                    <a href="#learn-more" class="btn btn-outline-secondary btn-lg">@L["LearnMore"]</a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -169,9 +170,14 @@
                 <div class="problem-cta">
                     <h3>@L["TestYourSkills"]</h3>
                     <p>@L["TestYourSkillsDesc"]</p>
-                    <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
-                        @L["TakeFreeAssessment"] <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center">
+                        <a asp-controller="Trial" asp-action="Index" class="btn btn-primary btn-lg">
+                            @L["TakeFreeAssessment"] <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a asp-controller="Signup" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                            @L["SubscribeNow"] <i class="fas fa-bolt"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -358,8 +364,8 @@
                     }
                     else
                     {
-                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
-                            @L["SignUpForFullAccess"]
+                        <a asp-controller="Signup" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                            @L["ViewPlansAndSignUp"]
                         </a>
                     }
                 </div>

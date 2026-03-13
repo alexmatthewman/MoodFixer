@@ -2,5 +2,6 @@
     "HelloUser": "Hello {0}!",
     "Logout": "Logout",
     "Register": "Register",
+    "SignUp": "Sign Up",
     "Login": "Login"
 }

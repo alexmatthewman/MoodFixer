@@ -333,3 +333,62 @@ footer {
     border: none !important;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
 }
+
+/* ?? signup tree: warm organic overrides ?????????????????? */
+.tree-option {
+    border-radius: 14px !important;
+    border-color: var(--border-color) !important;
+}
+
+.tree-option:hover:not(.disabled) {
+    border-color: var(--theme-primary) !important;
+    box-shadow: 0 6px 18px var(--shadow-color) !important;
+}
+
+.tree-option.selected {
+    border-color: var(--theme-primary) !important;
+    box-shadow: 0 0 0 3px var(--glow-color) !important;
+}
+
+.tree-badge {
+    border-radius: 20px !important;
+}
+
+.plan-summary-card {
+    border-radius: 16px !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.checkout-btn {
+    border-radius: 10px !important;
+}
+
+.pricing-table-card {
+    border-radius: 14px !important;
+    border: none !important;
+    background-color: var(--bg-tertiary) !important;
+    box-shadow: 0 2px 12px var(--shadow-color) !important;
+}
+
+.payment-summary-card {
+    border-radius: 16px !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.payment-form-card {
+    border-radius: 16px !important;
+}
+
+.payment-note {
+    border-radius: 12px !important;
+}
+
+.tree-connector {
+    background: linear-gradient(180deg, var(--theme-primary), var(--theme-secondary)) !important;
+    width: 3px !important;
+    border-radius: 3px !important;
+}
+
+.signup-type-illustration {
+    color: var(--theme-primary);
+}

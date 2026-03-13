@@ -1,0 +1,439 @@
+@inject IStringLocalizer<SignupIndexResource> L
+@inject IStringLocalizer<SignupIndexResource> L
+@{
+    ViewData["Title"] = L["PageTitle"].Value;
+}
+
+<section class="signup-hero">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="signup-title">@L["HeroTitle"]</h1>
+            <p class="signup-subtitle">@L["HeroSubtitle"]</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== STEP 1 — Individual or Group ===== -->
+<section class="signup-tree">
+    <div class="container">
+
+        <div class="tree-step" id="step-type">
+            <div class="tree-label">
+                <span class="tree-step-number">1</span>
+                @L["Step1Label"]
+            </div>
+            <p class="step-prompt">@L["Step1Prompt"]</p>
+            <div class="tree-type-cards" data-step="type">
+                <button class="tree-type-card" data-value="individual" onclick="selectType('individual')">
+                    <svg class="signup-type-illustration" viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="36" cy="22" r="10" />
+                        <path d="M18 58c0-10 8-18 18-18s18 8 18 18" />
+                        <circle cx="36" cy="22" r="3" fill="currentColor" stroke="none" opacity="0.3" />
+                    </svg>
+                    <span class="tree-option-title">@L["Individual"]</span>
+                    <span class="tree-option-desc">@L["IndividualDesc"]</span>
+                </button>
+                <button class="tree-type-card" data-value="group" onclick="selectType('group')">
+                    <svg class="signup-type-illustration" viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="24" cy="20" r="8" />
+                        <circle cx="48" cy="20" r="8" />
+                        <path d="M10 52c0-8 6-14 14-14s14 6 14 14" />
+                        <path d="M34 52c0-8 6-14 14-14s14 6 14 14" />
+                        <circle cx="36" cy="34" r="6" />
+                        <path d="M26 58c0-6 4-10 10-10s10 4 10 10" />
+                    </svg>
+                    <span class="tree-option-title">@L["GroupTeam"]</span>
+                    <span class="tree-option-desc">@L["GroupTeamDesc"]</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Group size (shown only for group) -->
+        <div class="tree-step hidden" id="step-group-size">
+            <div class="tree-label">
+                <span class="tree-step-number">1b</span>
+                @L["Step1bLabel"]
+            </div>
+            <div class="tree-options" data-step="groupsize">
+                <button class="tree-option" data-value="5" onclick="selectGroupSize(5)">
+                    <span class="tree-option-title">@L["Size5to10"]</span>
+                    <span class="tree-option-desc">@L["SmallTeam"]</span>
+                    <span class="tree-badge discount">@L["DiscountOff15"]</span>
+                </button>
+                <button class="tree-option" data-value="11" onclick="selectGroupSize(11)">
+                    <span class="tree-option-title">@L["Size11to30"]</span>
+                    <span class="tree-option-desc">@L["Department"]</span>
+                    <span class="tree-badge discount">@L["DiscountOff25"]</span>
+                </button>
+                <button class="tree-option" data-value="31" onclick="selectGroupSize(31)">
+                    <span class="tree-option-title">@L["Size31to100"]</span>
+                    <span class="tree-option-desc">@L["Organisation"]</span>
+                    <span class="tree-badge discount">@L["DiscountOff35"]</span>
+                </button>
+                <button class="tree-option" data-value="101" onclick="selectGroupSize(101)">
+                    <span class="tree-option-title">@L["Size101Plus"]</span>
+                    <span class="tree-option-desc">@L["Enterprise"]</span>
+                    <span class="tree-badge custom">@L["Custom"]</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== STEP 2 — Frequency ===== -->
+        <div class="tree-step hidden" id="step-freq">
+            <div class="tree-label">
+                <span class="tree-step-number">2</span>
+                @L["Step2Label"]
+            </div>
+            <div class="tree-options" data-step="frequency">
+                <button class="tree-option" data-value="weekly" onclick="selectFrequency('weekly')">
+                    <i class="fas fa-calendar-week"></i>
+                    <span class="tree-option-title">@L["Weekly"]</span>
+                    <span class="tree-option-desc">@L["WeeklyDesc"]</span>
+                </button>
+                <button class="tree-option" data-value="monthly" onclick="selectFrequency('monthly')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="tree-option-title">@L["Monthly"]</span>
+                    <span class="tree-option-desc">@L["MonthlyDesc"]</span>
+                </button>
+                <button class="tree-option disabled" disabled>
+                    <i class="fas fa-calendar-day"></i>
+                    <span class="tree-option-title">@L["Daily"]</span>
+                    <span class="tree-badge coming-soon">@L["ComingSoon"]</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== STEP 3 — Duration ===== -->
+        <div class="tree-step hidden" id="step-duration">
+            <div class="tree-label">
+                <span class="tree-step-number">3</span>
+                @L["Step3Label"]
+            </div>
+            <div class="tree-options" data-step="duration">
+                <button class="tree-option" data-value="3" onclick="selectDuration(3)">
+                    <span class="tree-option-title">@L["3Months"]</span>
+                    <span class="tree-option-desc">@L["3MonthsDesc"]</span>
+                </button>
+                <button class="tree-option" data-value="6" onclick="selectDuration(6)">
+                    <span class="tree-option-title">@L["6Months"]</span>
+                    <span class="tree-option-desc">@L["6MonthsDesc"]</span>
+                    <span class="tree-badge popular">@L["Popular"]</span>
+                </button>
+                <button class="tree-option recommended" data-value="12" onclick="selectDuration(12)">
+                    <span class="tree-option-title">@L["12Months"]</span>
+                    <span class="tree-option-desc">@L["12MonthsDesc"]</span>
+                    <span class="tree-badge best-value">@L["BestValue"]</span>
+                </button>
+            </div>
+            <div class="duration-benefits">
+                <p class="benefit-note"><i class="fas fa-check-circle"></i> @L["DurationBenefit"]</p>
+            </div>
+        </div>
+
+        <!-- ===== Summary & Checkout ===== -->
+        <div class="tree-step hidden" id="step-summary">
+            <div class="tree-label">
+                <span class="tree-step-number">?</span>
+                @L["YourPlan"]
+            </div>
+
+            <div class="plan-summary-card">
+                <div class="summary-row">
+                    <span class="summary-label">@L["Plan"]</span>
+                    <span class="summary-value" id="sum-type">—</span>
+                </div>
+                <div class="summary-row" id="sum-group-row" style="display:none;">
+                    <span class="summary-label">@L["GroupSize"]</span>
+                    <span class="summary-value" id="sum-group-size">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">@L["Frequency"]</span>
+                    <span class="summary-value" id="sum-freq">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">@L["Duration"]</span>
+                    <span class="summary-value" id="sum-duration">—</span>
+                </div>
+                <hr />
+                <div class="summary-row total">
+                    <span class="summary-label">@L["PricePerUser"]</span>
+                    <span class="summary-value" id="sum-price">—</span>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a id="checkout-btn" href="#" class="btn btn-primary btn-lg checkout-btn">
+                    <i class="fas fa-lock"></i> @L["ProceedToCheckout"]
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== Pricing Tables Reference ===== -->
+<section class="pricing-tables-section" id="pricing-tables">
+    <div class="container">
+        <h2 class="text-center section-title">@L["FullPricing"]</h2>
+        <p class="text-center text-muted mb-5">@L["PricingNote"]</p>
+
+        <div class="row">
+            <!-- Weekly table -->
+            <div class="col-lg-6 mb-4">
+                <div class="pricing-table-card">
+                    <h3 class="pricing-table-title"><i class="fas fa-calendar-week"></i> @L["WeeklyLessons"]</h3>
+                    <table class="table pricing-table">
+                        <thead>
+                            <tr>
+                                <th>@L["GroupSizeHeader"]</th>
+                                <th>@L["Discount"]</th>
+                                <th>@L["3Mo"]</th>
+                                <th>@L["6Mo"]</th>
+                                <th>@L["12Mo"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@L["IndividualLabel"]</td>
+                                <td>—</td>
+                                <td>$20</td>
+                                <td>$35</td>
+                                <td>$55</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size5to10"]</td>
+                                <td><span class="badge bg-success">15%</span></td>
+                                <td>$17</td>
+                                <td>$30</td>
+                                <td>$47</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size11to30"]</td>
+                                <td><span class="badge bg-success">25%</span></td>
+                                <td>$15</td>
+                                <td>$26</td>
+                                <td>$41</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size31to100"]</td>
+                                <td><span class="badge bg-success">35%</span></td>
+                                <td>$13</td>
+                                <td>$23</td>
+                                <td>$36</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Monthly table -->
+            <div class="col-lg-6 mb-4">
+                <div class="pricing-table-card">
+                    <h3 class="pricing-table-title"><i class="fas fa-calendar-alt"></i> @L["MonthlyLessons"]</h3>
+                    <table class="table pricing-table">
+                        <thead>
+                            <tr>
+                                <th>@L["GroupSizeHeader"]</th>
+                                <th>@L["Discount"]</th>
+                                <th>@L["3Mo"]</th>
+                                <th>@L["6Mo"]</th>
+                                <th>@L["12Mo"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@L["IndividualLabel"]</td>
+                                <td>—</td>
+                                <td>$10</td>
+                                <td>$18</td>
+                                <td>$29</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size5to10"]</td>
+                                <td><span class="badge bg-success">15%</span></td>
+                                <td>$9</td>
+                                <td>$15</td>
+                                <td>$25</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size11to30"]</td>
+                                <td><span class="badge bg-success">25%</span></td>
+                                <td>$8</td>
+                                <td>$14</td>
+                                <td>$22</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size31to100"]</td>
+                                <td><span class="badge bg-success">35%</span></td>
+                                <td>$7</td>
+                                <td>$12</td>
+                                <td>$19</td>
+                            </tr>
+                            <tr>
+                                <td>@L["Size101Plus"]</td>
+                                <td><span class="badge bg-info">@L["Custom"]</span></td>
+                                <td colspan="3" class="text-center">
+                                    <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-primary btn-sm">@L["ContactSales"]</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Localised labels for JS summary
+        const labels = {
+            groupTeam: '@Html.Raw(L["GroupTeam"].Value)',
+            individual: '@Html.Raw(L["Individual"].Value)',
+            weekly: '@Html.Raw(L["Weekly"].Value)',
+            monthly: '@Html.Raw(L["Monthly"].Value)',
+            months: '@Html.Raw(L["Months"].Value)',
+            s5to10: '@Html.Raw(L["5to10Users"].Value)',
+            s11to30: '@Html.Raw(L["11to30Users"].Value)',
+            s31to100: '@Html.Raw(L["31to100Users"].Value)'
+        };
+
+        // Pricing lookup
+        const pricing = {
+            weekly: {
+                individual: { 3: '$20', 6: '$35', 12: '$55' },
+                5:          { 3: '$17', 6: '$30', 12: '$47' },
+                11:         { 3: '$15', 6: '$26', 12: '$41' },
+                31:         { 3: '$13', 6: '$23', 12: '$36' }
+            },
+            monthly: {
+                individual: { 3: '$10', 6: '$18', 12: '$29' },
+                5:          { 3: '$9',  6: '$15', 12: '$25' },
+                11:         { 3: '$8',  6: '$14', 12: '$22' },
+                31:         { 3: '$7',  6: '$12', 12: '$19' }
+            }
+        };
+
+        let selected = { type: null, groupSize: 1, frequency: null, duration: null };
+
+        function clearAfter(step) {
+            const order = ['type', 'groupSize', 'frequency', 'duration'];
+            const idx = order.indexOf(step);
+            for (let i = idx + 1; i < order.length; i++) {
+                selected[order[i]] = order[i] === 'groupSize' ? 1 : null;
+            }
+        }
+
+        function show(id) { document.getElementById(id)?.classList.remove('hidden'); }
+        function hide(id) { document.getElementById(id)?.classList.add('hidden'); }
+        function markDone(id) { document.getElementById(id)?.classList.add('step-done'); }
+        function unmarkDone(id) { document.getElementById(id)?.classList.remove('step-done'); }
+
+        function markSelected(container, value) {
+            container.querySelectorAll('.tree-option, .tree-type-card').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.value == value);
+            });
+        }
+
+        function selectType(type) {
+            selected.type = type;
+            clearAfter('type');
+            markSelected(document.querySelector('[data-step="type"]'), type);
+            markDone('step-type');
+
+            if (type === 'group') {
+                show('step-group-size');
+                hide('step-freq');
+                hide('step-duration');
+                hide('step-summary');
+                unmarkDone('step-group-size');
+                document.querySelectorAll('[data-step="groupsize"] .tree-option').forEach(b => b.classList.remove('selected'));
+                scrollSmooth('step-group-size');
+            } else {
+                selected.groupSize = 1;
+                hide('step-group-size');
+                show('step-freq');
+                hide('step-duration');
+                hide('step-summary');
+                unmarkDone('step-freq');
+                document.querySelectorAll('[data-step="frequency"] .tree-option').forEach(b => b.classList.remove('selected'));
+                scrollSmooth('step-freq');
+            }
+        }
+
+        function selectGroupSize(size) {
+            if (size === 101) {
+                window.location.href = '@Url.Action("Index", "Contact")';
+                return;
+            }
+            selected.groupSize = size;
+            clearAfter('groupSize');
+            markSelected(document.querySelector('[data-step="groupsize"]'), size);
+            markDone('step-group-size');
+            show('step-freq');
+            hide('step-duration');
+            hide('step-summary');
+            unmarkDone('step-freq');
+            document.querySelectorAll('[data-step="frequency"] .tree-option').forEach(b => b.classList.remove('selected'));
+            scrollSmooth('step-freq');
+        }
+
+        function selectFrequency(freq) {
+            selected.frequency = freq;
+            clearAfter('frequency');
+            markSelected(document.querySelector('[data-step="frequency"]'), freq);
+            markDone('step-freq');
+            show('step-duration');
+            hide('step-summary');
+            unmarkDone('step-duration');
+            document.querySelectorAll('[data-step="duration"] .tree-option').forEach(b => b.classList.remove('selected'));
+            scrollSmooth('step-duration');
+        }
+
+        function selectDuration(months) {
+            selected.duration = months;
+            markSelected(document.querySelector('[data-step="duration"]'), months);
+            markDone('step-duration');
+            updateSummary();
+            show('step-summary');
+            scrollSmooth('step-summary');
+        }
+
+        function updateSummary() {
+            document.getElementById('sum-type').textContent =
+                selected.type === 'group' ? labels.groupTeam : labels.individual;
+
+            if (selected.type === 'group') {
+                document.getElementById('sum-group-row').style.display = '';
+                let label = selected.groupSize <= 10 ? labels.s5to10 :
+                            selected.groupSize <= 30 ? labels.s11to30 : labels.s31to100;
+                document.getElementById('sum-group-size').textContent = label;
+            } else {
+                document.getElementById('sum-group-row').style.display = 'none';
+            }
+
+            document.getElementById('sum-freq').textContent =
+                selected.frequency === 'weekly' ? labels.weekly : labels.monthly;
+
+            document.getElementById('sum-duration').textContent = selected.duration + ' ' + labels.months;
+
+            const key = selected.type === 'individual' ? 'individual' : selected.groupSize;
+            const price = pricing[selected.frequency]?.[key]?.[selected.duration] ?? '—';
+            document.getElementById('sum-price').textContent = price;
+
+            const url = '@Url.Action("Payment", "Signup")' +
+                '?planType=' + encodeURIComponent(selected.type) +
+                '&frequency=' + encodeURIComponent(selected.frequency) +
+                '&months=' + selected.duration +
+                '&groupSize=' + selected.groupSize +
+                '&price=' + encodeURIComponent(price);
+            document.getElementById('checkout-btn').href = url;
+        }
+
+        function scrollSmooth(id) {
+            setTimeout(() => {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 150);
+        }
+    </script>
+}

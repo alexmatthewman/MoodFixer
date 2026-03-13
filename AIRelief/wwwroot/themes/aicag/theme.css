@@ -84,7 +84,8 @@ body {
 .progress,
 .progress-bar,
 .question-situation-box,
-.question-question-box {
+.question-question-box,
+.tree-type-card {
     border-radius: 0 !important;
 }
 
@@ -215,6 +216,40 @@ footer {
 /* ?? problem-image: square crop ?????????????????????????? */
 .problem-image {
     border-radius: 0;
+}
+
+/* ?? signup tree: sharp clinical overrides ???????????????? */
+.tree-option,
+.tree-badge,
+.plan-summary-card,
+.checkout-btn,
+.pricing-table-card,
+.payment-summary-card,
+.payment-form-card,
+.payment-note,
+.register-pay-btn {
+    border-radius: 0 !important;
+}
+
+.tree-step-number {
+    border-radius: 0 !important;
+}
+
+.tree-connector {
+    background: linear-gradient(180deg, var(--border-accent), var(--border-color)) !important;
+}
+
+.tree-option.selected {
+    box-shadow: inset 0 0 0 2px var(--border-accent) !important;
+}
+
+.tree-option:hover:not(.disabled) {
+    transform: none;
+    box-shadow: inset 0 0 0 2px var(--border-accent);
+}
+
+.signup-type-illustration {
+    color: var(--text-accent);
 }
 
 /* ?? link font import (Inter) ???????????????????????????? */

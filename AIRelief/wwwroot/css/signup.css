@@ -1,0 +1,586 @@
+/* ===================================
+   SIGNUP — Flowing Tree & Pricing
+   =================================== */
+
+/* Hero */
+.signup-hero {
+    text-align: center;
+    padding: 2.5rem 0 1.5rem;
+}
+
+.signup-title {
+    font-size: 2.2rem;
+    border: none;
+    color: var(--text-secondary);
+}
+
+.signup-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+/* ---- Tree structure ---- */
+.signup-tree {
+    max-width: 760px;
+    margin: 0 auto 3rem;
+    position: relative;
+}
+
+/* Vertical trunk line behind all steps */
+.signup-tree::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+    z-index: 0;
+}
+
+.tree-step {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 0 1.5rem 56px;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    opacity: 1;
+    transform: translateY(0);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tree-step:last-child {
+    border-bottom: none;
+}
+
+.tree-step.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.tree-label {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.tree-step-number {
+    position: absolute;
+    left: 9px;
+    top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--text-accent);
+    color: var(--text-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+/* Completed step indicator */
+.tree-step.step-done .tree-step-number {
+    background: var(--text-accent);
+    color: var(--bg-primary);
+}
+
+/* Option buttons */
+.tree-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.tree-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.25rem 1.5rem;
+    min-width: 150px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.tree-option i {
+    font-size: 1.6rem;
+    color: var(--text-accent);
+    margin-bottom: 0.25rem;
+}
+
+.tree-option:hover:not(.disabled) {
+    border-color: var(--text-accent);
+    box-shadow: 0 4px 18px var(--shadow-color);
+    transform: translateY(-2px);
+}
+
+.tree-option.selected {
+    border-color: var(--text-accent);
+    box-shadow: 0 0 0 3px var(--glow-color);
+    background: color-mix(in srgb, var(--text-accent) 6%, var(--bg-tertiary));
+}
+
+.tree-option.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.tree-option.recommended {
+    border-color: var(--success-color);
+}
+
+.tree-option-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.tree-option-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ---- Step 1 type cards (larger with illustrations) ---- */
+.tree-type-cards {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.tree-type-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1.75rem 2rem 1.5rem;
+    min-width: 200px;
+    max-width: 260px;
+    flex: 1;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.tree-type-card:hover {
+    border-color: var(--text-accent);
+    box-shadow: 0 8px 28px var(--shadow-color);
+    transform: translateY(-3px);
+}
+
+.tree-type-card.selected {
+    border-color: var(--text-accent);
+    box-shadow: 0 0 0 3px var(--glow-color);
+    background: color-mix(in srgb, var(--text-accent) 6%, var(--bg-tertiary));
+}
+
+.signup-type-illustration {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0.25rem;
+    color: var(--text-accent);
+}
+
+.tree-type-card .tree-option-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.tree-type-card .tree-option-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.step-prompt {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* Badges */
+.tree-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 0.25rem;
+}
+
+.tree-badge.discount {
+    background: rgba(40, 167, 69, 0.15);
+    color: var(--success-color);
+}
+
+.tree-badge.custom {
+    background: rgba(0, 123, 255, 0.12);
+    color: var(--text-accent);
+}
+
+.tree-badge.coming-soon {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.tree-badge.popular {
+    background: rgba(0, 123, 255, 0.12);
+    color: var(--text-accent);
+}
+
+.tree-badge.best-value {
+    background: rgba(40, 167, 69, 0.15);
+    color: var(--success-color);
+}
+
+/* Connector lines */
+.tree-connector {
+    display: none;
+}
+
+/* Duration benefits */
+.duration-benefits {
+    margin-top: 0.75rem;
+    text-align: left;
+}
+
+.benefit-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.benefit-note i {
+    color: var(--success-color);
+    margin-right: 0.25rem;
+}
+
+/* ---- Plan summary card ---- */
+.plan-summary-card {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-accent);
+    border-radius: 14px;
+    padding: 1.5rem 2rem;
+    max-width: 420px;
+    margin: 0 auto;
+    box-shadow: 0 6px 24px var(--shadow-color);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    font-size: 0.95rem;
+}
+
+.summary-row.total {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-accent);
+}
+
+.summary-label {
+    color: var(--text-muted);
+}
+
+.summary-value {
+    font-weight: 600;
+}
+
+/* Checkout button */
+.checkout-btn {
+    padding: 0.85rem 2.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+/* ===================================
+   PRICING TABLES SECTION
+   =================================== */
+
+.pricing-tables-section {
+    padding: 3rem 0;
+}
+
+.pricing-table-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.pricing-table-title {
+    font-size: 1.15rem;
+    border: none;
+    text-align: center;
+    color: var(--text-accent);
+    margin-bottom: 1rem;
+}
+
+.pricing-table-title i {
+    margin-right: 0.35rem;
+}
+
+.pricing-table {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.pricing-table thead th {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0.6rem 0.5rem;
+}
+
+.pricing-table tbody td {
+    padding: 0.55rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.pricing-table tbody tr:hover {
+    background: var(--bg-secondary);
+}
+
+/* ===================================
+   PAYMENT PAGE
+   =================================== */
+
+.payment-section {
+    padding: 2rem 0;
+}
+
+.payment-summary-card {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-accent);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+.payment-summary-card h4 {
+    border: none;
+    font-size: 1.05rem;
+    color: var(--text-accent);
+    margin-bottom: 0.5rem;
+}
+
+.payment-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+}
+
+.payment-summary-row span {
+    color: var(--text-muted);
+}
+
+.payment-summary-row strong {
+    color: var(--text-primary);
+}
+
+.payment-summary-row.total strong {
+    color: var(--text-accent);
+    font-size: 1.2rem;
+}
+
+.price-highlight {
+    color: var(--success-color) !important;
+}
+
+.payment-note {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 0.75rem;
+    background: rgba(0, 123, 255, 0.06);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.payment-note i {
+    color: var(--text-accent);
+    margin-right: 0.3rem;
+}
+
+.payment-form-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.75rem;
+}
+
+.payment-form-card h4 {
+    border: none;
+    font-size: 1.05rem;
+    color: var(--text-accent);
+    margin-bottom: 0.5rem;
+}
+
+.register-pay-btn {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.85rem;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.register-pay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+/* ---- Responsive: collapse tree line on small screens ---- */
+@media (max-width: 576px) {
+    .signup-tree::before {
+        left: 14px;
+    }
+
+    .tree-step {
+        padding-left: 42px;
+    }
+
+    .tree-step-number {
+        left: 3px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+    .tree-type-cards {
+        flex-direction: column;
+    }
+
+    .tree-type-card {
+        max-width: none;
+    }
+
+    .tree-options {
+        flex-direction: column;
+    }
+
+    .tree-option {
+        min-width: auto;
+    }
+}
+
+/* ===================================
+   GROUP ADMIN WELCOME MODAL
+   =================================== */
+
+.ga-welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.ga-welcome-card {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-accent);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 520px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+    animation: slideInUp 0.4s ease;
+}
+
+.ga-welcome-card h2 {
+    border: none;
+    color: var(--text-accent);
+    margin-bottom: 1rem;
+}
+
+.ga-welcome-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.ga-welcome-features {
+    text-align: left;
+    margin: 1.25rem 0;
+}
+
+.ga-welcome-features li {
+    padding: 0.35rem 0;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    list-style: none;
+}
+
+.ga-welcome-features li i {
+    color: var(--success-color);
+    margin-right: 0.5rem;
+    width: 18px;
+    text-align: center;
+}
+
+.ga-welcome-card .btn {
+    margin-top: 1rem;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@@media (max-width: 768px) {
+    .tree-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tree-option {
+        min-width: auto;
+    }
+
+    .signup-title {
+        font-size: 1.6rem;
+    }
+}

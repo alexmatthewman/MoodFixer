@@ -1,0 +1,128 @@
+@model AIRelief.Controllers.PaymentViewModel
+@inject IStringLocalizer<SignupPaymentResource> L
+@{
+    ViewData["Title"] = L["PageTitle"].Value;
+    var isGroup = Model.PlanType?.Equals("group", StringComparison.OrdinalIgnoreCase) == true && Model.GroupSize > 1;
+    var freqLabel = Model.Frequency?.Equals("monthly", StringComparison.OrdinalIgnoreCase) == true
+        ? L["Monthly"].Value : L["Weekly"].Value;
+    var groupLabel = Model.GroupSize <= 1 ? L["Individual"].Value :
+                     Model.GroupSize <= 10 ? L["5to10Users"].Value :
+                     Model.GroupSize <= 30 ? L["11to30Users"].Value : L["31to100Users"].Value;
+}
+
+<section class="payment-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h1 class="text-center mb-2">@L["Heading"]</h1>
+                <p class="text-center text-muted mb-4">@L["Subtitle"]</p>
+
+                <div class="row">
+                    <!-- Plan summary sidebar -->
+                    <div class="col-md-4 mb-4">
+                        <div class="payment-summary-card">
+                            <h4><i class="fas fa-receipt"></i> @L["OrderSummary"]</h4>
+                            <hr />
+                            <div class="payment-summary-row">
+                                <span>@L["Plan"]</span>
+                                <strong>@(isGroup ? L["GroupTeam"].Value : L["Individual"].Value)</strong>
+                            </div>
+                            @if (isGroup)
+                            {
+                                <div class="payment-summary-row">
+                                    <span>@L["GroupSize"]</span>
+                                    <strong>@groupLabel</strong>
+                                </div>
+                            }
+                            <div class="payment-summary-row">
+                                <span>@L["Frequency"]</span>
+                                <strong>@freqLabel @L["LessonsSuffix"]</strong>
+                            </div>
+                            <div class="payment-summary-row">
+                                <span>@L["Duration"]</span>
+                                <strong>@Model.Months @L["MonthsSuffix"]</strong>
+                            </div>
+                            <hr />
+                            <div class="payment-summary-row total">
+                                <span>@L["PricePerUser"]</span>
+                                <strong class="price-highlight">@Model.DisplayPrice</strong>
+                            </div>
+
+                            @if (isGroup)
+                            {
+                                <div class="payment-note mt-3">
+                                    <i class="fas fa-info-circle"></i>
+                                    @Html.Raw(L["GroupAdminNote"].Value)
+                                </div>
+                            }
+
+                            <div class="text-center mt-3">
+                                <a asp-controller="Signup" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-arrow-left"></i> @L["ChangePlan"]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Registration form -->
+                    <div class="col-md-8">
+                        <div class="payment-form-card">
+                            <h4><i class="fas fa-user-plus"></i> @L["CreateAccount"]</h4>
+                            <hr />
+
+                            <form asp-controller="Signup" asp-action="RegisterAndPay" method="post">
+                                @Html.AntiForgeryToken()
+                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                                <!-- Hidden plan fields -->
+                                <input type="hidden" asp-for="PlanType" />
+                                <input type="hidden" asp-for="Frequency" />
+                                <input type="hidden" asp-for="Months" />
+                                <input type="hidden" asp-for="GroupSize" />
+                                <input type="hidden" asp-for="DisplayPrice" />
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="FullName" class="form-control" placeholder="@L["FullName"]" autocomplete="name" />
+                                    <label asp-for="FullName">@L["FullName"]</label>
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Email" class="form-control" placeholder="@L["Email"]" autocomplete="email" />
+                                    <label asp-for="Email">@L["Email"]</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Password" class="form-control" placeholder="@L["Password"]" autocomplete="new-password" />
+                                    <label asp-for="Password">@L["Password"]</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="@L["ConfirmPassword"]" autocomplete="new-password" />
+                                    <label asp-for="ConfirmPassword">@L["ConfirmPassword"]</label>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <hr />
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 register-pay-btn">
+                                    <i class="fas fa-shield-alt"></i> @Html.Raw(L["RegisterAndPay"].Value) — @Model.DisplayPrice
+                                </button>
+
+                                <p class="text-center text-muted mt-3 small">
+                                    <i class="fas fa-lock"></i> @L["SecurityNote"]
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
