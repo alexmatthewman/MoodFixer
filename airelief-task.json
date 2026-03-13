@@ -1,0 +1,60 @@
+{
+  "family": "airelief-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::105959917285:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::105959917285:role/airelief-task-role",
+  "containerDefinitions": [
+    {
+      "name": "airelief",
+      "image": "105959917285.dkr.ecr.us-east-1.amazonaws.com/airelief:latest",
+      "essential": true,
+      "portMappings": [
+        { "containerPort": 8080, "protocol": "tcp" }
+      ],
+      "environment": [
+        { "name": "ASPNETCORE_ENVIRONMENT", "value": "Production" },
+        { "name": "ConnectionStrings__IdentityConnection", "value": "Host=airelief-db.c6j8o2gw8o5m.us-east-1.rds.amazonaws.com;Port=5432;Database=aireliefdb;Username=airelief;Password=AlphaTest2026!xKm9" },
+        { "name": "Smtp__Host", "value": "" },
+        { "name": "Smtp__Port", "value": "587" },
+        { "name": "Smtp__Username", "value": "" },
+        { "name": "Smtp__Password", "value": "" },
+        { "name": "Smtp__FromAddress", "value": "" }
+      ],
+      "mountPoints": [
+        { "sourceVolume": "efs-keys", "containerPath": "/app/keys", "readOnly": false }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/airelief",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "efs-keys",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-06cf41b6b16742ff7",
+        "transitEncryption": "ENABLED",
+        "authorizationConfig": {
+          "accessPointId": "fsap-0a0033ee68bd83db7",
+          "iam": "ENABLED"
+        }
+      }
+    }
+  ]
+}

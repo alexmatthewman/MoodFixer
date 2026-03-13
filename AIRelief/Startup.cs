@@ -140,6 +140,8 @@ namespace AIRelief
                     context.Database.Migrate();
                     SeedTranslations.Run(context).GetAwaiter().GetResult();
                     SeedEmailTemplates.Run(context).GetAwaiter().GetResult();
+                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    SeedAdminUser.Run(context, userManager).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {

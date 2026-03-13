@@ -20,10 +20,13 @@ COPY --from=build /app/publish .
 # Create directory for Data Protection keys (mount EFS volume here in ECS)
 RUN mkdir -p /app/keys
 
+# Install curl for container health checks
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
 ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 --start-period=60s \
     CMD curl -f http://localhost:8080/health || exit 1
 
 ENTRYPOINT ["dotnet", "AIRelief.dll"]
