@@ -1,43 +1,89 @@
 ﻿// Theme switching functionality
-document.addEventListener('DOMContentLoaded', function () {
-    // Get footer theme toggle
-    const footerToggle = document.getElementById('footer-theme-toggle');
+(function () {
+    const themeCookieName = 'theme';
 
-    // Get current theme from localStorage or default to dark
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    updateToggleIcon(currentTheme);
-
-    // Theme toggle event listener
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateToggleIcon(newTheme);
+    function normalizeTheme(theme) {
+        return theme === 'light' || theme === 'dark' ? theme : null;
     }
 
-    if (footerToggle) {
-        footerToggle.addEventListener('click', toggleTheme);
+    function getStoredTheme() {
+        try {
+            return normalizeTheme(window.localStorage.getItem(themeCookieName));
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getCookieTheme() {
+        const match = document.cookie.match(/(?:^|;\s*)theme=([^;]*)/);
+        return normalizeTheme(match ? decodeURIComponent(match[1]) : null);
+    }
+
+    function getCurrentTheme() {
+        return normalizeTheme(document.documentElement.getAttribute('data-theme')) || 'dark';
+    }
+
+    function applyTheme(theme) {
+        const normalizedTheme = normalizeTheme(theme) || 'dark';
+        document.documentElement.setAttribute('data-theme', normalizedTheme);
+        document.documentElement.setAttribute('data-bs-theme', normalizedTheme);
+        document.documentElement.style.colorScheme = normalizedTheme;
+
+        return normalizedTheme;
+    }
+
+    function persistTheme(theme) {
+        document.cookie = themeCookieName + '=' + encodeURIComponent(theme) + ';path=/;max-age=31536000;SameSite=Lax';
+
+        try {
+            window.localStorage.setItem(themeCookieName, theme);
+        } catch (e) {
+        }
     }
 
     function updateToggleIcon(theme) {
-        // Update footer toggle
-        if (footerToggle) {
-            const icon = footerToggle.querySelector('.theme-icon');
-            const text = footerToggle.querySelector('.theme-text');
+        const footerToggle = document.getElementById('footer-theme-toggle');
+        if (!footerToggle) {
+            return;
+        }
 
-            if (theme === 'dark') {
-                icon.textContent = '☀️';
-                text.textContent = 'Light Mode';
-            } else {
-                icon.textContent = '🌙';
-                text.textContent = 'Dark Mode';
-            }
+        const icon = footerToggle.querySelector('.theme-icon');
+        const text = footerToggle.querySelector('.theme-text');
+        const lightModeLabel = footerToggle.dataset.lightModeLabel || 'Light Mode';
+        const darkModeLabel = footerToggle.dataset.darkModeLabel || 'Dark Mode';
+
+        if (icon) {
+            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        if (text) {
+            text.textContent = theme === 'dark' ? lightModeLabel : darkModeLabel;
         }
     }
-});
+
+    function syncThemeUi() {
+        const theme = applyTheme(getStoredTheme() || getCookieTheme() || getCurrentTheme());
+        persistTheme(theme);
+        updateToggleIcon(theme);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        syncThemeUi();
+
+        const footerToggle = document.getElementById('footer-theme-toggle');
+        if (footerToggle && !footerToggle.dataset.themeToggleBound) {
+            footerToggle.dataset.themeToggleBound = 'true';
+            footerToggle.addEventListener('click', function () {
+                const newTheme = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+                const appliedTheme = applyTheme(newTheme);
+                persistTheme(appliedTheme);
+                updateToggleIcon(appliedTheme);
+            });
+        }
+    });
+
+    window.addEventListener('pageshow', syncThemeUi);
+})();
 
 // Trial Assessment JavaScript Functions
 

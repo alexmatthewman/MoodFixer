@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+using AIRelief.Data;
+using AIRelief.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRelief.Areas.Identity.Pages.Account
 {
@@ -18,15 +20,21 @@ namespace AIRelief.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly AIReliefContext _context;
+        private readonly TenantRegistry _tenantRegistry;
         private readonly ILogger<LoginWith2faModel> _logger;
 
         public LoginWith2faModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
+            AIReliefContext context,
+            TenantRegistry tenantRegistry,
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
+            _tenantRegistry = tenantRegistry;
             _logger = logger;
         }
 
@@ -112,6 +120,26 @@ namespace AIRelief.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
+                // Verify the user belongs to this tenant before completing login
+                var appUser = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+                if (appUser != null && appUser.AuthLevel != AuthLevel.SystemAdmin)
+                {
+                    var host = HttpContext.Request.Host.Host;
+                    var currentTenant = _tenantRegistry.Resolve(host)
+                        ?? HttpContext.Items["Tenant"] as TenantConfig;
+                    var tenantCode = currentTenant?.MarketCode ?? "relief";
+
+                    if (!string.Equals(appUser.TenantCode, tenantCode, StringComparison.OrdinalIgnoreCase))
+                    {
+                        await _signInManager.SignOutAsync();
+                        ModelState.AddModelError(string.Empty,
+                            "Is this the website you are looking for? You have no account associated with this site.");
+                        return Page();
+                    }
+                }
+
                 _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
                 return LocalRedirect(returnUrl);
             }

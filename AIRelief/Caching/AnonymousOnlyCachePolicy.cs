@@ -1,4 +1,5 @@
 using System.Threading;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.OutputCaching;
 
@@ -9,6 +10,7 @@ namespace AIRelief.Caching
         public ValueTask CacheRequestAsync(OutputCacheContext context, CancellationToken cancellation)
         {
             var isAuthenticated = context.HttpContext.User?.Identity?.IsAuthenticated == true;
+            var theme = context.HttpContext.Request.Cookies["theme"];
 
             context.EnableOutputCaching = !isAuthenticated;
             context.AllowCacheLookup = !isAuthenticated;
@@ -16,6 +18,7 @@ namespace AIRelief.Caching
             context.AllowLocking = true;
 
             context.CacheVaryByRules.VaryByHost = true;
+            context.CacheVaryByRules.VaryByValues["theme"] = string.Equals(theme, "light", StringComparison.OrdinalIgnoreCase) ? "light" : "dark";
 
             return ValueTask.CompletedTask;
         }

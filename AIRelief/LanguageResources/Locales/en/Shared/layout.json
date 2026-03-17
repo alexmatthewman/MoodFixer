@@ -15,6 +15,10 @@
     "Contact": "Contact",
     "Administration": "Administration",
     "DarkMode": "Dark Mode",
+    "LightMode": "Light Mode",
     "ToggleTheme": "Toggle theme",
-    "FooterCopyright": "\u00a9 {0}"
+    "FooterCopyright": "\u00a9 {0}",
+    "SignUp": "Sign Up",
+    "Login": "Login",
+    "Logout": "Logout"
 }

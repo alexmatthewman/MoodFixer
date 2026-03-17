@@ -14,17 +14,31 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using AIRelief.Data;
+using AIRelief.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRelief.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly AIReliefContext _context;
+        private readonly TenantRegistry _tenantRegistry;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            AIReliefContext context,
+            TenantRegistry tenantRegistry,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _context = context;
+            _tenantRegistry = tenantRegistry;
             _logger = logger;
         }
 
@@ -114,6 +128,11 @@ namespace AIRelief.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    // Verify the user belongs to this tenant before completing login
+                    var tenantCheckResult = await CheckUserTenantAsync();
+                    if (tenantCheckResult != null)
+                        return tenantCheckResult;
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -133,8 +152,41 @@ namespace AIRelief.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+        // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        /// <summary>
+        /// After Identity has authenticated the user, check that their app-level TenantCode
+        /// matches the current site. If not, sign them out and return an error page result.
+        /// Returns null when the tenant check passes.
+        /// </summary>
+        private async Task<IActionResult?> CheckUserTenantAsync()
+        {
+            var host = HttpContext.Request.Host.Host;
+            var currentTenant = _tenantRegistry.Resolve(host)
+                ?? HttpContext.Items["Tenant"] as TenantConfig;
+            var tenantCode = currentTenant?.MarketCode ?? "relief";
+
+            var identityUser = await _userManager.FindByEmailAsync(Input.Email);
+            if (identityUser == null) return null;
+
+            var appUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == identityUser.Email);
+
+            if (appUser == null) return null; // no app profile; let other guards handle it
+
+            if (appUser.AuthLevel == AuthLevel.SystemAdmin) return null; // admins can log in anywhere
+
+            if (!string.Equals(appUser.TenantCode, tenantCode, StringComparison.OrdinalIgnoreCase))
+            {
+                await _signInManager.SignOutAsync();
+                ModelState.AddModelError(string.Empty,
+                    "Is this the website you are looking for? You have no account associated with this site.");
+                return Page();
+            }
+
+            return null;
         }
     }
 }

@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using AIRelief.Data;
+using AIRelief.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRelief.Areas.Identity.Pages.Account
 {
@@ -28,6 +31,8 @@ namespace AIRelief.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly IEmailSender _emailSender;
+        private readonly AIReliefContext _context;
+        private readonly TenantRegistry _tenantRegistry;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
@@ -35,7 +40,9 @@ namespace AIRelief.Areas.Identity.Pages.Account
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            AIReliefContext context,
+            TenantRegistry tenantRegistry)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -43,6 +50,8 @@ namespace AIRelief.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
+            _tenantRegistry = tenantRegistry;
         }
 
         /// <summary>
@@ -115,6 +124,29 @@ namespace AIRelief.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                // Verify the user belongs to this tenant before completing login
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (email != null)
+                {
+                    var appUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Email == email);
+
+                    if (appUser != null && appUser.AuthLevel != AuthLevel.SystemAdmin)
+                    {
+                        var host = HttpContext.Request.Host.Host;
+                        var currentTenant = _tenantRegistry.Resolve(host)
+                            ?? HttpContext.Items["Tenant"] as TenantConfig;
+                        var tenantCode = currentTenant?.MarketCode ?? "relief";
+
+                        if (!string.Equals(appUser.TenantCode, tenantCode, StringComparison.OrdinalIgnoreCase))
+                        {
+                            await _signInManager.SignOutAsync();
+                            ErrorMessage = "Is this the website you are looking for? You have no account associated with this site.";
+                            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                        }
+                    }
+                }
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }

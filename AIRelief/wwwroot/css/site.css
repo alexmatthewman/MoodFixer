@@ -1,5 +1,6 @@
 ﻿/* CSS Variables for theme switching */
-:root {
+[data-theme="dark"],
+:root:not([data-theme="light"]) {
     --bg-primary: #121212;
     --bg-secondary: #1a1a1a;
     --bg-tertiary: #2a2a2a;
@@ -14,6 +15,18 @@
     --success-color: #00ffaa;
     --shadow-color: rgba(0, 255, 170, 0.1);
     --glow-color: rgba(0, 255, 170, 0.2);
+    color-scheme: dark;
+}
+
+/* Bootstrap 5.3 overrides for dark mode.
+   Use [data-bs-theme="dark"] (specificity 0,1,0) so our variables
+   override Bootstrap's own [data-bs-theme="dark"] rules via source order. */
+[data-bs-theme="dark"] {
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+    --bs-link-color: var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color: var(--border-color);
 }
 
 /* Light theme */
@@ -32,6 +45,18 @@
     --success-color: #28a745;
     --shadow-color: rgba(0, 102, 204, 0.1);
     --glow-color: rgba(0, 102, 204, 0.2);
+    color-scheme: light;
+}
+
+/* Bootstrap 5.3 overrides for light mode.
+   Use [data-bs-theme="light"] (specificity 0,1,0) so our variables
+   override Bootstrap's own [data-bs-theme="light"] rules via source order. */
+[data-bs-theme="light"] {
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+    --bs-link-color: var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color: var(--border-color);
 }
 
 /* =================================
@@ -213,6 +238,19 @@ hr {
     transition: all 0.3s ease;
 }
 
+/* Theme-aware navbar: toggler icon colour follows the current palette */
+.site-navbar .navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.site-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+[data-theme="light"] .site-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0,0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .nav-link, .navbar-brand {
     color: var(--text-primary) !important;
     transition: all 0.3s ease;
@@ -221,6 +259,23 @@ hr {
     .nav-link:hover, .navbar-brand:hover {
         color: var(--text-secondary) !important;
         text-shadow: 0 0 4px var(--glow-color);
+    }
+
+/* Dropdown menus – theme-aware overrides */
+.dropdown-menu {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: var(--bg-tertiary);
+        color: var(--text-accent);
     }
 
 /* =================================
@@ -435,7 +490,8 @@ hr {
    FOOTER
    ================================= */
 
-footer {
+footer,
+.site-footer {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     border-top: 1px solid var(--border-color);
@@ -445,7 +501,8 @@ footer {
     animation: fadeIn 1s ease-out 0.5s both;
 }
 
-    footer .container {
+    footer .container,
+    .site-footer .container {
         padding: 0 1rem;
     }
 
@@ -497,6 +554,10 @@ footer {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     position: relative;
     overflow: hidden;
+}
+
+main > .container > .hero-section:first-child {
+    padding-top: 0;
 }
 
 .hero-title {

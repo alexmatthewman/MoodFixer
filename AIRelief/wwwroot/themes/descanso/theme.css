@@ -14,7 +14,10 @@
 :root {
     --theme-primary:   #a0522d;   /* Sienna / terracotta */
     --theme-secondary: #6b8e23;   /* Olive drab         */
+}
 
+[data-theme="dark"],
+:root:not([data-theme="light"]) {
     /* dark-mode palette */
     --bg-primary:      #1a1410;
     --bg-secondary:    #221c14;
@@ -47,6 +50,28 @@
     --success-color:   #4a7c2e;
     --shadow-color:    rgba(160, 82, 45, 0.08);
     --glow-color:      rgba(160, 82, 45, 0.12);
+}
+
+/* Bootstrap 5.3 overrides for Descanso dark mode.
+   [data-bs-theme="dark"] has specificity (0,1,0) matching Bootstrap's own
+   selector, so our rules win by source order. */
+[data-bs-theme="dark"] {
+    --bs-body-bg:          var(--bg-primary);
+    --bs-body-color:       var(--text-primary);
+    --bs-link-color:       var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color:     var(--border-color);
+}
+
+/* Bootstrap 5.3 overrides for Descanso light mode.
+   [data-bs-theme="light"] has specificity (0,1,0) matching Bootstrap's own
+   selector, so our rules win by source order. */
+[data-bs-theme="light"] {
+    --bs-body-bg:          var(--bg-primary);
+    --bs-body-color:       var(--text-primary);
+    --bs-link-color:       var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color:     var(--border-color);
 }
 
 /* ?? typography ?????????????????????????????????????????? */

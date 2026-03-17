@@ -13,7 +13,10 @@
 :root {
     --theme-primary:   #0a2540;
     --theme-secondary: #00c2b2;
+}
 
+[data-theme="dark"],
+:root:not([data-theme="light"]) {
     /* override site.css base palette for dark mode */
     --bg-primary:      #0b0f14;
     --bg-secondary:    #111820;
@@ -31,6 +34,17 @@
     --glow-color:      rgba(0, 194, 178, 0.15);
 }
 
+/* Bootstrap 5.3 overrides for AICAG dark mode.
+   [data-bs-theme="dark"] has specificity (0,1,0) matching Bootstrap's own
+   selector, so our rules win by source order. */
+[data-bs-theme="dark"] {
+    --bs-body-bg:      var(--bg-primary);
+    --bs-body-color:   var(--text-primary);
+    --bs-link-color:   var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color: var(--border-color);
+}
+
 [data-theme="light"] {
     --bg-primary:      #f8fafc;
     --bg-secondary:    #f1f5f9;
@@ -46,6 +60,17 @@
     --success-color:   #0284c7;
     --shadow-color:    rgba(2, 132, 199, 0.08);
     --glow-color:      rgba(2, 132, 199, 0.12);
+}
+
+/* Bootstrap 5.3 overrides for AICAG light mode.
+   [data-bs-theme="light"] has specificity (0,1,0) matching Bootstrap's own
+   selector, so our rules win by source order. */
+[data-bs-theme="light"] {
+    --bs-body-bg:      var(--bg-primary);
+    --bs-body-color:   var(--text-primary);
+    --bs-link-color:   var(--text-accent);
+    --bs-link-hover-color: var(--text-accent);
+    --bs-border-color: var(--border-color);
 }
 
 /* ?? typography ?????????????????????????????????????????? */
