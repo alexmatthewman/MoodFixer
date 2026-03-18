@@ -68,15 +68,15 @@ namespace AIRelief.Models
         [Display(Name = "Metacognition Weighted Average")]
         public decimal MetacognitionWeightedAverage { get; set; }
 
-        // ===== Short-Term Memory =====
-        [Display(Name = "Short-Term Memory Attempts")]
+        // ===== Working Memory =====
+        [Display(Name = "Working Memory Attempts")]
         public int ShortTermMemoryAttempts { get; set; }
 
-        [Display(Name = "Short-Term Memory Passed")]
+        [Display(Name = "Working Memory Passed")]
         public int ShortTermMemoryPassed { get; set; }
 
         [Range(0, 100)]
-        [Display(Name = "Short-Term Memory Weighted Average")]
+        [Display(Name = "Working Memory Weighted Average")]
         public decimal ShortTermMemoryWeightedAverage { get; set; }
 
         // ===== Confidence Calibration =====

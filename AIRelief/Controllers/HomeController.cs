@@ -88,7 +88,7 @@ namespace AIRelief.Controllers
         }
 
         [OutputCache(PolicyName = "PublicAlways")]
-        public IActionResult ShortTermMemory()
+        public IActionResult WorkingMemory()
         {
             return View();
         }

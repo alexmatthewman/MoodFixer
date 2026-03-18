@@ -21,7 +21,7 @@
     "ConfidenceCalibrationDesc": "Confidence Calibration assesses how accurately you gauge your own certainty \u2014 neither overconfident nor underconfident.",
     "MetacognitionDesc": "Metacognition is thinking about your own thinking \u2014 understanding what you know and don't know, and how you learn.",
     "ReadingComprehensionDesc": "Reading Comprehension evaluates how well you extract meaning, draw inferences, and critically evaluate written information.",
-    "ShortTermMemoryDesc": "Short-Term Memory questions test your ability to hold and manipulate information over brief time periods.",
+    "ShortTermMemoryDesc": "Working Memory questions test your ability to hold and manipulate information over brief time periods.",
     "NoQuestionsAvailable": "No questions are available for this lesson.",
     "ErrorSubmitting": "Error submitting answer. Please try again.",
     "NetworkError": "Network error. Please try again.",

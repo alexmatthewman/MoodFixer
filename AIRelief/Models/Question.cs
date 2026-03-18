@@ -12,7 +12,7 @@ namespace AIRelief.Models
         public const string ConfidenceCalibration = "Confidence Calibration";
         public const string Metacognition         = "Metacognition";
         public const string ReadingComprehension  = "Reading Comprehension";
-        public const string ShortTermMemory       = "Short Term Memory";
+        public const string ShortTermMemory       = "Working Memory";
         public const string Trial                 = "Trial";
 
         public static readonly string[] All =

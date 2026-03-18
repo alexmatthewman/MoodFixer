@@ -11,6 +11,6 @@
     "ReadingComprehension": "Reading Comprehension",
     "CausalReasoning": "Causal Reasoning",
     "Metacognition": "Metacognition",
-    "ShortTermMemory": "Short-Term Memory",
+    "ShortTermMemory": "Working Memory",
     "ConfidenceCalibration": "Confidence Calibration"
 }

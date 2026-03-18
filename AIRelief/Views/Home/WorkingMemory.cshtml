@@ -1,4 +1,5 @@
-@inject IStringLocalizer<HomeShortTermMemoryResource> L
+@inject IStringLocalizer<HomeWorkingMemoryResource> L
+@inject IStringLocalizer<HomeWorkingMemoryResource> L
 @{
     ViewData["Title"] = L["PageTitle"].Value;
 }
@@ -12,7 +13,7 @@
             <div class="text-center mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200"
                      style="max-width:100%; height:auto; border:1px solid var(--border-color); border-radius:0.5rem; background:var(--bg-secondary); padding:1rem;"
-                     aria-label="Diagram showing short-term memory as a buffer between incoming information and long-term memory, with an active maintenance loop"
+                     aria-label="Diagram showing working memory as a buffer between incoming information and long-term memory, with an active maintenance loop"
                      role="img">
                     <defs>
                         <marker id="stm-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
@@ -39,7 +40,7 @@
                     <rect x="180" y="72" width="120" height="56" rx="8"
                           fill="none" stroke="var(--text-accent)" stroke-width="2" />
                     <text x="240" y="97" text-anchor="middle" font-size="12"
-                          font-family="Courier New, monospace" fill="var(--text-accent)">Short-Term</text>
+                          font-family="Courier New, monospace" fill="var(--text-accent)">Working</text>
                     <text x="240" y="113" text-anchor="middle" font-size="12"
                           font-family="Courier New, monospace" fill="var(--text-accent)">Memory</text>
 
@@ -48,11 +49,11 @@
                           stroke="var(--text-accent)" stroke-width="1.5" stroke-dasharray="5,3"
                           marker-end="url(#stm-arr-accent)" />
                     <text x="240" y="28" text-anchor="middle" font-size="10"
-                          font-family="Courier New, monospace" fill="var(--text-accent)">rehearsal</text>
+                          font-family="Courier New, monospace" fill="var(--text-accent)">repetition</text>
 
                     <!-- Fade / decay label -->
                     <text x="240" y="158" text-anchor="middle" font-size="10"
-                          font-family="Courier New, monospace" fill="var(--text-muted)">fades without rehearsal</text>
+                          font-family="Courier New, monospace" fill="var(--text-muted)">fades without repetition</text>
                     <line x1="240" y1="148" x2="240" y2="131"
                           stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3,3"
                           marker-end="url(#stm-arr)" />

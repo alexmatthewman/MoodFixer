@@ -23,8 +23,8 @@ namespace AIRelief.LanguageResources
     public class HomeMetacognitionResource { }
     // ? Home/readingComprehension.json
     public class HomeReadingComprehensionResource { }
-    // ? Home/shortTermMemory.json
-    public class HomeShortTermMemoryResource { }
+    // ? Home/workingMemory.json
+    public class HomeWorkingMemoryResource { }
     // ? Home/confidenceCalibration.json
     public class HomeConfidenceCalibrationResource { }
     // ? Home/myQuestions.json
