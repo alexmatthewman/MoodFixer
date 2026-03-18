@@ -846,6 +846,18 @@ namespace AIRelief.Controllers
             var skipped = 0;
             var errors = new List<string>();
 
+            // Pre-load all existing MainText and QuestionText values in a single query to avoid
+            // N+1 database round-trips that would time out the request for large JSON files.
+            var existingMainTexts = new HashSet<string>(
+                await _context.Questions.Select(q => q.MainText).ToListAsync(),
+                StringComparer.Ordinal);
+            var existingQuestionTexts = new HashSet<string>(
+                await _context.Questions
+                    .Where(q => q.QuestionText != null)
+                    .Select(q => q.QuestionText!)
+                    .ToListAsync(),
+                StringComparer.Ordinal);
+
             for (int i = 0; i < dtos.Count; i++)
             {
                 var dto = dtos[i];
@@ -859,9 +871,9 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
-                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
+                bool mainTextExists = existingMainTexts.Contains(dto.MainText);
                 bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
-                    && await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText);
+                    && existingQuestionTexts.Contains(dto.QuestionText);
 
                 if (mainTextExists || questionTextExists)
                 {
@@ -933,6 +945,18 @@ namespace AIRelief.Controllers
                 return RedirectToAction(nameof(BulkQuestions));
             }
 
+            // Pre-load all existing MainText and QuestionText values in a single query to avoid
+            // N+1 database round-trips that would time out the request for large CSV files.
+            var existingMainTexts = new HashSet<string>(
+                await _context.Questions.Select(q => q.MainText).ToListAsync(),
+                StringComparer.Ordinal);
+            var existingQuestionTexts = new HashSet<string>(
+                await _context.Questions
+                    .Where(q => q.QuestionText != null)
+                    .Select(q => q.QuestionText!)
+                    .ToListAsync(),
+                StringComparer.Ordinal);
+
             var added = 0;
             var skipped = 0;
             // Each entry: (RowNumber, MainText preview, RawLine, ErrorReason)
@@ -957,10 +981,10 @@ namespace AIRelief.Controllers
                 }
 
                 bool mainTextExists = stagedMainTexts.Contains(dto.MainText)
-                    || await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
+                    || existingMainTexts.Contains(dto.MainText);
                 bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
                     && (stagedQuestionTexts.Contains(dto.QuestionText)
-                        || await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText));
+                        || existingQuestionTexts.Contains(dto.QuestionText));
 
                 if (mainTextExists || questionTextExists)
                 {
