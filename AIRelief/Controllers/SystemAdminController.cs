@@ -863,16 +863,10 @@ namespace AIRelief.Controllers
             var skipped = 0;
             var errors = new List<string>();
 
-            // Pre-load all existing MainText and QuestionText values in a single query to avoid
+            // Pre-load all existing MainText values in a single query to avoid
             // N+1 database round-trips that would time out the request for large JSON files.
             var existingMainTexts = new HashSet<string>(
                 await _context.Questions.Select(q => q.MainText).ToListAsync(),
-                StringComparer.Ordinal);
-            var existingQuestionTexts = new HashSet<string>(
-                await _context.Questions
-                    .Where(q => q.QuestionText != null)
-                    .Select(q => q.QuestionText!)
-                    .ToListAsync(),
                 StringComparer.Ordinal);
 
             for (int i = 0; i < dtos.Count; i++)
@@ -888,11 +882,7 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
-                bool mainTextExists = existingMainTexts.Contains(dto.MainText);
-                bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
-                    && existingQuestionTexts.Contains(dto.QuestionText);
-
-                if (mainTextExists || questionTextExists)
+                if (existingMainTexts.Contains(dto.MainText))
                 {
                     skipped++;
                     continue;
@@ -976,16 +966,10 @@ namespace AIRelief.Controllers
                 return RedirectToAction(nameof(BulkQuestions));
             }
 
-            // Pre-load all existing MainText and QuestionText values in a single query to avoid
+            // Pre-load all existing MainText values in a single query to avoid
             // N+1 database round-trips that would time out the request for large CSV files.
             var existingMainTexts = new HashSet<string>(
                 await _context.Questions.Select(q => q.MainText).ToListAsync(),
-                StringComparer.Ordinal);
-            var existingQuestionTexts = new HashSet<string>(
-                await _context.Questions
-                    .Where(q => q.QuestionText != null)
-                    .Select(q => q.QuestionText!)
-                    .ToListAsync(),
                 StringComparer.Ordinal);
 
             var added = 0;
@@ -993,7 +977,6 @@ namespace AIRelief.Controllers
             // Each entry: (RowNumber, MainText preview, RawLine, ErrorReason)
             var skippedRows = new List<(int RowNumber, string Preview, string RawLine, string Reason)>();
             var stagedMainTexts = new HashSet<string>(StringComparer.Ordinal);
-            var stagedQuestionTexts = new HashSet<string>(StringComparer.Ordinal);
 
             for (int i = 0; i < rows.Count; i++)
             {
@@ -1011,16 +994,9 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
-                bool mainTextExists = stagedMainTexts.Contains(dto.MainText)
-                    || existingMainTexts.Contains(dto.MainText);
-                bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
-                    && (stagedQuestionTexts.Contains(dto.QuestionText)
-                        || existingQuestionTexts.Contains(dto.QuestionText));
-
-                if (mainTextExists || questionTextExists)
+                if (stagedMainTexts.Contains(dto.MainText) || existingMainTexts.Contains(dto.MainText))
                 {
-                    var dupField = mainTextExists ? "MainText" : "QuestionText";
-                    skippedRows.Add((rowNumber, preview, rawLine, $"Duplicate: a question with the same {dupField} already exists in the database."));
+                    skippedRows.Add((rowNumber, preview, rawLine, "Duplicate: a question with the same MainText already exists in the database."));
                     skipped++;
                     continue;
                 }
@@ -1066,8 +1042,6 @@ namespace AIRelief.Controllers
                     ExplanationImage= string.IsNullOrEmpty(dto.ExplanationImage) ? null : dto.ExplanationImage
                 });
                 stagedMainTexts.Add(dto.MainText);
-                if (!string.IsNullOrWhiteSpace(dto.QuestionText))
-                    stagedQuestionTexts.Add(dto.QuestionText);
                 added++;
             }
 
