@@ -36,8 +36,10 @@ namespace AIRelief.Middleware
             var tenant = _registry.Resolve(host)
                          ?? _registry.GetByCode(_fallbackCode);
 
-            var lang = context.Request.Query["lang"].FirstOrDefault()
-                       ?? tenant.DefaultLanguage;
+            var requestedLang = context.Request.Query["lang"].FirstOrDefault();
+            var lang = (requestedLang != null && tenant.SupportedLanguages.Contains(requestedLang))
+                       ? requestedLang
+                       : tenant.DefaultLanguage;
 
             var culture = new CultureInfo(lang);
             CultureInfo.CurrentCulture = culture;

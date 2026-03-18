@@ -28,11 +28,15 @@
                     <h5><i class="fas fa-download"></i> Download All Questions</h5>
                 </div>
                 <div class="admin-card-body d-flex flex-column">
-                    <p>Export every question currently in the database as a CSV file.</p>
-                    <div class="mt-auto">
+                    <p>Export every question currently in the database as a JSON or CSV file.</p>
+                    <div class="mt-auto d-grid gap-2">
                         <a href="/Admin/SystemAdmin/BulkQuestions/Download"
                            class="btn btn-primary w-100">
-                            <i class="fas fa-file-csv"></i> Bulk Question Download
+                            <i class="fas fa-file-code"></i> Download as JSON
+                        </a>
+                        <a href="/Admin/SystemAdmin/BulkQuestions/DownloadCsv"
+                           class="btn btn-outline-primary w-100">
+                            <i class="fas fa-file-csv"></i> Download as CSV
                         </a>
                     </div>
                 </div>
@@ -42,42 +46,62 @@
         <div class="col-md-4">
             <div class="admin-card h-100">
                 <div class="admin-card-header">
-                    <h5><i class="fas fa-upload"></i> Upload Questions</h5>
+                    <h5><i class="fas fa-upload"></i> Upload Questions (JSON)</h5>
                 </div>
                 <div class="admin-card-body d-flex flex-column">
-                    <p>Upload a CSV file to import questions. Rows where <strong>MainText</strong> or <strong>QuestionText</strong> already exists in the database will be skipped.</p>
+                    <p>Upload a JSON file to import questions. Items where <strong>MainText</strong> or <strong>QuestionText</strong> already exists in the database will be skipped.</p>
                     <form method="post" action="/Admin/SystemAdmin/BulkQuestions/Upload"
+                          enctype="multipart/form-data" class="mt-auto">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <input type="file" name="file" accept=".json" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-file-upload"></i> Upload JSON
+                        </button>
+                    </form>
+                    <div class="mt-2">
+                        <a href="/Admin/SystemAdmin/BulkQuestions/Template" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-file-code"></i> Download JSON Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-header">
+                    <h5><i class="fas fa-upload"></i> Upload Questions (CSV)</h5>
+                </div>
+                <div class="admin-card-body d-flex flex-column">
+                    <p>Upload a CSV file to import questions. <mark><strong>Commas inside field values must be wrapped in quotes.</strong></mark> Items where <strong>MainText</strong> or <strong>QuestionText</strong> already exists in the database will be skipped.</p>
+                    <form method="post" action="/Admin/SystemAdmin/BulkQuestions/UploadCsv"
                           enctype="multipart/form-data" class="mt-auto">
                         @Html.AntiForgeryToken()
                         <div class="mb-3">
                             <input type="file" name="file" accept=".csv" class="form-control" required />
                         </div>
                         <button type="submit" class="btn btn-success w-100">
-                            <i class="fas fa-file-upload"></i> Bulk Question Upload
+                            <i class="fas fa-file-upload"></i> Upload CSV
                         </button>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="admin-card h-100">
-                <div class="admin-card-header">
-                    <h5><i class="fas fa-file-alt"></i> Download Template</h5>
-                </div>
-                <div class="admin-card-body d-flex flex-column">
-                    <p>Download a CSV template with two example questions showing the correct column format for upload.</p>
-                    <div class="mt-auto">
-                        <a href="/Admin/SystemAdmin/BulkQuestions/Template"
-                           class="btn btn-secondary w-100">
-                            <i class="fas fa-file-csv"></i> Bulk Question Template
+                    <div class="mt-2">
+                        <a href="/Admin/SystemAdmin/BulkQuestions/TemplateCsv" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-file-csv"></i> Download CSV Template
                         </a>
+                        <div class="mt-2 small text-muted">
+                            <p class="mb-1"><i class="fas fa-info-circle"></i> <strong>Opening the CSV template:</strong> Open the file in a plain text editor (e.g. Notepad on Windows, TextEdit on Mac) to see the double-quote characters that wrap fields containing commas. Excel hides these quotes and may strip them on save.</p>
+                            <p class="mb-0"><i class="fas fa-table"></i> <strong>Editing in Excel:</strong> If you need to include a comma inside a cell, simply type the value normally&mdash;Excel will automatically add the surrounding quotes when you <em>Save As &rarr; CSV UTF-8 (Comma delimited)</em>. Do not manually type the quotes in Excel; let Excel handle the escaping.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
+
+
 
     <div class="row g-4 mt-2">
         <div class="col-md-4">
@@ -86,7 +110,7 @@
                     <h5><i class="fas fa-trash-alt"></i> Remove All Questions</h5>
                 </div>
                 <div class="admin-card-body d-flex flex-column">
-                    <p>Permanently delete every question from the database. A full CSV backup will be downloaded automatically before deletion.</p>
+                    <p>Permanently delete every question from the database. A full JSON backup will be downloaded automatically before deletion.</p>
                     <div class="mt-auto">
                         <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#removeAllModal">
                             <i class="fas fa-trash-alt"></i> Remove All Questions
@@ -106,7 +130,7 @@
                 </div>
                 <div class="modal-body">
                     <p>This will <strong>permanently delete all questions</strong> from the database.</p>
-                    <p>A CSV backup of all questions will be downloaded to your computer before deletion.</p>
+                    <p>A JSON backup of all questions will be downloaded to your computer before deletion.</p>
                     <p class="text-danger mb-0"><strong>This action cannot be undone.</strong></p>
                 </div>
                 <div class="modal-footer">

@@ -20,5 +20,6 @@
     "FooterCopyright": "\u00a9 {0}",
     "SignUp": "Sign Up",
     "Login": "Login",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "HelloUser": "Hello {0}"
 }

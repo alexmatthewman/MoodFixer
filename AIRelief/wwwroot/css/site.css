@@ -849,7 +849,8 @@ main > .container > .hero-section:first-child {
 }
 
 [data-theme="light"] .cta-section {
-    background: linear-gradient(135deg, #1a3a5c 0%, #0f4c3a 100%);
+    background: linear-gradient(135deg, #e8f0f7 0%, #dceedd 100%);
+    color: var(--text-secondary);
 }
 
 .cta-title {
@@ -873,6 +874,19 @@ main > .container > .hero-section:first-child {
 
 .cta-guarantee {
     color: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="light"] #start-assessment .cta-title {
+    color: #212529;
+    text-shadow: none;
+}
+
+[data-theme="light"] #start-assessment .cta-subtitle {
+    color: #495057;
+}
+
+[data-theme="light"] #start-assessment .cta-guarantee {
+    color: #495057;
 }
 
     .cta-guarantee i {
@@ -900,6 +914,27 @@ main > .container > .hero-section:first-child {
         background-color: #ffffff;
         color: #1a3a5c;
     }
+
+[data-theme="light"] .cta-section .btn-primary {
+    background-color: #1a3a5c;
+    color: #ffffff;
+    border-color: #1a3a5c;
+}
+
+[data-theme="light"] .cta-section .btn-primary:hover {
+    background-color: #0f2b44;
+    color: #ffffff;
+}
+
+[data-theme="light"] .cta-section .btn-outline-primary {
+    border-color: #1a3a5c;
+    color: #1a3a5c;
+}
+
+[data-theme="light"] .cta-section .btn-outline-primary:hover {
+    background-color: #1a3a5c;
+    color: #ffffff;
+}
 
 /* Testimonials Section */
 .testimonials-section {

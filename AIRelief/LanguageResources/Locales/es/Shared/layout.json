@@ -20,5 +20,6 @@
     "FooterCopyright": "\u00a9 {0}",
     "SignUp": "Registrarse",
     "Login": "Iniciar sesi\u00f3n",
-    "Logout": "Cerrar sesi\u00f3n"
+    "Logout": "Cerrar sesi\u00f3n",
+    "HelloUser": "Hola {0}"
 }

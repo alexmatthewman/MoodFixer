@@ -223,6 +223,44 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: none;
 }
 
+/* ?? hero / CTA containers: transparent so section bg shows */
+.hero-section .container,
+.cta-section .container {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ?? CTA light-mode text: override white-on-white ???????? */
+[data-theme="light"] .cta-section .cta-title {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .cta-section .cta-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+[data-theme="light"] .cta-section .cta-guarantee {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ?? hero light-mode text: ensure visibility ????????????? */
+[data-theme="light"] .hero-title {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .hero-subtitle {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="light"] .stat-number {
+    color: var(--text-accent) !important;
+}
+
+[data-theme="light"] .stat-label {
+    color: var(--text-muted) !important;
+}
+
 /* ?? answer options: flat interaction ???????????????????? */
 .answer-option::before {
     display: none;

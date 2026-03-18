@@ -715,30 +715,65 @@ namespace AIRelief.Controllers
 
         // ========== BULK QUESTIONS ==========
 
-        private static readonly string[] CsvHeaders = new[]
+        private record QuestionDto(
+            string? Category,
+            string? QuestionText,
+            string MainText,
+            string? Image,
+            string Option1,
+            string Option2,
+            string? Option3,
+            string? Option4,
+            string? Option5,
+            string CorrectAnswer,
+            string? BestAnswersRaw,
+            string? ExplanationText,
+            string? ExplanationImage
+        );
+
+        private static readonly System.Text.Json.JsonSerializerOptions JsonOptions = new()
         {
-            "Category", "QuestionText", "MainText", "Image",
-            "Option1", "Option2", "Option3", "Option4", "Option5",
-            "CorrectAnswer", "BestAnswersRaw",
-            "ExplanationText", "ExplanationImage"
+            WriteIndented = true,
+            PropertyNamingPolicy = null
         };
 
-        private static string ToCsvRow(params string?[] fields)
+        private static QuestionDto QuestionToDto(Question q) =>
+            new(q.Category, q.QuestionText, q.MainText, q.Image,
+                q.Option1, q.Option2, q.Option3, q.Option4, q.Option5,
+                q.CorrectAnswer, q.BestAnswersRaw,
+                q.ExplanationText, q.ExplanationImage);
+
+        private static byte[] QuestionsToJsonBytes(IEnumerable<Question> questions)
         {
-            return string.Join(",", fields.Select(f =>
-            {
-                if (f == null) return string.Empty;
-                if (f.Contains(',') || f.Contains('"') || f.Contains('\n'))
-                    return $"\"{f.Replace("\"", "\"\"")}\"";
-                return f;
-            }));
+            var dtos = questions.Select(QuestionToDto).ToList();
+            return System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(dtos, JsonOptions);
         }
 
-        private static string QuestionToCsvRow(Question q) =>
-            ToCsvRow(q.Category, q.QuestionText, q.MainText, q.Image,
-                     q.Option1, q.Option2, q.Option3, q.Option4, q.Option5,
-                     q.CorrectAnswer, q.BestAnswersRaw,
-                     q.ExplanationText, q.ExplanationImage);
+        private static byte[] QuestionsToCsvBytes(IEnumerable<Question> questions)
+        {
+            static string CsvField(string? value)
+            {
+                if (string.IsNullOrEmpty(value)) return string.Empty;
+                // Wrap in quotes if the value contains a comma, double-quote, or newline
+                if (value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r'))
+                    return '"' + value.Replace("\"", "\"\"") + '"';
+                return value;
+            }
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Category,QuestionText,MainText,Image,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,ExplanationText,ExplanationImage");
+            foreach (var q in questions)
+            {
+                var dto = QuestionToDto(q);
+                sb.AppendLine(string.Join(",",
+                    CsvField(dto.Category), CsvField(dto.QuestionText), CsvField(dto.MainText),
+                    CsvField(dto.Image), CsvField(dto.Option1), CsvField(dto.Option2),
+                    CsvField(dto.Option3), CsvField(dto.Option4), CsvField(dto.Option5),
+                    CsvField(dto.CorrectAnswer), CsvField(dto.BestAnswersRaw),
+                    CsvField(dto.ExplanationText), CsvField(dto.ExplanationImage)));
+            }
+            return System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+        }
 
         [Route("BulkQuestions")]
         public async Task<IActionResult> BulkQuestions()
@@ -758,13 +793,19 @@ namespace AIRelief.Controllers
                 return Forbid();
 
             var questions = await _context.Questions.OrderBy(q => q.Category).ThenBy(q => q.ID).ToListAsync();
+            var bytes = QuestionsToJsonBytes(questions);
+            return File(bytes, "application/json", $"questions_{System.DateTime.UtcNow:yyyyMMdd}.json");
+        }
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(string.Join(",", CsvHeaders));
-            foreach (var q in questions)
-                sb.AppendLine(QuestionToCsvRow(q));
+        [Route("BulkQuestions/DownloadCsv")]
+        public async Task<IActionResult> BulkQuestionsDownloadCsv()
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
 
-            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            var questions = await _context.Questions.OrderBy(q => q.Category).ThenBy(q => q.ID).ToListAsync();
+            var bytes = QuestionsToCsvBytes(questions);
             return File(bytes, "text/csv", $"questions_{System.DateTime.UtcNow:yyyyMMdd}.csv");
         }
 
@@ -779,62 +820,48 @@ namespace AIRelief.Controllers
 
             if (file == null || file.Length == 0)
             {
-                TempData["ErrorMessage"] = "Please select a CSV file to upload.";
+                TempData["ErrorMessage"] = "Please select a JSON file to upload.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            List<QuestionDto>? dtos;
+            try
+            {
+                dtos = await System.Text.Json.JsonSerializer.DeserializeAsync<List<QuestionDto>>(
+                    file.OpenReadStream(), JsonOptions);
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                TempData["ErrorMessage"] = $"Invalid JSON file: {ex.Message}";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            if (dtos == null || dtos.Count == 0)
+            {
+                TempData["ErrorMessage"] = "The uploaded file is empty or contains no questions.";
                 return RedirectToAction(nameof(BulkQuestions));
             }
 
             var added = 0;
             var skipped = 0;
-            var errors = new System.Collections.Generic.List<string>();
+            var errors = new List<string>();
 
-            using var reader = new System.IO.StreamReader(file.OpenReadStream(), System.Text.Encoding.UTF8);
-            var headerLine = await reader.ReadLineAsync();
-            if (headerLine == null)
+            for (int i = 0; i < dtos.Count; i++)
             {
-                TempData["ErrorMessage"] = "The uploaded file is empty.";
-                return RedirectToAction(nameof(BulkQuestions));
-            }
+                var dto = dtos[i];
+                var itemLabel = $"Item {i + 1}";
 
-            var headers = ParseCsvRow(headerLine);
-            int Idx(string name)
-            {
-                var i = System.Array.FindIndex(headers, h => h.Trim().Equals(name, System.StringComparison.OrdinalIgnoreCase));
-                return i;
-            }
-
-            int rowNumber = 1;
-            string? line;
-            while ((line = await reader.ReadLineAsync()) != null)
-            {
-                rowNumber++;
-                if (string.IsNullOrWhiteSpace(line)) continue;
-
-                var cols = ParseCsvRow(line);
-
-                string Get(string name)
+                if (string.IsNullOrWhiteSpace(dto.MainText) || string.IsNullOrWhiteSpace(dto.Option1)
+                    || string.IsNullOrWhiteSpace(dto.Option2) || string.IsNullOrWhiteSpace(dto.CorrectAnswer))
                 {
-                    var i = Idx(name);
-                    return (i >= 0 && i < cols.Length) ? cols[i].Trim() : string.Empty;
-                }
-
-                var mainText = Get("MainText");
-                var option1  = Get("Option1");
-                var option2  = Get("Option2");
-                var correct  = Get("CorrectAnswer");
-
-                if (string.IsNullOrWhiteSpace(mainText) || string.IsNullOrWhiteSpace(option1)
-                    || string.IsNullOrWhiteSpace(option2) || string.IsNullOrWhiteSpace(correct))
-                {
-                    errors.Add($"Row {rowNumber}: skipped — MainText, Option1, Option2 and CorrectAnswer are required.");
+                    errors.Add($"{itemLabel}: skipped — MainText, Option1, Option2 and CorrectAnswer are required.");
                     skipped++;
                     continue;
                 }
 
-                var questionText = Get("QuestionText");
-
-                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == mainText);
-                bool questionTextExists = !string.IsNullOrWhiteSpace(questionText)
-                    && await _context.Questions.AnyAsync(q => q.QuestionText == questionText);
+                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
+                bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
+                    && await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText);
 
                 if (mainTextExists || questionTextExists)
                 {
@@ -842,24 +869,22 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
-                var question = new Question
+                _context.Questions.Add(new Question
                 {
-                    Category        = string.IsNullOrEmpty(Get("Category")) ? null : Get("Category"),
-                    QuestionText    = string.IsNullOrEmpty(questionText) ? null : questionText,
-                    MainText        = mainText,
-                    Image           = string.IsNullOrEmpty(Get("Image")) ? null : Get("Image"),
-                    Option1         = option1,
-                    Option2         = option2,
-                    Option3         = string.IsNullOrEmpty(Get("Option3")) ? null : Get("Option3"),
-                    Option4         = string.IsNullOrEmpty(Get("Option4")) ? null : Get("Option4"),
-                    Option5         = string.IsNullOrEmpty(Get("Option5")) ? null : Get("Option5"),
-                    CorrectAnswer   = correct,
-                    BestAnswersRaw  = string.IsNullOrEmpty(Get("BestAnswersRaw")) ? null : Get("BestAnswersRaw"),
-                    ExplanationText = string.IsNullOrEmpty(Get("ExplanationText")) ? null : Get("ExplanationText"),
-                    ExplanationImage= string.IsNullOrEmpty(Get("ExplanationImage")) ? null : Get("ExplanationImage")
-                };
-
-                _context.Questions.Add(question);
+                    Category        = string.IsNullOrEmpty(dto.Category)         ? null : dto.Category,
+                    QuestionText    = string.IsNullOrEmpty(dto.QuestionText)     ? null : dto.QuestionText,
+                    MainText        = dto.MainText,
+                    Image           = string.IsNullOrEmpty(dto.Image)            ? null : dto.Image,
+                    Option1         = dto.Option1,
+                    Option2         = dto.Option2,
+                    Option3         = string.IsNullOrEmpty(dto.Option3)          ? null : dto.Option3,
+                    Option4         = string.IsNullOrEmpty(dto.Option4)          ? null : dto.Option4,
+                    Option5         = string.IsNullOrEmpty(dto.Option5)          ? null : dto.Option5,
+                    CorrectAnswer   = dto.CorrectAnswer,
+                    BestAnswersRaw  = string.IsNullOrEmpty(dto.BestAnswersRaw)   ? null : dto.BestAnswersRaw,
+                    ExplanationText = string.IsNullOrEmpty(dto.ExplanationText)  ? null : dto.ExplanationText,
+                    ExplanationImage= string.IsNullOrEmpty(dto.ExplanationImage) ? null : dto.ExplanationImage
+                });
                 added++;
             }
 
@@ -874,39 +899,234 @@ namespace AIRelief.Controllers
             return RedirectToAction(nameof(BulkQuestions));
         }
 
+        [Route("BulkQuestions/UploadCsv")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BulkQuestionsUploadCsv(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            var appUser = await GetCurrentUserAsync();
+            if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
+                return Forbid();
+
+            if (file == null || file.Length == 0)
+            {
+                TempData["ErrorMessage"] = "Please select a CSV file to upload.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            List<QuestionDto> dtos;
+            try
+            {
+                using var reader = new StreamReader(file.OpenReadStream());
+                dtos = ParseCsvQuestions(reader);
+            }
+            catch (System.Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Could not parse CSV file: {ex.Message}";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            if (dtos.Count == 0)
+            {
+                TempData["ErrorMessage"] = "The uploaded CSV file is empty or contains no questions.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+
+            var added = 0;
+            var skipped = 0;
+            var errors = new List<string>();
+
+            for (int i = 0; i < dtos.Count; i++)
+            {
+                var dto = dtos[i];
+                var itemLabel = $"Row {i + 2}";
+
+                if (string.IsNullOrWhiteSpace(dto.MainText) || string.IsNullOrWhiteSpace(dto.Option1)
+                    || string.IsNullOrWhiteSpace(dto.Option2) || string.IsNullOrWhiteSpace(dto.CorrectAnswer))
+                {
+                    errors.Add($"{itemLabel}: skipped — MainText, Option1, Option2 and CorrectAnswer are required.");
+                    skipped++;
+                    continue;
+                }
+
+                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
+                bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
+                    && await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText);
+
+                if (mainTextExists || questionTextExists)
+                {
+                    skipped++;
+                    continue;
+                }
+
+                _context.Questions.Add(new Question
+                {
+                    Category        = string.IsNullOrEmpty(dto.Category)         ? null : dto.Category,
+                    QuestionText    = string.IsNullOrEmpty(dto.QuestionText)     ? null : dto.QuestionText,
+                    MainText        = dto.MainText,
+                    Image           = string.IsNullOrEmpty(dto.Image)            ? null : dto.Image,
+                    Option1         = dto.Option1,
+                    Option2         = dto.Option2,
+                    Option3         = string.IsNullOrEmpty(dto.Option3)          ? null : dto.Option3,
+                    Option4         = string.IsNullOrEmpty(dto.Option4)          ? null : dto.Option4,
+                    Option5         = string.IsNullOrEmpty(dto.Option5)          ? null : dto.Option5,
+                    CorrectAnswer   = dto.CorrectAnswer,
+                    BestAnswersRaw  = string.IsNullOrEmpty(dto.BestAnswersRaw)   ? null : dto.BestAnswersRaw,
+                    ExplanationText = string.IsNullOrEmpty(dto.ExplanationText)  ? null : dto.ExplanationText,
+                    ExplanationImage= string.IsNullOrEmpty(dto.ExplanationImage) ? null : dto.ExplanationImage
+                });
+                added++;
+            }
+
+            if (added > 0)
+                await _context.SaveChangesAsync();
+
+            var summary = $"{added} question(s) imported from CSV, {skipped} skipped.";
+            if (errors.Count > 0)
+                summary += " Errors: " + string.Join(" | ", errors);
+
+            TempData[added > 0 || skipped > 0 ? "SuccessMessage" : "ErrorMessage"] = summary;
+            return RedirectToAction(nameof(BulkQuestions));
+        }
+
+        private static List<QuestionDto> ParseCsvQuestions(StreamReader reader)
+        {
+            // RFC-4180 compliant CSV parser that handles quoted fields containing commas/newlines
+            static string[] SplitCsvLine(string line)
+            {
+                var fields = new List<string>();
+                var field = new System.Text.StringBuilder();
+                bool inQuotes = false;
+
+                for (int i = 0; i < line.Length; i++)
+                {
+                    char c = line[i];
+                    if (inQuotes)
+                    {
+                        if (c == '"')
+                        {
+                            if (i + 1 < line.Length && line[i + 1] == '"') { field.Append('"'); i++; }
+                            else inQuotes = false;
+                        }
+                        else field.Append(c);
+                    }
+                    else
+                    {
+                        if (c == '"') inQuotes = true;
+                        else if (c == ',') { fields.Add(field.ToString()); field.Clear(); }
+                        else field.Append(c);
+                    }
+                }
+                fields.Add(field.ToString());
+                return fields.ToArray();
+            }
+
+            // Expected header order (case-insensitive)
+            // Category,QuestionText,MainText,Image,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,ExplanationText,ExplanationImage
+            var headerLine = reader.ReadLine();
+            if (headerLine == null)
+                return new List<QuestionDto>();
+
+            var headers = SplitCsvLine(headerLine)
+                .Select(h => h.Trim().ToLowerInvariant())
+                .ToArray();
+
+            int Idx(string name) => System.Array.IndexOf(headers, name.ToLowerInvariant());
+
+            int iCategory        = Idx("Category");
+            int iQuestionText    = Idx("QuestionText");
+            int iMainText        = Idx("MainText");
+            int iImage           = Idx("Image");
+            int iOption1         = Idx("Option1");
+            int iOption2         = Idx("Option2");
+            int iOption3         = Idx("Option3");
+            int iOption4         = Idx("Option4");
+            int iOption5         = Idx("Option5");
+            int iCorrectAnswer   = Idx("CorrectAnswer");
+            int iBestAnswersRaw  = Idx("BestAnswersRaw");
+            int iExplanationText = Idx("ExplanationText");
+            int iExplanationImage= Idx("ExplanationImage");
+
+            string? Get(string[] cols, int idx) =>
+                idx >= 0 && idx < cols.Length ? cols[idx].Trim() : null;
+
+            var dtos = new List<QuestionDto>();
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                var cols = SplitCsvLine(line);
+                dtos.Add(new QuestionDto(
+                    Category:         Get(cols, iCategory),
+                    QuestionText:     Get(cols, iQuestionText),
+                    MainText:         Get(cols, iMainText) ?? string.Empty,
+                    Image:            Get(cols, iImage),
+                    Option1:          Get(cols, iOption1) ?? string.Empty,
+                    Option2:          Get(cols, iOption2) ?? string.Empty,
+                    Option3:          Get(cols, iOption3),
+                    Option4:          Get(cols, iOption4),
+                    Option5:          Get(cols, iOption5),
+                    CorrectAnswer:    Get(cols, iCorrectAnswer) ?? string.Empty,
+                    BestAnswersRaw:   Get(cols, iBestAnswersRaw),
+                    ExplanationText:  Get(cols, iExplanationText),
+                    ExplanationImage: Get(cols, iExplanationImage)
+                ));
+            }
+            return dtos;
+        }
+
+        [Route("BulkQuestions/TemplateCsv")]
+        public IActionResult BulkQuestionsTemplateCsv()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Category,QuestionText,MainText,Image,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,ExplanationText,ExplanationImage");
+            sb.AppendLine("Trial,,\"A pencil costs 50 cents more than an eraser. The total cost of both is $1. How much does the eraser cost?\",q1.png,$0.50,$0.25,$0.75,$0.05,,$0.25,,\"The correct breakdown is $0.25 for the eraser and $0.75 for the pencil.\",q1x.png");
+            sb.AppendLine("Causal Reasoning,\"Which answer best explains why the bike-sharing program may not be the real cause of fewer accidents?\",\"A small town introduces a bike-sharing program and traffic accidents decline. However, new traffic lights and road improvements were also installed at the same time.\",,\"Traffic lights and road improvements could explain the decline\",\"Cyclists may still get into accidents\",\"People might dislike cycling in bad weather\",\"Bicycle ownership is unrelated to traffic accidents\",\"The town's population may have decreased\",\"Traffic lights and road improvements could explain the decline\",1,\"Multiple interventions occurred simultaneously.\",");
+            // Cognitive Reflection row — note commas inside field values are wrapped in double-quotes
+            sb.AppendLine("Cognitive Reflection,,\"A bat and a ball cost $1.10 in total. The bat costs $1 more than the ball. How much does the ball cost?\",,$0.05,$0.10,$0.50,$1.00,,$0.05,,\"The intuitive answer is $0.10, but that would make the bat $1.10 and the total $1.20. The correct answer is $0.05: ball = $0.05, bat = $1.05, total = $1.10.\",");
+            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(bytes, "text/csv", "questions_template.csv");
+        }
+
         [Route("BulkQuestions/Template")]
         public IActionResult BulkQuestionsTemplate()
         {
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(string.Join(",", CsvHeaders));
+            var template = new[]
+            {
+                new QuestionDto(
+                    Category: "Trial",
+                    QuestionText: null,
+                    MainText: "A pencil costs 50 cents more than an eraser. The total cost of both is $1. How much does the eraser cost?",
+                    Image: "q1.png",
+                    Option1: "$0.50",
+                    Option2: "$0.25",
+                    Option3: "$0.75",
+                    Option4: "$0.05",
+                    Option5: null,
+                    CorrectAnswer: "$0.25",
+                    BestAnswersRaw: null,
+                    ExplanationText: "The correct breakdown is $0.25 for the eraser and $0.75 for the pencil.",
+                    ExplanationImage: "q1x.png"
+                ),
+                new QuestionDto(
+                    Category: "Causal Reasoning",
+                    QuestionText: "Which answer best explains why the bike-sharing program may not be the real cause of fewer accidents?",
+                    MainText: "A small town introduces a bike-sharing program and traffic accidents decline. However, new traffic lights and road improvements were also installed at the same time.",
+                    Image: null,
+                    Option1: "Traffic lights and road improvements could explain the decline",
+                    Option2: "Cyclists may still get into accidents",
+                    Option3: "People might dislike cycling in bad weather",
+                    Option4: "Bicycle ownership is unrelated to traffic accidents",
+                    Option5: "The town's population may have decreased",
+                    CorrectAnswer: "Traffic lights and road improvements could explain the decline",
+                    BestAnswersRaw: "1",
+                    ExplanationText: "Multiple interventions occurred simultaneously.",
+                    ExplanationImage: null
+                )
+            };
 
-            sb.AppendLine(ToCsvRow(
-                "Trial",
-                "",
-                "A pencil costs 50 cents more than an eraser. The total cost of both is $1. How much does the eraser cost?",
-                "q1.png",
-                "$0.50", "$0.25", "$0.75", "$0.05", "",
-                "$0.25", "",
-                "The correct breakdown is $0.25 for the eraser and $0.75 for the pencil.", "q1x.png"
-            ));
-
-            sb.AppendLine(ToCsvRow(
-                "Causal Reasoning",
-                "Which answer best explains why the bike-sharing program may not be the real cause of fewer accidents?",
-                "A small town introduces a bike-sharing program and traffic accidents decline. However, new traffic lights and road improvements were also installed at the same time.",
-                "",
-                "Traffic lights and road improvements could explain the decline",
-                "Cyclists may still get into accidents",
-                "People might dislike cycling in bad weather",
-                "Bicycle ownership is unrelated to traffic accidents",
-                "The town's population may have decreased",
-                "Traffic lights and road improvements could explain the decline",
-                "1",
-                "Multiple interventions occurred simultaneously.", ""
-            ));
-
-            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
-            return File(bytes, "text/csv", "questions_template.csv");
+            var bytes = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(template, JsonOptions);
+            return File(bytes, "application/json", "questions_template.json");
         }
 
         [Route("BulkQuestions/RemoveAll")]
@@ -919,67 +1139,12 @@ namespace AIRelief.Controllers
                 return Forbid();
 
             var questions = await _context.Questions.OrderBy(q => q.Category).ThenBy(q => q.ID).ToListAsync();
-
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(string.Join(",", CsvHeaders));
-            foreach (var q in questions)
-                sb.AppendLine(QuestionToCsvRow(q));
+            var bytes = QuestionsToJsonBytes(questions);
 
             _context.Questions.RemoveRange(questions);
             await _context.SaveChangesAsync();
 
-            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
-            return File(bytes, "text/csv", $"questions_backup_{System.DateTime.UtcNow:yyyyMMdd_HHmmss}.csv");
-        }
-
-        private static string[] ParseCsvRow(string line)
-        {
-            var fields = new System.Collections.Generic.List<string>();
-            var current = new System.Text.StringBuilder();
-            bool inQuotes = false;
-
-            for (int i = 0; i < line.Length; i++)
-            {
-                char c = line[i];
-                if (inQuotes)
-                {
-                    if (c == '"')
-                    {
-                        if (i + 1 < line.Length && line[i + 1] == '"')
-                        {
-                            current.Append('"');
-                            i++;
-                        }
-                        else
-                        {
-                            inQuotes = false;
-                        }
-                    }
-                    else
-                    {
-                        current.Append(c);
-                    }
-                }
-                else
-                {
-                    if (c == '"')
-                    {
-                        inQuotes = true;
-                    }
-                    else if (c == ',')
-                    {
-                        fields.Add(current.ToString());
-                        current.Clear();
-                    }
-                    else
-                    {
-                        current.Append(c);
-                    }
-                }
-            }
-
-            fields.Add(current.ToString());
-            return fields.ToArray();
+            return File(bytes, "application/json", $"questions_backup_{System.DateTime.UtcNow:yyyyMMdd_HHmmss}.json");
         }
 
         // ========== FEEDBACK ==========
