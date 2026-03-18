@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace AIRelief.Tests.TestInfrastructure;
@@ -61,6 +62,9 @@ internal sealed class ControllerTestFixture : IAsyncDisposable
     public IEmailService EmailService { get; } = Mock.Of<IEmailService>();
 
     public IOutputCacheStore OutputCacheStore { get; } = Mock.Of<IOutputCacheStore>();
+
+    public Microsoft.Extensions.Logging.ILogger<AIRelief.Controllers.SystemAdminController> SystemAdminLogger { get; } =
+        NullLogger<AIRelief.Controllers.SystemAdminController>.Instance;
 
     public Group? TestGroup { get; private set; }
 

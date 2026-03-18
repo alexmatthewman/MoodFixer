@@ -17,7 +17,7 @@ public class SystemAdminControllerTests
         var admin = await fixture.CreateAppUserAsync("TestUser1", "testuser1@system.local", AuthLevel.SystemAdmin);
         fixture.SetCurrentUser(admin);
 
-        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore));
+        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore, fixture.SystemAdminLogger));
         var group = new Group
         {
             Name = "TestGroup",
@@ -48,7 +48,7 @@ public class SystemAdminControllerTests
         var admin = await fixture.CreateAppUserAsync("TestUser1", "testuser1@system.local", AuthLevel.SystemAdmin);
         fixture.SetCurrentUser(admin);
 
-        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore));
+        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore, fixture.SystemAdminLogger));
         var user = new User
         {
             Name = "TestUser2",
@@ -85,7 +85,7 @@ public class SystemAdminControllerTests
         await fixture.CreateAppUserAsync("TestUserExisting", "existing@testgroup.local", AuthLevel.User, group.ID);
         fixture.SetCurrentUser(admin);
 
-        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore));
+        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore, fixture.SystemAdminLogger));
 
         const string csv = "Name,Email,AuthLevel,Password\r\n"
             + "TestUser2,testuser2@testgroup.local,User,TempPass123!\r\n"
@@ -112,7 +112,7 @@ public class SystemAdminControllerTests
         var admin = await fixture.CreateAppUserAsync("TestUser1", "testuser1@system.local", AuthLevel.SystemAdmin);
         fixture.SetCurrentUser(admin);
 
-        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore));
+        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore, fixture.SystemAdminLogger));
 
         var result = await controller.AddSystemAdmin("TestUser2", "testuser2@system.local", "TempPass123!");
 
@@ -131,7 +131,7 @@ public class SystemAdminControllerTests
         var targetAdmin = await fixture.CreateAppUserAsync("TestUser2", "testuser2@system.local", AuthLevel.SystemAdmin);
         fixture.SetCurrentUser(currentAdmin);
 
-        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore));
+        var controller = fixture.InitializeController(new SystemAdminController(fixture.Context, fixture.UserManager, fixture.AuthorizationService, fixture.TenantRegistry, fixture.EmailService, fixture.OutputCacheStore, fixture.SystemAdminLogger));
 
         var result = await controller.RemoveSystemAdmin(targetAdmin.ID);
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using AIRelief.Models;
 using AIRelief.Services;
 using System;
@@ -24,8 +25,9 @@ namespace AIRelief.Controllers
         private readonly TenantRegistry _tenantRegistry;
         private readonly IEmailService _emailService;
         private readonly IOutputCacheStore _outputCacheStore;
+        private readonly ILogger<SystemAdminController> _logger;
 
-        public SystemAdminController(AIReliefContext context, UserManager<IdentityUser> userManager, AdminAuthorizationService authService, TenantRegistry tenantRegistry, IEmailService emailService, IOutputCacheStore outputCacheStore)
+        public SystemAdminController(AIReliefContext context, UserManager<IdentityUser> userManager, AdminAuthorizationService authService, TenantRegistry tenantRegistry, IEmailService emailService, IOutputCacheStore outputCacheStore, ILogger<SystemAdminController> logger)
         {
             _context = context;
             _userManager = userManager;
@@ -33,6 +35,7 @@ namespace AIRelief.Controllers
             _tenantRegistry = tenantRegistry;
             _emailService = emailService;
             _outputCacheStore = outputCacheStore;
+            _logger = logger;
         }
 
         private async Task<User> GetCurrentUserAsync()
@@ -818,6 +821,20 @@ namespace AIRelief.Controllers
             if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
                 return Forbid();
 
+            try
+            {
+                return await BulkQuestionsUploadCore(file);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError(ex, "Unhandled error during JSON bulk upload by {User}", appUser?.Email);
+                TempData["ErrorMessage"] = "An unexpected error occurred while processing the JSON file. The error has been logged.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+        }
+
+        private async Task<IActionResult> BulkQuestionsUploadCore(Microsoft.AspNetCore.Http.IFormFile file)
+        {
             if (file == null || file.Length == 0)
             {
                 TempData["ErrorMessage"] = "Please select a JSON file to upload.";
@@ -920,6 +937,20 @@ namespace AIRelief.Controllers
             if (appUser?.AuthLevel != AuthLevel.SystemAdmin)
                 return Forbid();
 
+            try
+            {
+                return await BulkQuestionsUploadCsvCore(file);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError(ex, "Unhandled error during CSV bulk upload by {User}", appUser?.Email);
+                TempData["ErrorMessage"] = "An unexpected error occurred while processing the CSV file. The error has been logged.";
+                return RedirectToAction(nameof(BulkQuestions));
+            }
+        }
+
+        private async Task<IActionResult> BulkQuestionsUploadCsvCore(Microsoft.AspNetCore.Http.IFormFile file)
+        {
             if (file == null || file.Length == 0)
             {
                 TempData["ErrorMessage"] = "Please select a CSV file to upload.";
@@ -994,6 +1025,30 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
+                // Validate field lengths against DB column constraints to prevent SaveChanges exceptions.
+                // Rows with too-long fields are most commonly caused by a column-shift (e.g. a row with
+                // fewer options than expected), which causes explanation text to land in ExplanationImage.
+                string? lengthError = null;
+                if (dto.MainText.Length > 1000)         lengthError = "MainText exceeds 1000 characters";
+                else if ((dto.QuestionText?.Length ?? 0) > 1000)  lengthError = "QuestionText exceeds 1000 characters";
+                else if (dto.Option1.Length > 500)       lengthError = "Option1 exceeds 500 characters";
+                else if (dto.Option2.Length > 500)       lengthError = "Option2 exceeds 500 characters";
+                else if ((dto.Option3?.Length ?? 0) > 500)        lengthError = "Option3 exceeds 500 characters";
+                else if ((dto.Option4?.Length ?? 0) > 500)        lengthError = "Option4 exceeds 500 characters";
+                else if ((dto.Option5?.Length ?? 0) > 500)        lengthError = "Option5 exceeds 500 characters";
+                else if (dto.CorrectAnswer.Length > 500) lengthError = "CorrectAnswer exceeds 500 characters (row may have fewer options than expected, causing a column shift)";
+                else if ((dto.ExplanationText?.Length ?? 0) > 2000)  lengthError = "ExplanationText exceeds 2000 characters";
+                else if ((dto.ExplanationImage?.Length ?? 0) > 300)  lengthError = "ExplanationImage exceeds 300 characters (row may have fewer options than expected, causing a column shift)";
+                else if ((dto.Image?.Length ?? 0) > 1000)            lengthError = "Image exceeds 1000 characters";
+                else if ((dto.Category?.Length ?? 0) > 100)          lengthError = "Category exceeds 100 characters";
+
+                if (lengthError != null)
+                {
+                    skippedRows.Add((rowNumber, preview, rawLine, $"Invalid data: {lengthError}. Check that this row has the correct number of columns."));
+                    skipped++;
+                    continue;
+                }
+
                 _context.Questions.Add(new Question
                 {
                     Category        = string.IsNullOrEmpty(dto.Category)         ? null : dto.Category,
@@ -1063,45 +1118,84 @@ namespace AIRelief.Controllers
 
         private static (List<(QuestionDto Dto, string RawLine)> Rows, string Header) ParseCsvQuestions(StreamReader reader)
         {
-            // RFC-4180 compliant CSV parser that handles quoted fields containing commas/newlines
-            static string[] SplitCsvLine(string line)
+            // RFC-4180 compliant CSV parser. Reads the entire stream at once so that quoted fields
+            // containing embedded newlines (e.g. long explanation texts) are parsed correctly.
+            // A line-by-line approach splits such fields across multiple "rows" and corrupts data.
+            static List<List<string>> ParseCsv(string text)
             {
-                var fields = new List<string>();
-                var field = new System.Text.StringBuilder();
+                var records = new List<List<string>>();
+                var record  = new List<string>();
+                var field   = new System.Text.StringBuilder();
                 bool inQuotes = false;
+                int i = 0;
 
-                for (int i = 0; i < line.Length; i++)
+                while (i < text.Length)
                 {
-                    char c = line[i];
+                    char c = text[i];
+
                     if (inQuotes)
                     {
                         if (c == '"')
                         {
-                            if (i + 1 < line.Length && line[i + 1] == '"') { field.Append('"'); i++; }
-                            else inQuotes = false;
+                            // Escaped quote ("") ? append a single quote
+                            if (i + 1 < text.Length && text[i + 1] == '"') { field.Append('"'); i += 2; continue; }
+                            inQuotes = false;
                         }
-                        else field.Append(c);
+                        else
+                        {
+                            field.Append(c);
+                        }
                     }
                     else
                     {
-                        if (c == '"') inQuotes = true;
-                        else if (c == ',') { fields.Add(field.ToString()); field.Clear(); }
-                        else field.Append(c);
+                        if (c == '"')
+                        {
+                            inQuotes = true;
+                        }
+                        else if (c == ',')
+                        {
+                            record.Add(field.ToString());
+                            field.Clear();
+                        }
+                        else if (c == '\r' || c == '\n')
+                        {
+                            // Consume \r\n as a single line ending
+                            if (c == '\r' && i + 1 < text.Length && text[i + 1] == '\n') i++;
+                            record.Add(field.ToString());
+                            field.Clear();
+                            records.Add(record);
+                            record = new List<string>();
+                        }
+                        else
+                        {
+                            field.Append(c);
+                        }
                     }
+                    i++;
                 }
-                fields.Add(field.ToString());
-                return fields.ToArray();
+
+                // Flush last field/record (file may not end with a newline)
+                record.Add(field.ToString());
+                if (record.Any(f => f.Length > 0))
+                    records.Add(record);
+
+                return records;
             }
+
+            var allText = reader.ReadToEnd();
+            var records = ParseCsv(allText);
+
+            if (records.Count == 0)
+                return (new List<(QuestionDto, string)>(), string.Empty);
 
             // Expected header order (case-insensitive)
             // Category,QuestionText,MainText,Image,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,ExplanationText,ExplanationImage
-            var headerLine = reader.ReadLine();
-            if (headerLine == null)
-                return (new List<(QuestionDto, string)>(), string.Empty);
+            var headerFields = records[0];
+            var headerLine   = string.Join(",", headerFields.Select(h =>
+                h.Contains(',') || h.Contains('"') || h.Contains('\n')
+                    ? '"' + h.Replace("\"", "\"\"") + '"' : h));
 
-            var headers = SplitCsvLine(headerLine)
-                .Select(h => h.Trim().ToLowerInvariant())
-                .ToArray();
+            var headers = headerFields.Select(h => h.Trim().ToLowerInvariant()).ToArray();
 
             int Idx(string name) => System.Array.IndexOf(headers, name.ToLowerInvariant());
 
@@ -1119,15 +1213,24 @@ namespace AIRelief.Controllers
             int iExplanationText = Idx("ExplanationText");
             int iExplanationImage= Idx("ExplanationImage");
 
-            string? Get(string[] cols, int idx) =>
-                idx >= 0 && idx < cols.Length ? cols[idx].Trim() : null;
+            string? Get(List<string> cols, int idx) =>
+                idx >= 0 && idx < cols.Count ? cols[idx].Trim() : null;
+
+            static string RecordToRawLine(List<string> cols)
+            {
+                static string Escape(string v) =>
+                    v.Contains(',') || v.Contains('"') || v.Contains('\n') || v.Contains('\r')
+                        ? '"' + v.Replace("\"", "\"\"") + '"' : v;
+                return string.Join(",", cols.Select(Escape));
+            }
 
             var rows = new List<(QuestionDto Dto, string RawLine)>();
-            while (!reader.EndOfStream)
+            for (int r = 1; r < records.Count; r++)
             {
-                var line = reader.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) continue;
-                var cols = SplitCsvLine(line);
+                var cols = records[r];
+                // Skip rows that are entirely blank (can happen with trailing newlines)
+                if (cols.All(f => string.IsNullOrWhiteSpace(f))) continue;
+
                 rows.Add((new QuestionDto(
                     Category:         Get(cols, iCategory),
                     QuestionText:     Get(cols, iQuestionText),
@@ -1142,7 +1245,7 @@ namespace AIRelief.Controllers
                     BestAnswersRaw:   Get(cols, iBestAnswersRaw),
                     ExplanationText:  Get(cols, iExplanationText),
                     ExplanationImage: Get(cols, iExplanationImage)
-                ), line));
+                ), RecordToRawLine(cols)));
             }
             return (rows, headerLine);
         }
