@@ -914,11 +914,12 @@ namespace AIRelief.Controllers
                 return RedirectToAction(nameof(BulkQuestions));
             }
 
-            List<QuestionDto> dtos;
+            List<(QuestionDto Dto, string RawLine)> rows;
+            string csvHeader;
             try
             {
                 using var reader = new StreamReader(file.OpenReadStream());
-                dtos = ParseCsvQuestions(reader);
+                (rows, csvHeader) = ParseCsvQuestions(reader);
             }
             catch (System.Exception ex)
             {
@@ -926,7 +927,7 @@ namespace AIRelief.Controllers
                 return RedirectToAction(nameof(BulkQuestions));
             }
 
-            if (dtos.Count == 0)
+            if (rows.Count == 0)
             {
                 TempData["ErrorMessage"] = "The uploaded CSV file is empty or contains no questions.";
                 return RedirectToAction(nameof(BulkQuestions));
@@ -934,19 +935,23 @@ namespace AIRelief.Controllers
 
             var added = 0;
             var skipped = 0;
-            var errors = new List<string>();
+            // Each entry: (RowNumber, MainText preview, RawLine, ErrorReason)
+            var skippedRows = new List<(int RowNumber, string Preview, string RawLine, string Reason)>();
             var stagedMainTexts = new HashSet<string>(StringComparer.Ordinal);
             var stagedQuestionTexts = new HashSet<string>(StringComparer.Ordinal);
 
-            for (int i = 0; i < dtos.Count; i++)
+            for (int i = 0; i < rows.Count; i++)
             {
-                var dto = dtos[i];
-                var itemLabel = $"Row {i + 2}";
+                var (dto, rawLine) = rows[i];
+                int rowNumber = i + 2; // 1-based, +1 for header
+                string preview = string.IsNullOrWhiteSpace(dto.MainText)
+                    ? $"(Row {rowNumber})"
+                    : dto.MainText.Length > 60 ? dto.MainText[..60] + "…" : dto.MainText;
 
                 if (string.IsNullOrWhiteSpace(dto.MainText) || string.IsNullOrWhiteSpace(dto.Option1)
                     || string.IsNullOrWhiteSpace(dto.Option2) || string.IsNullOrWhiteSpace(dto.CorrectAnswer))
                 {
-                    errors.Add($"{itemLabel}: skipped — MainText, Option1, Option2 and CorrectAnswer are required.");
+                    skippedRows.Add((rowNumber, preview, rawLine, "Missing required field(s): MainText, Option1, Option2, CorrectAnswer are all required."));
                     skipped++;
                     continue;
                 }
@@ -959,6 +964,8 @@ namespace AIRelief.Controllers
 
                 if (mainTextExists || questionTextExists)
                 {
+                    var dupField = mainTextExists ? "MainText" : "QuestionText";
+                    skippedRows.Add((rowNumber, preview, rawLine, $"Duplicate: a question with the same {dupField} already exists in the database."));
                     skipped++;
                     continue;
                 }
@@ -988,15 +995,49 @@ namespace AIRelief.Controllers
             if (added > 0)
                 await _context.SaveChangesAsync();
 
-            var summary = $"{added} question(s) imported from CSV, {skipped} skipped.";
-            if (errors.Count > 0)
-                summary += " Errors: " + string.Join(" | ", errors);
+            TempData["CsvImportAdded"]   = added;
+            TempData["CsvImportSkipped"] = skipped;
 
-            TempData[added > 0 || skipped > 0 ? "SuccessMessage" : "ErrorMessage"] = summary;
+            if (skippedRows.Count > 0)
+            {
+                // Serialize skipped row details for the view
+                var skippedJson = System.Text.Json.JsonSerializer.Serialize(
+                    skippedRows.Select(r => new { r.RowNumber, r.Preview, r.RawLine, r.Reason }).ToList());
+                TempData["CsvSkippedRowsJson"] = skippedJson;
+
+                // Build the skipped-rows CSV (original columns + Error column)
+                static string CsvFieldEscape(string? value)
+                {
+                    if (string.IsNullOrEmpty(value)) return string.Empty;
+                    if (value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r'))
+                        return '"' + value.Replace("\"", "\"\"") + '"';
+                    return value;
+                }
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine(csvHeader + ",Error");
+                foreach (var (_, _, rawLine, reason) in skippedRows)
+                    sb.AppendLine(rawLine + "," + CsvFieldEscape(reason));
+                TempData["CsvSkippedContent"] = sb.ToString();
+            }
+
+            TempData[added > 0 || skipped > 0 ? "SuccessMessage" : "ErrorMessage"] =
+                $"{added} question(s) imported from CSV, {skipped} skipped.";
             return RedirectToAction(nameof(BulkQuestions));
         }
 
-        private static List<QuestionDto> ParseCsvQuestions(StreamReader reader)
+        [Route("BulkQuestions/DownloadSkippedCsv")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BulkQuestionsDownloadSkippedCsv(string csvContent)
+        {
+            if (string.IsNullOrEmpty(csvContent))
+                return RedirectToAction(nameof(BulkQuestions));
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(csvContent);
+            return File(bytes, "text/csv", $"skipped_questions_{System.DateTime.UtcNow:yyyyMMdd_HHmmss}.csv");
+        }
+
+        private static (List<(QuestionDto Dto, string RawLine)> Rows, string Header) ParseCsvQuestions(StreamReader reader)
         {
             // RFC-4180 compliant CSV parser that handles quoted fields containing commas/newlines
             static string[] SplitCsvLine(string line)
@@ -1032,7 +1073,7 @@ namespace AIRelief.Controllers
             // Category,QuestionText,MainText,Image,Option1,Option2,Option3,Option4,Option5,CorrectAnswer,BestAnswersRaw,ExplanationText,ExplanationImage
             var headerLine = reader.ReadLine();
             if (headerLine == null)
-                return new List<QuestionDto>();
+                return (new List<(QuestionDto, string)>(), string.Empty);
 
             var headers = SplitCsvLine(headerLine)
                 .Select(h => h.Trim().ToLowerInvariant())
@@ -1057,13 +1098,13 @@ namespace AIRelief.Controllers
             string? Get(string[] cols, int idx) =>
                 idx >= 0 && idx < cols.Length ? cols[idx].Trim() : null;
 
-            var dtos = new List<QuestionDto>();
+            var rows = new List<(QuestionDto Dto, string RawLine)>();
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) continue;
                 var cols = SplitCsvLine(line);
-                dtos.Add(new QuestionDto(
+                rows.Add((new QuestionDto(
                     Category:         Get(cols, iCategory),
                     QuestionText:     Get(cols, iQuestionText),
                     MainText:         Get(cols, iMainText) ?? string.Empty,
@@ -1077,9 +1118,9 @@ namespace AIRelief.Controllers
                     BestAnswersRaw:   Get(cols, iBestAnswersRaw),
                     ExplanationText:  Get(cols, iExplanationText),
                     ExplanationImage: Get(cols, iExplanationImage)
-                ));
+                ), line));
             }
-            return dtos;
+            return (rows, headerLine);
         }
 
         [Route("BulkQuestions/TemplateCsv")]
