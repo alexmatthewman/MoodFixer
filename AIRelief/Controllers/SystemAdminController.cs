@@ -935,6 +935,8 @@ namespace AIRelief.Controllers
             var added = 0;
             var skipped = 0;
             var errors = new List<string>();
+            var stagedMainTexts = new HashSet<string>(StringComparer.Ordinal);
+            var stagedQuestionTexts = new HashSet<string>(StringComparer.Ordinal);
 
             for (int i = 0; i < dtos.Count; i++)
             {
@@ -949,9 +951,11 @@ namespace AIRelief.Controllers
                     continue;
                 }
 
-                bool mainTextExists = await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
+                bool mainTextExists = stagedMainTexts.Contains(dto.MainText)
+                    || await _context.Questions.AnyAsync(q => q.MainText == dto.MainText);
                 bool questionTextExists = !string.IsNullOrWhiteSpace(dto.QuestionText)
-                    && await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText);
+                    && (stagedQuestionTexts.Contains(dto.QuestionText)
+                        || await _context.Questions.AnyAsync(q => q.QuestionText == dto.QuestionText));
 
                 if (mainTextExists || questionTextExists)
                 {
@@ -975,6 +979,9 @@ namespace AIRelief.Controllers
                     ExplanationText = string.IsNullOrEmpty(dto.ExplanationText)  ? null : dto.ExplanationText,
                     ExplanationImage= string.IsNullOrEmpty(dto.ExplanationImage) ? null : dto.ExplanationImage
                 });
+                stagedMainTexts.Add(dto.MainText);
+                if (!string.IsNullOrWhiteSpace(dto.QuestionText))
+                    stagedQuestionTexts.Add(dto.QuestionText);
                 added++;
             }
 
